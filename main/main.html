@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<link rel="stylesheet" href="../fonts/iconfont.css">
+		<link rel="stylesheet" href="../css/app.css">
+		<style type="text/css">
+			.wb-footer{
+				height: 54px;
+				border-top: 1px solid #eee;
+				font-size: 12px;
+				color: gray;
+			}
+			.nav-tab .iconfont{
+				font-size: 24px;
+				margin: 11px 0 5px 0;
+			}
+			.nav-tab.tab-active{
+				color: #EA1C40;
+			}
+		</style>
+	</head>
+
+	<body>
+		<ul class="wb-footer wb-flex-box">
+			<li class="nav-tab tab-active" i="0"><p class="iconfont icon-shouye"></p><p>首页</p></li>
+			<li class="nav-tab" i="1"><p class="iconfont icon-jiaoyi"></p><p>交易大厅</p></li>
+			<li class="nav-tab" i="2"><p class="iconfont icon-gupiao"></p><p>股票</p></li>
+			<li class="nav-tab" i="3"><p class="iconfont icon-dingdan"></p><p>订单</p></li>
+			<li class="nav-tab" i="4"><p class="iconfont icon-wode"></p><p>我的</p></li>
+		</ul>
+	</body>
+
+	<script src="../js/mui.min.js" charset="utf-8"></script>
+	<script src="../js/DomBiz.js" charset="utf-8"></script>
+	<script src="../js/app.js" charset="utf-8"></script>
+	<script type="text/javascript">
+		var subpages = ['main-home.html','main-trade.html','main-share.html','main-order.html','main-user.html'];//子页路径
+		var subObjs=new Array(5);//子页对象
+		var curIndex=0;//当前显示的子页下标
+		
+		mui.init();
+		mui.plusReady(function(){
+			var self=plus.webview.currentWebview();
+			//禁止右滑关闭
+			self.setStyle({'popGesture': 'none'});
+			if (self.isCanBack==false) {
+				//打开app进来的第一个界面,需关闭启动页
+				setTimeout(function () {
+					plus.navigator.closeSplashscreen();
+				},400);//需延时,否则会看到index.html
+			}
+			
+			//显示第一个子页
+			getPageObj(0);
+			
+			//点击导航切换子页
+			mui(".wb-footer").on("tap","li",function(){
+				EJ_ChangePage(this.getAttribute("i"));
+			})
+			
+			//android双击退出
+			doubleTapQuit();
+		});
+		
+		/*获取指定下标界面对象*/
+		function getPageObj (i) {
+			var pageObj=subObjs[i];
+			if (!pageObj) {
+				//如果模板页未创建则先创建
+				pageObj = plus.webview.create(subpages[i], subpages[i], {top:"0",bottom:'54px'});
+				plus.webview.currentWebview().append(pageObj);
+				subObjs[i]=pageObj;
+			}
+			return pageObj;
+		}
+		
+		/*切换指定的界面*/
+		function EJ_ChangePage (i) {
+			if (curIndex!=i) {
+				getPageObj(curIndex).hide();//隐藏当前页
+				getPageObj(i).show();//显示目标页
+				//当前按钮不选中
+				var navTabs=document.getElementsByClassName("nav-tab");
+				navTabs[curIndex].classList.remove("tab-active");
+				//指定按钮选中
+				navTabs[i].classList.add("tab-active");
+				//标记
+				curIndex=i;
+			}
+		}
+	</script>
+</html>

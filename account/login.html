@@ -4,9 +4,6 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
-		<meta name="apple-mobile-web-app-capable" content="yes">
-		<meta name="apple-mobile-web-app-status-bar-style" content="black">
-
 		<link rel="stylesheet" href="../fonts/iconfont.css">
 		<link rel="stylesheet" href="../css/app.css">
 		<link rel="stylesheet" href="../css/login.css">
@@ -40,11 +37,12 @@
 		mui.init();
 		mui.plusReady(function() {
 			var self=plus.webview.currentWebview();
+			//打开app进来的第一个界面
 			if (self.isCanBack==false) {
 				//禁止关闭
 				$(".wb-back").hide();
-				plus.webview.currentWebview().setStyle({'popGesture': 'none'});
-				//关闭启动页,打开app进来的第一个界面
+				self.setStyle({'popGesture': 'none'});
+				//关闭启动页
 				setTimeout(function () {
 					plus.navigator.closeSplashscreen();
 				},400);//需延时,否则会看到index.html
