@@ -1,0 +1,85 @@
+.wb-content{
+	position: relative;
+	padding: 22% 10% 0 10%;
+	text-align: center;
+}
+.wb-title{
+	z-index: 9910;
+	margin-top: 8px;
+	font-size: 18px;
+}
+
+.logo{
+	width: 128px;
+	height: 128px;
+}
+
+.input-warp{
+	margin-top: 20px;
+	border: 1px solid #dedede;
+	border-radius: 10px;
+	background-color: #FAFAFA;
+}
+.input-item{
+	position: relative;
+	border-bottom: 1px solid #dedede;
+}
+.input-item:last-child{
+	border: none;
+}
+.input-left{
+	display: inline-block;
+	width: 20%;
+	padding: 8px;
+	vertical-align: middle;
+	border-right: 1px solid #dedede;
+}
+.input-left.iconfont{
+	font-size: 22px;
+	color: #666;
+}
+.input-center{
+	width: 76%;
+	padding: 16px;
+	vertical-align: middle;
+	background-color: transparent;
+}
+.input-item-text .input-left{
+	width: 30%;
+}
+.input-item-text .input-center{
+	width: 66%;
+}
+
+.input-right{
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 54px;
+	line-height: 54px;
+	font-size: 12px;
+	padding: 0 12px;
+	color: gray;
+}
+
+.btn-submit{
+	font-size: 16px;
+	padding: 14px;
+	margin-top: 40px;
+	border-radius: 50px;
+	text-align: center;
+	background-color: #EA1D3F;
+	color: white;
+}
+.btn-bd{
+	margin-top: 25px;
+	border: 1px solid #EA1D3F;
+	background-color: white;
+	color: #EA1D3F;
+}
+.btn-right{
+	float: right;
+	font-size: 13px;
+	padding: 10px 10px 10px 20px;
+	color: darkgray;
+}

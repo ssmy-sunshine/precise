@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="../fonts/iconfont.css">
+		<link rel="stylesheet" href="../css/app.css">
+		<link rel="stylesheet" href="../css/login.css">
+	</head>
+
+	<body>
+		<p class="wb-back btn-circle iconfont icon-fanhui wb-head-left"></p>
+		<div class="wb-content" style="padding-top: 12%;">
+			<img class="logo" src="../img/logo-red.png"/>
+			<div class="input-warp">
+				<div class="input-item input-item-text">
+					<p class="input-left">昵&nbsp; 称 :</p>
+					<input id="username" class="input-center" type="text" placeholder="输入昵称" />
+				</div>
+				<div class="input-item input-item-text">
+					<p class="input-left">密&nbsp; 码 :</p>
+					<input id="pass" class="input-center" type="password" placeholder="输入密码" />
+				</div>
+				<div class="input-item input-item-text">
+					<p class="input-left">手机号 :</p>
+					<input id="tel" class="input-center" type="tel" placeholder="输入手机号" />
+				</div>
+				<div class="input-item input-item-text">
+					<p class="input-left">验证码 :</p>
+					<input id="code" class="input-center" type="number" placeholder="验证码" />
+					<p id="send" class="input-right" style="color: red;">发送验证码</p>
+				</div>
+				<div class="input-item input-item-text">
+					<p class="input-left">邀请码 :</p>
+					<input id="inviter" class="input-center" type="number" placeholder="邀请码" />
+				</div>
+				<div class="input-item input-item-text">
+					<p class="input-left">国&nbsp; 家 :</p>
+					<input id="country" class="input-center" type="text" value="中国" disabled="true"/>
+				</div>
+			</div>
+			<p id="btnSubmit" class="btn-submit">注册</p>
+		</div>
+	</body>
+
+	<script src="../js/mui.min.js" charset="utf-8"></script>
+	<script src="../js/DomBiz.js" charset="utf-8"></script>
+	<script src="../js/sendCode.js" charset="utf-8"></script>
+	<script src="../js/app.js" charset="utf-8"></script>
+	<script type="text/javascript" charset="utf-8">
+		mui.init();
+		mui.plusReady(function() {
+			//点击注册
+			$("#btnSubmit").click(function() {
+				openWindow("regin-ok.html",null,true); return;
+				
+				
+				var username=$("#username").val();
+				if (username.length<1) {
+					mui.toast("请输入昵称");
+					return;
+				}
+				var pass=$("#pass").val();
+				if (pass.length<6) {
+					mui.toast("密码至少6位");
+					return;
+				}
+				var tel=$("#tel").val();
+				if (!isTel(tel)) {
+					mui.toast("手机号不正确");
+					return;
+				}
+				var code=$("#code").val();
+				if (code.length<3) {
+					mui.toast("验证码不正确");
+					return;
+				}
+				var inviter=$("#inviter").val();
+				if (inviter.length<1) {
+					mui.toast("请输入邀请码");
+					return;
+				}
+				//注册
+				regin({LoginName:username,Name:username, TradingPwd:pass,Password:pass, PhoneNumber:tel, ValiCode:code, InviteCode:inviter});
+			})
+			
+			//发送验证码
+			initSendCode("send","tel");
+		})
+		
+		//注册
+		function regin(param) {
+			ajaxData(Host+"api/Account/Register", function(data) {
+				//{"Message":"注册成功","Data":100024,"Status":200}
+				if (data.Status==200) {
+					UserObj.setUid(data.Data);
+					mui.toast("注册成功");
+					openWindow("regin-ok.html",null,true);
+				} else{
+					return data.Message;
+				}
+			}, param);
+		}
+	</script>
+
+</html>

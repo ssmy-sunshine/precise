@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="../fonts/iconfont.css">
+		<link rel="stylesheet" href="../css/app.css">
+		<style type="text/css">
+			.wb-content{
+				text-align: center;
+				padding:20% 15% 0 15%;
+			}
+			/*注册成功*/
+			.regin-ok{
+				font-size: 40px;
+				color: #EA1C40;
+			}
+			.regin-tip{
+				font-size: 20px;
+				margin-top: 30px;
+				color: #EA1C40;
+			}
+			/*套餐列表*/
+			.list{
+				margin-top: 40px;
+			}
+			.list li{
+				position: relative;
+				margin-top: 25px;
+				border-radius: 50px;
+				border: 1px solid #aaa;
+			}
+			.list .select{
+				position: absolute;
+				left: 12px;
+				top: 12px;
+				font-size: 24px;
+				color: #18B4FE;
+			}
+			.list .ComboName{
+				font-size: 18px;
+				padding: 12px;
+				color: #e79519;
+			}
+			.list .ActiveAmount{
+				position: absolute;
+				right: 12px;
+				top: 12px;
+				font-size: 12px;
+				color: #EA1C40;
+			}
+			.list .ActiveAmount b{
+				font-size: 14px;
+				margin-right: 4px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<p class="wb-back btn-circle iconfont icon-fanhui wb-head-left"></p>
+		<div class="wb-content">
+			<p class="regin-ok iconfont icon-xuanze"></p>
+			<p class="regin-tip">注册成功</p>
+			<ul id="list" class="list">
+				<!--<li>
+					<p class="select iconfont icon-weixuanze"></p>
+					<p class="ComboName">T1</p>
+					<p class="ActiveAmount mid-align"><b>100</b><span>注册币</span></p>
+				</li>-->
+			</ul>
+		</div>
+		<div id="btnSubmit" class="wb-footer wb-btn btn-red">请选择激活的套餐</div>
+	</body>
+
+	<script src="../js/mui.min.js" charset="utf-8"></script>
+	<script src="../js/DomBiz.js" charset="utf-8"></script>
+	<script src="../js/TempBiz.js" charset="utf-8"></script>
+	<script src="../js/app.js" charset="utf-8"></script>
+	<script type="text/javascript" charset="utf-8">
+		mui.init();
+		mui.plusReady(function() {
+			//获取套餐列表
+			getCombo();
+			//选择套餐
+			mui("#list").on("tap","li",function() {
+				$("#list .icon-xuanze").removeClass("icon-xuanze").addClass("icon-weixuanze");
+				var selectDom=this.getElementsByClassName("select")[0];
+				selectDom.classList.remove("icon-weixuanze");
+				selectDom.classList.add("icon-xuanze");
+			});
+			//激活套餐
+			$("#btnSubmit").click(function() {
+				var selectDom=document.getElementById("list").getElementsByClassName("icon-xuanze")[0];
+				if (!selectDom) {
+					mui.toast("请选择套餐");
+					return;
+				}
+				var ComboId=selectDom.parentNode.getAttribute("cid");
+				actCombo(ComboId);
+			})
+		})
+		
+		/*获取套餐列表*/
+		function getCombo(){
+			ajaxData(Host+"api/Combo/GetCombo?pageIndex=1",function(data){
+				//{"Message":null,"Data":{"Data":[{"ComboId":1,"ComboName":"T1","ActiveAmount":100,"ComboValue":100,"MaxShares":1000,"RecommendAwardRate":0.05,"TouchAwardRate":0.03,"TouchRecommendAwardRate":0.03,"SeeDotAwardRate":0.03,"TouchRecommendAwardLayers":5,"SeeDotAwardLayers":6,"ShareRedeemRate":0.2,"CreateDate":"2017-05-28T15:01:20.893","UpdateDate":"2017-06-22T21:12:08.783","IsDeleted":false,"ShareRate":0.58},{"ComboId":2,"ComboName":"T2","ActiveAmount":200,"ComboValue":200,"MaxShares":10000,"RecommendAwardRate":0.05,"TouchAwardRate":0.05,"TouchRecommendAwardRate":0.03,"SeeDotAwardRate":0.05,"TouchRecommendAwardLayers":3,"SeeDotAwardLayers":5,"ShareRedeemRate":0.4,"CreateDate":"2017-07-07T21:33:17.233","UpdateDate":"2017-07-07T21:33:17.233","IsDeleted":false,"ShareRate":0.4}],"PageCount":1,"PageNumber":1,"HasNextPage":false,"IsFirstPage":true},"Status":200}
+				var str='';
+				var comboList=data.Data.Data;
+				for (var i = 0; i < comboList.length; i++) {
+					var obj=comboList[i];
+					str+='<li cid="'+obj.ComboId+'">';
+					str+='<p class="select iconfont icon-weixuanze"></p>';
+					str+='<p class="ComboName">'+obj.ComboName+'</p>';
+					str+='<p class="ActiveAmount mid-align"><b>'+obj.ActiveAmount+'</b><span>注册币</span></p>';
+					str+='</li>';
+				}
+				$("#list").html(str);
+			},{ajaxtype:"get"})
+		}
+		
+		/*申请激活*/
+		function actCombo(ComboId){
+			ajaxData(Host+"api/Combo/Apply?comboID="+ComboId+"&userID="+UserObj.getUid(),function(data){
+				mui.confirm(data.Message, "温馨提示", "好的", function(){
+					if (data.Status==200) {
+						mui.back();
+					}
+				})
+			},{ajaxtype:"get"})
+		}
+	</script>
+
+</html>

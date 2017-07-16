@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		
+		<link rel="stylesheet" type="text/css" href="../css/app.css"/>
+		<style type="text/css">
+			/*版本升级信息*/
+			.update-info{padding: 40% 10% 0 10%;text-align: center;line-height: 30px;}
+			.update-info .logo{width: 40%;margin-bottom: 10px;}
+			.update-info .progress{z-index: 10;position: relative;top: 4px;width: 0;height: 4px;border-radius: 10px;background-color: #FE2D66;}
+			.update-info .progress-bg{width: 100%;height: 4px;border-radius: 20px;background-color: #eee;}
+		</style>
+	</head>
+
+	<body>
+		<!--版本升级信息-->
+		<div id="update-info" class="update-info">
+			<img class="logo" src="../img/logo-red.png"/>
+			<p>当前版本:<span id="curVersion"></span></p>
+			<p>升级新版本: <b id="newVersion"></b></p>
+			<p id="progress-tip" class="pink">0%</p>
+			<div id="progress" class="progress"></div>
+			<div class="progress-bg"></div>
+		</div>
+	</body>
+
+	<script src="../js/mui.min.js" charset="utf-8"></script>
+	<script src="../js/DomBiz.js" charset="utf-8"></script>
+	<script src="../js/app.js" charset="utf-8"></script>
+	<!--<script src="../js/updateBiz.js" charset="utf-8"></script>-->
+	<script type="text/javascript" charset="utf-8">
+		mui.init();
+		mui.plusReady(function() {
+			//仅支持竖屏显示
+			plus.screen.lockOrientation("portrait-primary");
+			
+			intApp(); //进入app
+			
+//			//更新版本 TODO
+//			var progress=document.getElementById("progress");
+//			var progressTip=document.getElementById("progress-tip");
+//			new UpdateBiz(function(status,newVersion,gress){
+//				switch (status){
+//					case UpdateBiz.START_LOADING://关闭启动页,显示下载进度
+//						document.getElementById("newVersion").innerHTML=newVersion;
+//						plus.navigator.closeSplashscreen();
+//						break;
+//					case UpdateBiz.LOADING://显示进度
+//						progress.style.width=gress+"%";
+//						progressTip.innerHTML=gress+"%";
+//						break;
+//					case UpdateBiz.SUCCESS:
+//						plus.runtime.restart();//更新成功重启程序
+//						break;
+//					case UpdateBiz.END:
+//						intApp();//没得更新或者最新完毕
+//						break;
+//				}
+//			}).start();
+//			
+//			//显示当前版本号
+//			plus.runtime.getProperty(plus.runtime.appid, function(inf) {
+//				document.getElementById("curVersion").innerHTML=inf.version;
+//			});
+//			
+//			//禁止右滑关闭
+//			plus.webview.currentWebview().setStyle({'popGesture': 'none'});
+		});
+		
+		/*进入app*/
+		function intApp () {
+			if (UserObj.isLogin(false)){
+				//如果已登录则进入首页
+				openWindow("../main/main.html");
+			}else{
+				//如果没有登录则自动跳转登录页
+				openWindow("../account/login.html",{isCanBack:false});
+			}
+		}
+	</script>
+
+</html>
