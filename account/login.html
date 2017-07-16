@@ -18,16 +18,15 @@
 			<img class="logo" src="../img/logo-red.png"/>
 			<div class="input-warp">
 				<div class="input-item">
-					<p class="input-left iconfont icon-dianhua"></p>
-					<input id="tel" class="input-center" type="number" placeholder="输入手机号" />
-					<p id="telDel" class="input-right iconfont icon-guanbi hide"></p>
+					<p class="input-left">用户名 :</p>
+					<input id="username" class="input-center" type="text" placeholder="输入用户名" />
 				</div>
 				<div class="input-item">
-					<p class="input-left iconfont icon-yanzhengma"></p>
-					<input id="code" class="input-center" type="number" placeholder="输入密码" />
+					<p class="input-left">密&nbsp; &nbsp; 码 :</p>
+					<input id="pass" class="input-center" type="password" placeholder="输入密码" />
 				</div>
 			</div>
-			<p class="btn-right tohref" href="../account/login-pw.html">忘记密码</p>
+			<p class="btn-right tohref" href="../account/findpw.html">忘记密码</p>
 			<p id="btnSubmit" class="btn-submit">登录</p>
 			<p class="btn-submit btn-bd tohref" href="../account/regin.html">注册</p>
 		</div>
@@ -52,98 +51,37 @@
 			}
 			
 			//填入缓存的账号
-			var tel=UserObj.getTel();
-			if (tel){
-				$("#tel").val(tel);
-				$("#telDel").show();
-			}
-			
-			//手机号输入监听
-			document.getElementById("tel").addEventListener("input",function(){
-				//删除按钮显示隐藏
-				if (this.value) {
-					$("#telDel").show();
-				} else{
-					$("#telDel").hide();
-				}
-			})
-			
-			//删除手机号
-			$("#telDel").click(function() {
-				$("#tel").val("");
-				$(this).hide();
-			})
+			var username=UserObj.getUsername();
+			if(username) $("#username").val(username);
 			
 			//登录
 			$("#btnSubmit").click(function() {
-				var tel=$("#tel").val();
-				if (!isTel(tel)) {
-					mui.toast("手机号不正确");
+				var username=$("#username").val();
+				if (!username) {
+					mui.toast("请输入用户名");
 					return;
 				}
-				var code=$("#code").val();
-				if (code.length<3) {
-					mui.toast("验证码不正确");
+				var pass=$("#pass").val();
+				if (pass.length<5) {
+					mui.toast("密码不正确");
 					return;
 				}
-				//检查账号是否存在
-				getReginState(tel,function(data){
-					if(data&&data.UID){
-						//如果存在,则直接登录
-						loginByMessage(tel,code);
-					}else{
-						//如果不存在,则跳去注册
-						openWindow("../account/regin-invite.html",{tel:tel,code:code,userUnRegin:true});
-					}
-				})
+				//登录
+				var param={"username":username, "password":pass, "grant_type":"password"};
+				ajaxData(Host+"token", function(data){
+					//保存账户信息
+//					UserObj.setTel(tel);
+//					UserObj.setUid(dataArr[1]);
+//					UserObj.setTK(dataArr[2]);
+					
+				},param);
 			})
 			
 		})
 		
-		/*根据电话号码查询注册状态*/
-		function getReginState(tel,callback){
-			var param={"IFID":121,"PR":[[tel]]};
-			ajaxData(HostDataQuery, function(dataArr){
-				//Y§1§[{"RegState":2,"UID":1174}]§QV2.0§6§2016/8/7 11:32:39
-				var data=JSON.parse(dataArr[2])[0];
-				callback&&callback(data);
-			},param);
-		}
-		
-		/*手机+验证码登录*/
-		var isLoginByMessage;
-		function loginByMessage(tel,code){
-			var param={"TelNum":tel,"CD":code};
-			ajaxData(Host+"DataInterface/WBAPP/LoginByMessage.ashx", function(dataArr){
-				//保存账户信息 Y§11757§token§md5pw
-				UserObj.setTel(tel);
-				UserObj.setUid(dataArr[1]);
-				UserObj.setTK(dataArr[2]);
-				UserObj.setPassword(dataArr[3]);
-				//获取门店信息
-				UserObj.getUserinfo(function(){
-					//刷新所有界面的 EJ_LoginData方法
-					isLoginByMessage=true;//如果是login-pw.html登录成功会调EJ_LoginData关闭本界面
-					var allWeb=plus.webview.all();
-					for(var i = allWeb.length-1; i >= 0; i--){
-						allWeb[i].evalJS("EJ_LoginData()");
-					}
-					//需在最后才关闭本界面
-					setTimeout(function () {
-						mui.back();
-					},500);
-				})
-			},param,null,null,false,true);
-		}
-		
 		/*验证是否为手机号*/
 		function isTel(tel){
 		    return /^1[3|4|5|7|8]\d{9}$/.test(tel);
-		}
-		
-		/*登录成功的回调*/
-		function EJ_LoginData(){
-			if(!isLoginByMessage) plus.webview.currentWebview().close("none");//login-pw.html登录成功关闭本界面
 		}
 	</script>
 

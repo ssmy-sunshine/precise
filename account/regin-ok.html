@@ -124,7 +124,7 @@
 		
 		/*申请激活*/
 		function actCombo(ComboId){
-			ajaxData(Host+"api/Combo/Apply?comboID="+ComboId+"&userID="+UserObj.getUid(),function(data){
+			ajaxData(Host+"api/Combo/Apply?comboID="+ComboId+"&userID="+UserObj.getUid()+"&loginName="+UserObj.getUsername(),function(data){
 				mui.confirm(data.Message, "温馨提示", "好的", function(){
 					if (data.Status==200) {
 						mui.back();

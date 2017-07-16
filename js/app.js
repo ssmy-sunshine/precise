@@ -47,6 +47,13 @@ var UserObj={
 	setIcon : function(imgpath){
 		setLocalStorage("UserIcon",UserObj.getIcon(imgpath));
 	},
+	/*获取用户名*/
+	getUsername : function() {
+		return localStorage.getItem("Username");
+	},
+	setUsername : function(username) {
+		setLocalStorage("Username",username);
+	},
 	/*获取用户昵称*/
 	getNickname : function() {
 		return localStorage.getItem("UNickName");
@@ -170,8 +177,7 @@ function getImgpath(imgpath,size){
 function ajaxData(url,success,param,err,hideWait) {
 	//统一带参
 	param=param||{};
-	param["Uid"]=UserObj.getUid();
-	param["TK"]=UserObj.getTK();
+	param["access_token"]=UserObj.getTK();
 	param["ajaxtype"]=param.ajaxtype||'post';
 	param["device"]=plus.device.model+" "+plus.os.version;//设备信息:iPhone 10.0.2; HUAWEI MT7-TL00 4.4.2
 	param["IMEI"]=plus.device.uuid;//设备号
@@ -225,7 +231,7 @@ function ajaxData(url,success,param,err,hideWait) {
 				}
 			},
 			error:function (xhr) {
-				isConsole&&console.log("请求url--> " + url + " 参数--> " + JSON.stringify(param)+" 异常--> status=" + xhr.status+";statusText="+xhr.statusText);
+				isConsole&&console.log("请求url--> " + url + " 参数--> " + JSON.stringify(param)+" 异常--> " + xhr.responseText);
 				//关闭进度条
 				if(!hideWait) plus.nativeUI.closeWaiting();
 				//请求失败 特殊状态重新请求3次
@@ -238,7 +244,10 @@ function ajaxData(url,success,param,err,hideWait) {
 					//错误回调
 					var errMsg=err&&err();//返回false,不提示; 返回具体信息,则提示具体信息; 否则提示默认信息
 					if (errMsg!=false) {
-						errMsg=errMsg||("网速繁忙,请重试."+xhr.status+" v"+param.version);
+						if(!errMsg){
+							if (xhr.response)errMsg=JSON.parse(xhr.response).error_description;//取返回体的值
+							errMsg=errMsg||("网速繁忙,请重试."+xhr.status+" v"+param.version);//取固定值
+						}
 						mui.toast(errMsg);
 					}
 				}

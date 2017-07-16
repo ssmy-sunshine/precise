@@ -1,7 +1,9 @@
 /*初始化获取验证码的按钮
  sendCodeId 发送验证码按钮的id
- inputTelId 获取手机号输入框的id*/
-function initSendCode(sendCodeId,inputTelId) {
+ inputTelId 获取手机号输入框的id
+ isBuyName 是否根据用户名获取 默认false
+ */
+function initSendCode(sendCodeId,inputTelId,isBuyName) {
 	//获取验证码
 	var codeTimer;
 	$("#"+sendCodeId).click(function() {
@@ -10,14 +12,26 @@ function initSendCode(sendCodeId,inputTelId) {
 			return;
 		}
 		//手机号
-		var tel=$("#"+inputTelId).val();
-		if (!isTel(tel)) {
-			mui.toast("手机号不正确");
-			return;
+		var tel=document.getElementById(inputTelId).value;
+		var url;
+		if (isBuyName) {
+			if(!tel.length){
+				mui.toast("请输入用户名");
+				return;
+			}
+			url=Host+"api/ValiCode/GetCodeByName?name="+tel;
+		} else{
+			if (!isTel(tel)) {
+				mui.toast("手机号不正确");
+				return;
+			}
+			url=Host+"api/ValiCode/GetCode?phone="+tel;
 		}
 		//发送验证码
-		ajaxData(Host+"api/ValiCode/GetCode?phone="+tel, function(data) {
-			if (data.Status==1) {
+		ajaxData(url, function(data) {
+			if(isBuyName&&data.Status==200) {
+				mui.confirm("验证码已发送至"+data.Data+", 请注意查收 ~");
+			} else if(data.Status==1) {
 				mui.toast("验证码发送成功");
 			} else{
 				return data.Message;
@@ -25,6 +39,7 @@ function initSendCode(sendCodeId,inputTelId) {
 		}, {ajaxtype:"get"},function(){
 			codeTimer.isStop=true;
 		});
+		
 		//倒计时
 		if (!codeTimer) {
 			var codeBtn=$(this);
@@ -35,7 +50,7 @@ function initSendCode(sendCodeId,inputTelId) {
 			})
 		}
 		codeTimer.start();
-	})
+	});
 }
 
 /*验证是否为手机号*/
