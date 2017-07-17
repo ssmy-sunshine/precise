@@ -124,6 +124,14 @@ img{width:100%; height:auto; vertical-align:bottom}
 .head-btn:active{ opacity: 0.5; }
 /*内容*/
 .wb-head~.wb-content{ padding-top: 44px; }
+.wb-head~.mescroll{
+	position: fixed;
+	top: 44px;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: auto;
+}
 /*底部*/
 .wb-footer{
 	position: fixed;

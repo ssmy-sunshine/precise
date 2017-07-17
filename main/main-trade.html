@@ -6,6 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
 		<link rel="stylesheet" href="../fonts/iconfont.css">
 		<link rel="stylesheet" href="../css/app.css">
+		<link rel="stylesheet" href="../css/mescroll.min.css">
 		<style type="text/css">
 			/*标题*/
 			.wb-head{
@@ -44,11 +45,11 @@
 				padding: 18px;
 			}
 			/*内容*/
-			.wb-head~.wb-content{padding-top: 88px;}
+			.wb-head~.mescroll{top: 88px;bottom: 0;}
 			/*筛选*/
 			.limit{
 				z-index: 9990;
-				position: fixed;
+				position: absolute;
 				top: -50px;
 				left: 0;
 				width: 100%;
@@ -64,13 +65,13 @@
 			.limit input::-webkit-input-placeholder{font-size: 12px;line-height: 22px; }
 			.limit .icon-guanbi{padding: 10px 5%; }
 			/*列表*/
-			.trade-list li{
+			.datalist li{
 				border-bottom: 1px solid #eee;
 			}
-			.trade-list li > p{
+			.datalist li > p{
 				padding: 15px 0;
 			}
-			.trade-list .btn-buy{
+			.datalist .btn-buy{
 				padding: 4px 15px;
 				font-size: 14px;
 				border: 1px solid #E79519;
@@ -85,25 +86,6 @@
 			<ul id="navs" class="navs"><li class="tab-active" i="0">大陆市场</li><li i="1">欧美市场</li></ul>
 			<ul class="wb-flex-box"><li>用户</li><li>人民币</li><li>美元</li><li id="titleBuy">购买</li></ul>
 			<p id="limitShow" class="iconfont icon-sousuo"></p>
-		</div>
-		<div class="wb-content">
-			<!--大陆市场-->
-			<ul id="zhList" class="trade-list">
-				<!--<li class="wb-flex-box">
-					<p>昵称</p>
-					<p>680</p>
-					<p>100</p>
-					<p><span class="btn-buy">兑换</span></p>
-				</li>-->
-			</ul>
-			<!--欧美市场-->
-			<ul id="enList" class="trade-list hide">
-				<!--<li class="wb-flex-box">
-					<p>昵6称</p>
-					<p>999</p>
-					<p>180</p>
-				</li>-->
-			</ul>
 			<!--筛选-->
 			<div id="limit" class="limit">
 				<p>筛选 :</p>
@@ -113,14 +95,26 @@
 				<p id="limitHide" class="iconfont icon-guanbi"></p>
 			</div>
 		</div>
+		<div id="mescroll" class="mescroll">
+			<ul id="datalist" class="datalist">
+				<!--<li class="wb-flex-box">
+					<p>昵称</p>
+					<p>680</p>
+					<p>100</p>
+					<p><span class="btn-buy">兑换</span></p>
+				</li>-->
+			</ul>
+		</div>
 	</body>
 
 	<script src="../js/mui.min.js" charset="utf-8"></script>
 	<script src="../js/DomBiz.js" charset="utf-8"></script>
 	<script src="../js/app.js" charset="utf-8"></script>
+	<script src="../js/mescroll.min.js" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
 		var navIndex=0;
 		var minDom,maxDom;
+		var mescroll;
 		
 		mui.init();
 		mui.plusReady(function() {
@@ -130,14 +124,21 @@
 			minDom.addEventListener("input",initList);
 			maxDom.addEventListener("input",initList);
 			
-			//初始化第一页
-			initList();
+			//创建MeScroll对象
+			mescroll = initMeScroll("mescroll", {
+				down:{ use:false },
+				up: {
+					auto:true,
+					callback: initList,
+					page:{size:100},//保证只加载一页
+					clearEmptyId:"datalist"
+				}
+			});
 			
 			//切换导航
 			$("#navs li").click(function() {
 				changePage(this.getAttribute("i"));
 			});
-			
 			
 			//显示筛选
 			$("#limitShow").click(function () {
@@ -149,7 +150,7 @@
 				if(minDom.value||maxDom.value){
 					minDom.value="";
 					maxDom.value="";
-					initList();
+					mescroll.resetUpScroll();
 				}
 			})
 			
@@ -177,7 +178,7 @@
 				}
 				//标记切换
 				navIndex=i;
-				initList();
+				mescroll.resetUpScroll();
 			}
 		}
 		
@@ -189,33 +190,45 @@
 				var max=Number(maxDom.value||0);
 				ajaxData(Host+"api/Trading/GetCNTradingList?start="+min+"&end="+max, function(data) {
 					var list=data.Data;
-					var str='';
-					for (var i = 0; i < list.length; i++) {
-						var obj=list[i];
-						str+='<li oid="'+obj.OrderNumber+'"  class="wb-flex-box">';
-						str+='<p>'+obj.Name+'</p>';
-						str+='<p>'+obj.TransactionCNPrice+'</p>';
-						str+='<p>'+obj.TransactionUSPrice+'</p>';
-						str+='<p><span class="btn-buy">兑换</span></p>';
-						str+='</li>';
+					var len=list.length;
+					mescroll.endSuccess(len);
+					if (len>0) {
+						var str='';
+						for (var i = 0; i < len; i++) {
+							var obj=list[i];
+							str+='<li oid="'+obj.OrderNumber+'"  class="wb-flex-box">';
+							str+='<p>'+obj.Name+'</p>';
+							str+='<p>'+obj.TransactionCNPrice+'</p>';
+							str+='<p>'+obj.TransactionUSPrice+'</p>';
+							str+='<p><span class="btn-buy">兑换</span></p>';
+							str+='</li>';
+						}
+						$("#datalist").html(str);
 					}
-					$("#zhList").html(str);
-				},{ajaxtype:"get"});
+				},{ajaxtype:"get"},function () {
+					mescroll.endErr();
+				},true);
 			} else{
 				//欧美市场
 				ajaxData(Host+"api/Trading/GetUSTradingList", function(data) {
 					var list=data.Data;
-					var str='';
-					for (var i = 0; i < list.length; i++) {
-						var obj=list[i];
-						str+='<li class="wb-flex-box">';
-						str+='<p>'+obj.Name+'</p>';
-						str+='<p>'+obj.TransactionCNPrice+'</p>';
-						str+='<p>'+obj.TransactionUSPrice+'</p>';
-						str+='</li>';
+					var len=list.length;
+					mescroll.endSuccess(len);
+					if (len>0) {
+						var str='';
+						for (var i = 0; i < len; i++) {
+							var obj=list[i];
+							str+='<li class="wb-flex-box">';
+							str+='<p>'+obj.Name+'</p>';
+							str+='<p>'+obj.TransactionCNPrice+'</p>';
+							str+='<p>'+obj.TransactionUSPrice+'</p>';
+							str+='</li>';
+						}
+						$("#datalist").html(str);
 					}
-					$("#enList").html(str);
-				},{ajaxtype:"get"});
+				},{ajaxtype:"get"},function () {
+					mescroll.endErr();
+				},true);
 			}
 		}
 	</script>
