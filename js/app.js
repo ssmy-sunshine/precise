@@ -216,11 +216,8 @@ function ajaxData(url,success,param,err,hideWait) {
 			timeout:10000,
 			success:function(data){
 				isConsole&&console.log("请求url--> " + url + " 参数--> " + JSON.stringify(sendData) + " 结果-->" + JSON.stringify(data));
-				//关闭进度条
-				if(!hideWait) plus.nativeUI.closeWaiting();
-				//回调
-				var errMsg=success&&success(data);//返回401,自动刷TK; 返回具体的信息,则直接提示; 不返回,则不提示
-				if (errMsg==401||data.Status==401){
+				if(!hideWait) plus.nativeUI.closeWaiting();//关闭进度条
+				if (data.Status==401){
 					//token过期 自动刷token
 					if(!window.isGetTK){
 						//一个界面只许刷一次token,避免多个请求同时刷token导致死循环
@@ -234,9 +231,10 @@ function ajaxData(url,success,param,err,hideWait) {
 						//延时3秒刷新TK后,重新请求
 						setTimeout(function(){ sendAjax(); },3000);
 					}
-				} else if (errMsg){
+				}else{
+					var errMsg=success&&success(data);//回调返回具体的信息,则直接提示; 不返回,则不提示
 					//其他信息直接提示
-					mui.toast(errMsg+" v"+param.version);
+					errMsg&&mui.toast(errMsg+" v"+param.version);
 				}
 			},
 			error:function (xhr) {
