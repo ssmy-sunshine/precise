@@ -21,6 +21,7 @@
 				margin-bottom: 15px;
 			}
 			.top-warp .level{
+				min-height: 18px;
 				margin-left: 12px;
 				font-weight: bold;
 				background-color: #E79519;
@@ -60,12 +61,12 @@
 			.notices li{
 				position: relative;
 				border-bottom: 1px solid #eee;
-				padding: 10px;
+				padding: 12px;
 				color: #333;
 			}
 			.notices .singleline{
 				padding: 6px 20% 6px 8px;
-				font-size: 14px;
+				font-size: 15px;
 			}
 			.notices .time{
 				position: absolute;
@@ -80,22 +81,22 @@
 	<body>
 		<!--顶部-->
 		<div class="top-warp">
-			<img class="usericon" src="../img/logo-red.png"/>
+			<img id="usericon" class="usericon" src="../img/logo-red.png"/>
 			<div class="mid-align">
-				<span class="nickname">昵称</span>
-				<span class="level">T1会员</span>
+				<span id="username"></span>
+				<span id="level" class="level"></span>
 			</div>
 			<ul class="userdata">
-				<li> <b>6</b> <p>持股数</p> </li>
-				<li> <b>6</b> <p>当前股价</p> </li>
-				<li> <b>6</b> <p>总价值</p> </li>
+				<li> <b id="SharesCount">0</b> <p>持股数</p> </li>
+				<li> <b id="SharesPrice">0</b> <p>当前股价</p> </li>
+				<li> <b id="CountPrice">0</b> <p>总价值</p> </li>
 			</ul>
 		</div>
 		<!--菜单-->
 		<ul class="navs wb-flex-box">
 			<li class="mall tohref" href="../mall/mall.html"><p class="iconfont icon-shangcheng"></p><p>商城</p></li>
-			<li class="packet"><p class="iconfont icon-hongbao"></p><p>红包</p></li>
-			<li class="read"><p class="iconfont icon-yuedu"></p><p>阅读</p></li>
+			<li class="packet tohref" href="../packet/packet.html"><p class="iconfont icon-hongbao"></p><p>红包</p></li>
+			<li class="read tohref" href="../mall/mall.html"><p class="iconfont icon-yuedu"></p><p>阅读</p></li>
 		</ul>
 		<!--公告-->
 		<ul id="notices" class="notices">
@@ -112,8 +113,23 @@
 	<script type="text/javascript" charset="utf-8">
 		mui.init();
 		mui.plusReady(function(){
-			//获取公告
+			//账户信息
+			UserObj.getUserinfo(function(user){
+				if(user){
+					$("#username").html(UserObj.getUsername());
+					$("#level").html(UserObj.getLevelName());
+					$("#SharesCount").html(user.SharesCount);
+					$("#SharesPrice").html(user.SharesPrice);
+					$("#CountPrice").html(user.CountPrice);
+				}
+			});
+			
+			//公告
 			getNotice();
+			mui("#notices").on("tap","li",function() {
+				var nid=this.getAttribute("nid");
+				openWindow("../notice/notice.html",{nid:nid});
+			})
 		});
 		
 		/*获取公告*/
@@ -131,7 +147,6 @@
 				$("#notices").html(str);
 			},{ajaxtype:"get"});
 		}
-		
 	</script>
 
 </html>

@@ -91,7 +91,6 @@
 			ajaxData(Host+"api/Account/Register", function(data) {
 				//{"Message":"注册成功","Data":100024,"Status":200}
 				if (data.Status==200) {
-					UserObj.setUid(data.Data);
 					UserObj.setUsername(param.Name);
 					mui.toast("注册成功");
 					openWindow("regin-ok.html",null,true);

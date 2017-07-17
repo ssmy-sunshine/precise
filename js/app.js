@@ -22,26 +22,19 @@ document.addEventListener("plusready", function() {
 var UserObj={
 	/*获取本地缓存的用户Uid*/
 	getUid : function() {
-		var Uid=localStorage.getItem("Uid")||0;
+		var Uid=localStorage.getItem("Uid");
 		if (Uid) Uid=Number(Uid);
 		return Uid;
 	},
 	setUid : function(Uid){
 		setLocalStorage("Uid",Uid);
 	},
-	/*获取本地缓存的用户手机号*/
-	getTel : function() {
-		return localStorage.getItem("Mnum");
-	},
-	setTel : function(tel){
-		setLocalStorage("Mnum",tel);
-	},
 	/*获取用户头像,如果传imgpath则返回拼接的头像地址,如果不传则返回当前用户的头像地址*/
 	getIcon : function(imgpath) {
 		if(imgpath){
 			return getImgpath(imgpath);
 		}else{
-			return localStorage.getItem("UserIcon")||"";
+			return localStorage.getItem("UserIcon");
 		}
 	},
 	setIcon : function(imgpath){
@@ -61,14 +54,7 @@ var UserObj={
 	setNickname : function(nickname) {
 		setLocalStorage("UNickName",nickname);
 	},
-	/*获取用户注册状态: 0完成微信注册; 1注册手机号; 2选择礼包; 3已付款成店主*/
-	getRegisState : function() {
-		return localStorage.getItem("RegisState");
-	},
-	setRegisState : function(regisState) {
-		setLocalStorage("RegisState",regisState);
-	},
-	/*获取用户会员等级: 2店主,3主管,4经理*/
+	/*获取用户会员等级*/
 	getLevelTag : function() {
 		return localStorage.getItem("UserTypTag");
 	},
@@ -76,7 +62,7 @@ var UserObj={
 		setLocalStorage("UserTypTag",userTypTag);
 	},
 	getLevelName : function() {
-		return localStorage.getItem("LevelName")||"Lv.0 普通用户";
+		return localStorage.getItem("LevelName")+"会员";
 	},
 	setLevelName : function(levelName) {
 		setLocalStorage("LevelName",levelName);
@@ -89,69 +75,79 @@ var UserObj={
 		setLocalStorage("USER_ISTEST",type);
 	},
 	/*获取access_token*/
-	getTK : function() {
+	getTokenAccess : function() {
 		return localStorage.getItem("access_token");
 	},
-	setTK : function(token) {
-		setLocalStorage("access_token",token);
+	setTokenAccess : function(access_token) {
+		setLocalStorage("access_token",access_token);
 	},
 	/*获取refresh_token*/
-	getRFTK : function() {
+	getTokenRefresh : function() {
 		return localStorage.getItem("refresh_token");
 	},
-	setRFTK : function(token) {
-		setLocalStorage("refresh_token",token);
+	setTokenRefresh : function(refresh_token) {
+		setLocalStorage("refresh_token",refresh_token);
 	},
-	/*获取用户是否登录 isToLogin默认跳转登录*/
-	isLogin : function(isToLogin) {
-		if (UserObj.getUid()&&UserObj.getTK()) {
-			return true;
-		} else{
-			if(isToLogin!=false) openWindow("../account/login.html");
-			return false;
-		}
+	/*获取refresh_token*/
+	getTokenType : function() {
+		return localStorage.getItem("token_type");
+	},
+	setTokenType : function(token_type) {
+		setLocalStorage("token_type",token_type);
 	},
 	/*刷新TK*/
-	flushTK : function(success,err){
-		var TK = UserObj.getRFTK();
-		if (TK) {
+	flushToken : function(success,err){
+		var refresh_token = UserObj.getTokenRefresh();
+		if (refresh_token) {
 			ajaxData(Host+"token", function(data) {
-				//{"access_token":"xx","expires_in":3599,"refresh_token":"xxxx","as:client_id":"100024","userName":"文举"}
-				UserObj.setTK(data.access_token);//更新TK
-				UserObj.setRFTK(data.refresh_token);//更新TK
+				//{"access_token":"xx","token_type":"bearer","refresh_token":"xxxx","as:client_id":"100024","userName":"文举"}
+				UserObj.setTokenAccess(data.access_token);
+				UserObj.setTokenRefresh(data.refresh_token);
+				UserObj.setTokenType(data.token_type);
+				UserObj.setUsername(data.userName);
+				UserObj.setUid(data["as:client_id"]);
 				success&&success();//成功回调
-			},{grant_type:"refresh_token", refresh_token:TK},function(e) {
+			},{grant_type:"refresh_token", refresh_token:refresh_token},function(e) {
 				err&&err(e);//失败回调
 			},true);
 		}else{
 			openWindow("../account/login.html");//如果没有TK,则去登录页
 		}
 	},
+	/*获取用户是否登录 isToLogin默认跳转登录*/
+	isLogin : function(isToLogin) {
+		if (UserObj.getUid()&&UserObj.getTokenAccess()) {
+			return true;
+		} else{
+			if(isToLogin!=false) openWindow("../account/login.html");
+			return false;
+		}
+	},
 	/*获取用户信息*/
 	getUserinfo : function(callback){
-		if(!UserObj.isLogin(false)){
-			callback&&callback();
-			return;
+		if(UserObj.isLogin(false)){
+			ajaxData(Host+"api/Account/GetMemberInfo", function(data){
+				if (data.Status==200) {
+					var user=data.Data;
+					//缓存数据
+					UserObj.setIcon(user.ImgUrl);//头像
+					UserObj.setNickname(user.Name);//昵称
+					UserObj.setLevelTag(user.ComboId);//会员级别id
+					UserObj.setLevelName(user.Level);//会员级别名称
+					UserObj.setTestTag(user.IsTestUser);//是否为测试人员,在updateBiz.js用到
+					//回调
+					callback&&callback(user);
+				}else{
+					//失败回调
+					callback&&callback();
+					return data.Message;
+				}
+			},{ajaxtype:"get"},function(){
+				callback&&callback();//失败回调
+			},true);
+		}else{
+			callback&&callback();//未登录
 		}
-		ajaxJson(Host+"ExpServiceInterface/MemberRightsInterface/UserMessageByShopkeeper.ashx", function(user){
-			//{"UNickName":"135**617","WBIMG":"/Images/WBimg/usericon-max.png","ShopName":"135**617的店铺","amount":"0.00","Ex1":"4","visited":"0","ShopImg":"/Images/WBimg/ShopHead.jpg","ShopID":"176278","RegisState":"3","IsTestUser":"2","UserTypeTag":"2","UserType":"Lv.1 店主","RegisTime":"2017/5/3 15:27:49","FatherUID":"1254","ShopCode":"193907"}
-			//先缓存变量,其他界面公用
-			UserObj.setIcon(user.WBIMG);//头像
-			UserObj.setNickname(user.UNickName);//用户名
-			UserObj.setShopId(user.ShopID);//店铺id
-			UserObj.setShopCode(user.ShopCode);//店铺邀请码
-			UserObj.setShopImg(user.ShopImg);//店铺背景
-			UserObj.setShopName(user.ShopName);//店名
-			UserObj.setRegisState(user.RegisState);//注册状态
-			UserObj.setLevelTag(user.UserTypeTag);//会员级别id
-			UserObj.setLevelName(user.UserType);//会员级别名称
-			UserObj.setTestTag(user.IsTestUser);//是否为测试人员,在updateBiz.js用到
-			UserObj.setFatherUID(user.FatherUID);//邀请注册的用户id
-			//回调
-			callback&&callback(true);
-		},null,function(){
-			callback&&callback();
-		},true);
 	}
 }
 
@@ -186,58 +182,57 @@ function getImgpath(imgpath,size){
 function ajaxData(url,success,param,err,hideWait) {
 	//统一带参
 	param=param||{};
-	param["access_token"]=UserObj.getTK();
-	param["ajaxtype"]=param.ajaxtype||'post';
-	param["device"]=plus.device.model+" "+plus.os.version;//设备信息:iPhone 10.0.2; HUAWEI MT7-TL00 4.4.2
-	param["IMEI"]=plus.device.uuid;//设备号
+	param["ajaxtype"]=param.ajaxtype||'post';//默认post请求
 	param["version"]=localStorage.getItem("version");//版本号,在updateBiz.js中赋值;
+	param["tryNum"]=0;//重试第几次
+	//如果get请求需拼接参数
+	var sendData;
+	if (param.ajaxtype=="get") {
+		url += url.indexOf("?")==-1 ? "?" : "&" ;
+		for(key in param){
+			url += key + "=" + param[key] + "&";
+		}
+	}else{
+		sendData = param;
+	}
 	
 	/*封装请求,便于重试*/
 	function sendAjax(){
 		//重试次数,默认3次
-		if(!param.tryNum) param.tryNum=0;
-		if(param.tryNum>=3) {
+		param.tryNum++;
+		if(param.tryNum>3) {
 			mui.toast("请求超时,请重试. v"+param.version);
 			return;
 		}
-		param.tryNum++;
 		//显示进度条 默认显示hideWait==null或false
 		if(!hideWait) showWaiting();
+	
 		//联网请求
 		mui.ajax(url,{
-			data:param,
+			data:sendData,
 			type:param.ajaxtype,
 			dataType:'json',
+			headers:{'Authorization':UserObj.getTokenType()+" "+UserObj.getTokenAccess()},
 			timeout:10000,
 			success:function(data){
-				isConsole&&console.log("请求url--> " + url + " 参数--> " + JSON.stringify(param) + " 结果-->" + JSON.stringify(data));
+				isConsole&&console.log("请求url--> " + url + " 参数--> " + JSON.stringify(sendData) + " 结果-->" + JSON.stringify(data));
 				//关闭进度条
 				if(!hideWait) plus.nativeUI.closeWaiting();
 				//回调
-				var errMsg;
-				if(data.Status==401){
-					errMsg=401;
-				}else{
-					errMsg=success&&success(data);//返回401,自动刷TK; 返回具体的信息,则直接提示; 不返回,则不提示
-				}
-				if (errMsg==401){
+				var errMsg=success&&success(data);//返回401,自动刷TK; 返回具体的信息,则直接提示; 不返回,则不提示
+				if (errMsg==401||data.Status==401){
 					//token过期 自动刷token
 					if(!window.isGetTK){
 						//一个界面只许刷一次token,避免多个请求同时刷token导致死循环
 						window.isGetTK=true;
-						UserObj.flushTK(function() {
-							param.TK=UserObj.getTK();;
+						UserObj.flushToken(function() {
 							sendAjax();
 						},function (){
 							window.isGetTK=false;
 						});
 					}else{
 						//延时3秒刷新TK后,重新请求
-						setTimeout(function(){
-							//isGetTK=true;其他请求已刷过TK;则更新TK,继续请求,重新请求3次
-							param.TK=UserObj.getTK();;
-							sendAjax();
-						},3000);
+						setTimeout(function(){ sendAjax(); },3000);
 					}
 				} else if (errMsg){
 					//其他信息直接提示
@@ -245,20 +240,16 @@ function ajaxData(url,success,param,err,hideWait) {
 				}
 			},
 			error:function (xhr) {
-				isConsole&&console.log("请求url--> " + url + " 参数--> " + JSON.stringify(param)+" 异常--> " + xhr.responseText);
+				isConsole&&console.log("请求url--> " + url + " 参数--> " + JSON.stringify(sendData)+" 异常--> " + xhr.responseText);
 				//关闭进度条
 				if(!hideWait) plus.nativeUI.closeWaiting();
 				//请求失败 特殊状态重新请求3次
-				if(param.tryNum<3 && (xhr.status==406||xhr.status==0)){
+				if(param.tryNum<=3 && (xhr.status==406||xhr.status==0)){
 					//延时1秒
-					setTimeout(function(){
-						sendAjax();
-					},1000)
+					setTimeout(function(){ sendAjax(); },1000)
 				}else{
 					//错误回调
-					var errMsg,res;
-					if (xhr.status==400) res=JSON.parse(xhr.response);
-					res=res||xhr
+					var res = xhr.status==400 ? JSON.parse(xhr.response) : xhr ;
 					var errMsg=err&&err(res);//返回false,不提示; 返回具体信息,则提示具体信息; 否则提示默认信息
 					if (errMsg!=false) {
 						if(!errMsg) errMsg=res.error_description||("网速繁忙,请重试."+xhr.status+" v"+param.version);
@@ -270,12 +261,6 @@ function ajaxData(url,success,param,err,hideWait) {
 	}
 	//发送请求
 	sendAjax();
-}
-
-/*获取json,参数param默认带TK和UID*/
-function ajaxJson (url,success,param,err,hideWait) {
-	//传参类型和返回数据类型都是json字符串
-	ajaxData(url,success,param,err,hideWait,false,true,true);
 }
 
 /*显示进度条 modal是否禁止外部可按,默认true不可按*/

@@ -7,17 +7,24 @@
 		<link rel="stylesheet" href="../fonts/iconfont.css">
 		<link rel="stylesheet" href="../css/app.css">
 		<style type="text/css">
-			.wb-content{text-align: center;padding-top: 30%;}
-			.logo{width: auto;margin-bottom: 20px;}
-			.icon-shizhong{font-size: 20px}
+		
 		</style>
 	</head>
 
 	<body>
-		<p class="wb-back btn-circle iconfont icon-fanhui wb-head-left"></p>
+		<!--标题-->
+		<div class="wb-head">
+			<p class="wb-back iconfont icon-fanhui"></p>
+			<p class="wb-title">标题</p>
+			<p class="wb-head-right iconfont icon-youjiantou"></p>
+		</div>
+		<!--内容写到这里-->
 		<div class="wb-content">
-			<img class="logo" src="../img/logo-red.png"/>
-			<p><span class="iconfont icon-shizhong"></span> 正在升级维护,很快开放,敬请期待 ~</p>
+
+		</div>
+		<!--底部-->
+		<div class="wb-footer">
+
 		</div>
 	</body>
 
@@ -27,8 +34,24 @@
 	<script type="text/javascript" charset="utf-8">
 		mui.init();
 		mui.plusReady(function() {
-			
+			//获取公告
+//			getNotice();
 		});
+		
+		/*获取公告*/
+		function getNotice(){
+			ajaxData(Host+"api/Content/GetContents", function(data) {
+				var list=data.Data;
+				var str='';
+				for (var i = 0; i < list.length; i++) {
+					var obj=list[i];
+					str+='';
+					str+='';
+					str+='';
+				}
+				$("#notices").html(str);
+			},{ajaxtype:"get"});
+		}
 	</script>
 
 </html>

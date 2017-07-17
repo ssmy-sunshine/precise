@@ -67,10 +67,12 @@
 				//登录
 				var param={"username":username, "password":pass, "grant_type":"password"};
 				ajaxData(Host+"token", function(data){
-					//{"access_token":"xx","expires_in":3599,"refresh_token":"xxxx","as:client_id":"100024","userName":"文举"}
-					UserObj.setTK(data.access_token);
-					UserObj.setRFTK(data.refresh_token);
+					//{"access_token":"xx","token_type":"bearer","refresh_token":"xxxx","as:client_id":"100024","userName":"文举"}
+					UserObj.setTokenAccess(data.access_token);
+					UserObj.setTokenRefresh(data.refresh_token);
+					UserObj.setTokenType(data.token_type);
 					UserObj.setUsername(data.userName);
+					UserObj.setUid(data["as:client_id"]);
 					openWindow("../main/main.html");
 				},param,function (e){
 					if (e.error_description&&e.error_description.indexOf("未激活")!=-1) {
