@@ -73,7 +73,7 @@
 		function intApp () {
 			if (!UserObj.isLogin(false)){
 				//如果已登录则进入首页
-				openWindow("../main/main.html");
+				openWindow("../main/main.html",{isCanBack:false});
 			}else{
 				//如果没有登录则自动跳转登录页
 				openWindow("../account/login.html",{isCanBack:false});

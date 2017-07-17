@@ -7,21 +7,128 @@
 		<link rel="stylesheet" href="../fonts/iconfont.css">
 		<link rel="stylesheet" href="../css/app.css">
 		<style type="text/css">
-		
+			/*标题*/
+			.wb-head{
+				height: 84px;
+			}
+			.wb-head .navs{
+				width: 50%;
+				margin-left: 25%;
+				margin-top: 12px;
+				border: 1px solid #EA1C40;
+				border-radius: 20px;
+				color: gray;
+			}
+			.wb-head .navs li{
+				display: inline-block;
+				width: 50%;
+				padding: 5px 0;
+				font-size: 14px;
+				text-align: center;
+			}
+			.wb-head .navs li:first-child{
+				border-right: 1px solid #EA1C40;
+			}
+			.wb-head .navs .tab-active{
+				color: #EA1C40;
+			}
+			.wb-head .title li{
+				display: inline-block;
+				width: 25%;
+				text-align: center;
+				margin-top: 16px;
+				font-size: 14px;
+				color: #555;
+			}
+			/*.wb-head .icon-sousuo{
+				position: absolute;
+				top: 0;
+				right: 0;
+				padding: 18px;
+			}*/
+			/*内容*/
+			.wb-head~.wb-content{padding-top: 88px;}
+			/*筛选*/
+			.limit{padding: 4px 0 4px 8%;border-bottom: 1px solid #eee;}
+			.limit p{display: inline-block;font-size: 14px;color: gray;}
+			.limit input{width: 60px;text-align: center;padding: 8px 0;color: #EA1C40;margin: 0 8px;}
+			.limit input::-webkit-input-placeholder{font-size: 12px;line-height: 22px; }
+			.limit .limit-submit{
+				float: right;
+				padding: 3px 15px;
+				font-size: 12px;
+				margin: 4px 6% 0 0;
+				border: 1px solid #18B4FE;
+				border-radius: 20px;
+				color: #18B4FE;
+			}
+			/*.limit .icon-guanbi{
+				float: right;
+				padding: 10px 16px;
+			}*/
+			/*列表*/
+			.trade-list li{
+				font-size: 14px;
+				color: #333;
+				border-bottom: 1px solid #eee;
+			}
+			.trade-list li > p{
+				padding: 15px 0;
+			}
+			.trade-list .btn-buy{
+				padding: 3px 15px;
+				font-size: 12px;
+				border: 1px solid #E79519;
+				border-radius: 20px;
+				color: #E79519;
+			}
 		</style>
 	</head>
 
 	<body>
-		<!--标题-->
 		<div class="wb-head">
-			<p class="wb-back iconfont icon-fanhui"></p>
-			<p class="wb-title">标题</p>
-			<p class="wb-head-right iconfont icon-youjiantou"></p>
+			<ul id="navs" class="navs"><li class="tab-active" i="0">大陆市场</li><li i="1">欧美市场</li></ul>
+			<ul class="title"><li>用户</li><li>人民币</li><li>美元</li><li>购买</li></ul>
+			<!--<p class="iconfont icon-sousuo"></p>-->
 		</div>
-		
-		<!--内容写到这里-->
 		<div class="wb-content">
-交易大厅
+			<div id="zhWarp">
+				<div class="limit">
+					<p>筛选</p>
+					<input class="min-price" type="number" placeholder="最小金额"/>
+					<p>--</p>
+					<input class="max-price" type="number" placeholder="最大金额"/>
+					<p class="limit-submit">确定</p>
+					<!--<p class="iconfont icon-guanbi"></p>-->
+				</div>
+				<ul id="zhList" class="trade-list">
+					<li class="wb-flex-box">
+						<p>昵称</p>
+						<p>680</p>
+						<p>100</p>
+						<p><span class="btn-buy">兑换</span></p>
+					</li>
+				</ul>
+			</div>
+			
+			<div id="enWarp" class="hide">
+				<div class="limit">
+					<p>筛选</p>
+					<input class="min-price" type="number" placeholder="最小金额"/>
+					<p>--</p>
+					<input class="max-price" type="number" placeholder="最大金额"/>
+					<p class="limit-submit">确定</p>
+					<!--<p class="iconfont icon-guanbi"></p>-->
+				</div>
+				<ul id="enList" class="trade-list">
+					<li class="wb-flex-box">
+						<p>昵6称</p>
+						<p>999</p>
+						<p>180</p>
+						<p><span class="btn-buy">兑换</span></p>
+					</li>
+				</ul>
+			</div>
 		</div>
 	</body>
 
@@ -29,68 +136,36 @@
 	<script src="../js/DomBiz.js" charset="utf-8"></script>
 	<script src="../js/app.js" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
+		var navIndex=0;
+		
 		mui.init();
 		mui.ready(function() {//plusReady TODO
-			//获取传来的参数
-//			var value=plus.webview.currentWebview().key;
-			//联网获取数据
-//			getData(value);
 			
-			//点击事件
-//			$("#id").click(function(e) {
-//				var act=data[Number(this.getAttribute("i"))];
-//				var href = e.target.getAttribute("href");
-//				if (href=="toshare") {
-//					
-//				}else{
-//					
-//				}
-//			})
+			//切换导航
+			$("#navs li").click(function() {
+				changePage(this.getAttribute("i"));
+			})
 		});
 		
-		/*联网获取数据*/
-//		function getData(orderId){
-//			//参数
-//			var param={"IFID":23,"PR":[[orderId],[orderId],[orderId]]};
-//			ajaxData(HostDataInV2, function(dataArr) {
-//				//返回数据
-//				var data=JSON.parse(dataArr[2]);
-//				//设置界面数据
-//				initView(data);
-//				
-//			},param);
-//		}
-
-		/*设置界面数据*/
-//		function initView(data) {
-//			var listDom=document.getElementById("upscroll-list");
-//			listDom.innerHTML="";
-//			for (var i = 0; i < data.length; i++) {
-//				var liData=data[i];
-				//拼接
-//				var str='';
-//				str+='';
-//				str+='';
-//				str+='';
-//				str+='';
-//				str+='';
-//				str+='';
-//				str+='';
-//				str+='';
-//				//加入
-//				var liDom=document.createElement("li");
-//				liDom.innerHTML=str;
-//				listDom.appendChild(liDom);
-//				//存入变量到li
-//				liDom.setAttribute("liID",liData.id);
-//				//li的点击事件
-//				liDom.addEventListener("tap",function() {
-//					var liID=this.getAttribute("liID");
-//					
-//				})
-//				
-//			}
-//		}
+		function changePage(i) {
+			if (i!=navIndex){
+				//选中
+				var navDom=document.getElementById("navs");
+				var navArr=navDom.getElementsByTagName("li");
+				navDom.getElementsByClassName("tab-active")[0].classList.remove("tab-active");
+				navArr[i].classList.add("tab-active");
+				//切换列表
+				if (i==0) {
+					$("#enWarp").hide();
+					$("#zhWarp").show();
+				} else{
+					$("#zhWarp").hide();
+					$("#enWarp").show();
+				}
+				//标记选中
+				navIndex=i;
+			}
+		}
 	</script>
 
 </html>

@@ -90,10 +90,10 @@ var UserObj={
 	},
 	/*获取用户登录的token*/
 	getTK : function() {
-		return localStorage.getItem("TK");
+		return localStorage.getItem("access_token");
 	},
 	setTK : function(token) {
-		setLocalStorage("TK",token);
+		setLocalStorage("access_token",token);
 	},
 	/*获取用户是否登录 isToLogin默认跳转登录*/
 	isLogin : function(isToLogin) {
@@ -205,7 +205,12 @@ function ajaxData(url,success,param,err,hideWait) {
 				//关闭进度条
 				if(!hideWait) plus.nativeUI.closeWaiting();
 				//回调
-				var errMsg=success&&success(data);//返回401,自动刷TK; 返回具体的信息,则直接提示; 不返回,则不提示
+				var errMsg;
+				if(data.Status==401){
+					errMsg=401;
+				}else{
+					errMsg=success&&success(data);//返回401,自动刷TK; 返回具体的信息,则直接提示; 不返回,则不提示
+				}
 				if (errMsg==401){
 					//token过期 自动刷token
 					if(!window.isGetTK){
