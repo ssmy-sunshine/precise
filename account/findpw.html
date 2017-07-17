@@ -39,6 +39,10 @@
 	<script type="text/javascript" charset="utf-8">
 		mui.init();
 		mui.plusReady(function() {
+			//填入缓存的账号
+			var username=UserObj.getUsername();
+			if(username) $("#username").val(username);
+			
 			//点击找回密码
 			$("#btnSubmit").click(function() {
 				var username=$("#username").val();
@@ -57,7 +61,7 @@
 					return;
 				}
 				//找回密码
-				regin({LoginName:username, ValiCode:code, newP:pass});
+				regin(username,code,pass);
 			})
 			
 			//发送验证码
@@ -65,15 +69,15 @@
 		})
 		
 		//找回密码
-		function regin(param) {
-			ajaxData(Host+"api/Account/ReSetPassword", function(data) {
+		function regin(username,code,pass) {
+			ajaxData(Host+"api/Account/ReSetPassword?LoginName="+username+"&ValiCode="+code+"&newP="+pass, function(data) {
 				if (data.Status==200) {
 					mui.toast("密码已重置");
 					mui.back();
 				} else{
 					return data.Message;
 				}
-			}, param);
+			}, {ajaxtype:"get"});
 		}
 	</script>
 

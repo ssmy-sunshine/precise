@@ -53,9 +53,6 @@
 		mui.plusReady(function() {
 			//点击注册
 			$("#btnSubmit").click(function() {
-				openWindow("regin-ok.html",null,true); return;
-				
-				
 				var username=$("#username").val();
 				if (username.length<1) {
 					mui.toast("请输入用户名");

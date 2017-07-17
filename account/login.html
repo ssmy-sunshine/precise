@@ -67,12 +67,22 @@
 				//登录
 				var param={"username":username, "password":pass, "grant_type":"password"};
 				ajaxData(Host+"token", function(data){
-					//保存账户信息
-//					UserObj.setTel(tel);
-//					UserObj.setUid(dataArr[1]);
-//					UserObj.setTK(dataArr[2]);
-					
-				},param);
+					//{"access_token":"xx","expires_in":3599,"refresh_token":"xxxx","as:client_id":"100024","userName":"文举"}
+					UserObj.setTK(data.access_token);
+					UserObj.setRFTK(data.refresh_token);
+					UserObj.setUsername(data.userName);
+					openWindow("../main/main.html");
+				},param,function (e){
+					if (e.error_description&&e.error_description.indexOf("未激活")!=-1) {
+						mui.confirm("您的账号未激活.","温馨提示",["取消","立即激活"],function(e){
+							if (e.index==1) {
+								UserObj.setUsername(username);
+								openWindow("regin-ok.html");
+							}
+						});
+						return false;
+					}
+				});
 			})
 			
 		})

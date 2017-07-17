@@ -9,16 +9,14 @@
 		<style type="text/css">
 			.wb-content{
 				text-align: center;
-				padding:20% 15% 0 15%;
+				padding:10% 15% 0 15%;
 			}
 			/*注册成功*/
-			.regin-ok{
-				font-size: 40px;
-				color: #EA1C40;
+			.logo{
+				width: auto;
 			}
 			.regin-tip{
-				font-size: 20px;
-				margin-top: 30px;
+				font-size: 18px;
 				color: #EA1C40;
 			}
 			/*套餐列表*/
@@ -60,8 +58,8 @@
 	<body>
 		<p class="wb-back btn-circle iconfont icon-fanhui wb-head-left"></p>
 		<div class="wb-content">
-			<p class="regin-ok iconfont icon-xuanze"></p>
-			<p class="regin-tip">注册成功</p>
+			<img class="logo" src="../img/logo-red.png"/>
+			<p class="regin-tip">请选择激活的套餐</p>
 			<ul id="list" class="list">
 				<!--<li>
 					<p class="select iconfont icon-weixuanze"></p>
@@ -70,7 +68,7 @@
 				</li>-->
 			</ul>
 		</div>
-		<div id="btnSubmit" class="wb-footer wb-btn btn-red">请选择激活的套餐</div>
+		<div id="btnSubmit" class="wb-footer wb-btn btn-red">确定</div>
 	</body>
 
 	<script src="../js/mui.min.js" charset="utf-8"></script>
@@ -120,8 +118,8 @@
 		
 		/*申请激活*/
 		function actCombo(ComboId){
-			ajaxData(Host+"api/Combo/Apply?comboID="+ComboId+"&userID="+UserObj.getUid()+"&loginName="+UserObj.getUsername(),function(data){
-				mui.confirm(data.Message, "温馨提示", "好的", function(){
+			ajaxData(Host+"api/Combo/Apply?comboID="+ComboId+"&loginName="+UserObj.getUsername(),function(data){
+				mui.confirm(data.Message, "温馨提示", ["好的"], function(){
 					if (data.Status==200) {
 						mui.back();
 					}

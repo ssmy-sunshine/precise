@@ -88,12 +88,19 @@ var UserObj={
 	setTestTag : function(type) {
 		setLocalStorage("USER_ISTEST",type);
 	},
-	/*获取用户登录的token*/
+	/*获取access_token*/
 	getTK : function() {
 		return localStorage.getItem("access_token");
 	},
 	setTK : function(token) {
 		setLocalStorage("access_token",token);
+	},
+	/*获取refresh_token*/
+	getRFTK : function() {
+		return localStorage.getItem("refresh_token");
+	},
+	setRFTK : function(token) {
+		setLocalStorage("refresh_token",token);
 	},
 	/*获取用户是否登录 isToLogin默认跳转登录*/
 	isLogin : function(isToLogin) {
@@ -106,10 +113,12 @@ var UserObj={
 	},
 	/*刷新TK*/
 	flushTK : function(success,err){
-		var TK = UserObj.getTK();//TK
+		var TK = UserObj.getRFTK();
 		if (TK) {
 			ajaxData(Host+"token", function(data) {
+				//{"access_token":"xx","expires_in":3599,"refresh_token":"xxxx","as:client_id":"100024","userName":"文举"}
 				UserObj.setTK(data.access_token);//更新TK
+				UserObj.setRFTK(data.refresh_token);//更新TK
 				success&&success();//成功回调
 			},{grant_type:"refresh_token", refresh_token:TK},function(e) {
 				err&&err(e);//失败回调
@@ -247,12 +256,12 @@ function ajaxData(url,success,param,err,hideWait) {
 					},1000)
 				}else{
 					//错误回调
-					var errMsg=err&&err();//返回false,不提示; 返回具体信息,则提示具体信息; 否则提示默认信息
+					var errMsg,res;
+					if (xhr.status==400) res=JSON.parse(xhr.response);
+					res=res||xhr
+					var errMsg=err&&err(res);//返回false,不提示; 返回具体信息,则提示具体信息; 否则提示默认信息
 					if (errMsg!=false) {
-						if(!errMsg){
-							if (xhr.response)errMsg=JSON.parse(xhr.response).error_description;//取返回体的值
-							errMsg=errMsg||("网速繁忙,请重试."+xhr.status+" v"+param.version);//取固定值
-						}
+						if(!errMsg) errMsg=res.error_description||("网速繁忙,请重试."+xhr.status+" v"+param.version);
 						mui.toast(errMsg);
 					}
 				}

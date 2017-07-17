@@ -71,7 +71,7 @@
 		
 		/*进入app*/
 		function intApp () {
-			if (!UserObj.isLogin(false)){
+			if (UserObj.isLogin(false)){
 				//如果已登录则进入首页
 				openWindow("../main/main.html",{isCanBack:false});
 			}else{
