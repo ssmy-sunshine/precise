@@ -15,7 +15,7 @@
 				text-align: center;
 				color: white;
 			}
-			.towarp .RegisterAmount{
+			.towarp .Amount{
 				font-size: 40px;
 				margin-bottom: 20px;
 			}
@@ -58,19 +58,18 @@
 			.wb-footer{
 				height: 50px;
 				line-height: 50px;
+				text-align: center;
+				background-color: #E79519;
 				color: white;
 			}
-			.wb-footer .btn-buy{background-color: #E79519 }
-			.wb-footer .btn-update{background-color: #FF5152 }
-			.wb-footer .btn-act{background-color: #FF6990 }
 		</style>
 	</head>
 
 	<body>
 		<p class="wb-back btn-circle iconfont icon-fanhui wb-head-left"></p>
 		<div class="towarp">
-			<p id="RegisterAmount" class="RegisterAmount">0.00</p>
-			<p class="amount-tip">当前注册币</p>
+			<p id="Amount" class="Amount">0.00</p>
+			<p class="amount-tip">当前现金币</p>
 		</div>
 		<p class="title-list">交易明细</p>
 		<div id="mescroll" class="mescroll">
@@ -82,11 +81,7 @@
 				</li>-->
 			</ul>
 		</div>
-		<ul class="wb-footer wb-flex-box">
-			<li class="btn-buy">购买</li>
-			<li class="btn-update">升级</li>
-			<li class="btn-act">激活</li>
-		</ul>
+		<p class="wb-footer">兑 换</p>
 	</body>
 
 	<script src="../js/mui.min.js" charset="utf-8"></script>
@@ -114,7 +109,7 @@
 		
 		/*初始化列表*/
 		function initList(){
-			ajaxData(Host+"api/Purse/GetPurseLog?pageIndex="+page.num+"&accountType=3", function(data) {
+			ajaxData(Host+"api/Purse/GetPurseLog?pageIndex="+page.num+"&accountType=0", function(data) {
 				var objArr=data.Data||[];
 				var len=objArr.length;
 				mescroll.endSuccess(len);
