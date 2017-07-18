@@ -20,7 +20,7 @@
 				border-radius: 50%;
 				margin-bottom: 15px;
 			}
-			.top-warp .level{
+			.top-warp .LevelName{
 				min-height: 18px;
 				margin-left: 12px;
 				font-weight: bold;
@@ -82,8 +82,8 @@
 		<div class="top-warp">
 			<img id="usericon" class="usericon" src="../img/logo-red.png"/>
 			<div class="mid-align">
-				<span id="username"></span>
-				<span id="level" class="level"></span>
+				<span id="Username"></span>
+				<span id="LevelName" class="LevelName"></span>
 			</div>
 			<ul class="userdata">
 				<li> <b id="SharesCount">0</b> <p>持股数</p> </li>
@@ -113,14 +113,8 @@
 		mui.init();
 		mui.plusReady(function(){
 			//账户信息
-			UserObj.getUserinfo(function(user){
-				if(user){
-					$("#username").html(UserObj.getUsername());
-					$("#level").html(UserObj.getLevelName());
-					$("#SharesCount").html(user.SharesCount);
-					$("#SharesPrice").html(user.SharesPrice);
-					$("#CountPrice").html(user.CountPrice);
-				}
+			UserObj.getUserinfo(function(){
+				EJ_SetUserInfo();
 			});
 			
 			//公告

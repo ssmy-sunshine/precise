@@ -124,8 +124,12 @@ var UserObj={
 					UserObj.setIcon(user.ImgUrl);//头像
 					UserObj.setNickname(user.Name);//昵称
 					UserObj.setLevelTag(user.ComboId);//会员级别id
-					UserObj.setLevelName(user.Level);//会员级别名称
+					UserObj.setLevelName(user.Level);//会员等级名(套餐名)
 					UserObj.setTestTag(user.IsTestUser);//是否为测试人员,在updateBiz.js用到
+					UserObj.setSharesCount(user.SharesCount);//持股数
+					UserObj.setShareAmount(user.ShareAmount);//股票币
+					UserObj.setSharesPrice(user.SharesPrice);//当前股价
+					UserObj.setCountPrice(user.CountPrice);//总价值
 					//回调
 					callback&&callback(user);
 				}else{
@@ -135,9 +139,17 @@ var UserObj={
 				}
 			},{ajaxtype:"get"},function(){
 				callback&&callback();//失败回调
-			},true);
+			});
 		}else{
 			callback&&callback();//未登录
+		}
+	},
+	/*刷新用户数据*/
+	notifyView : function() {
+		var viewIdArr=["main-home.html"];
+		for (var i = 0; i < viewIdArr.length; i++) {
+			var viewObj=plus.webview.getWebviewById(viewIdArr[i]);
+			viewObj&&viewObj.evalJS("EJ_SetUserInfo()");
 		}
 	},
 	/*获取用户测试身份: 0普通用户,1测试人员;2开发人员;*/
@@ -146,7 +158,45 @@ var UserObj={
 	},
 	setTestTag : function(type) {
 		setLocalStorage("USER_ISTEST",type);
-	}
+	},
+	/*持股数*/
+	getSharesCount : function() {
+		return localStorage.getItem("SharesCount")||"0";
+	},
+	setSharesCount : function(value) {
+		setLocalStorage("SharesCount",value);
+	},
+	/*股票币*/
+	getShareAmount : function() {
+		return localStorage.getItem("ShareAmount")||"0";
+	},
+	setShareAmount : function(value) {
+		setLocalStorage("ShareAmount",value);
+	},
+	/*当前股价*/
+	getSharesPrice : function() {
+		return localStorage.getItem("SharesPrice")||"0";
+	},
+	setSharesPrice : function(value) {
+		setLocalStorage("SharesPrice",value);
+	},
+	/*总价值*/
+	getCountPrice : function() {
+		return localStorage.getItem("CountPrice")||"0.00";
+	},
+	setCountPrice : function(value) {
+		setLocalStorage("CountPrice",value);
+	},
+}
+
+/*设置用户信息*/
+function EJ_SetUserInfo(){
+	$("#Username").html(UserObj.getUsername());//用户名
+	$("#LevelName").html(UserObj.getLevelName());//会员等级名(套餐名)
+	$("#SharesCount").html(UserObj.getSharesCount());//持股数
+	$("#ShareAmount").html(UserObj.getShareAmount());//股票币
+	$("#SharesPrice").html(UserObj.getSharesPrice());//当前股价
+	$("#CountPrice").html(UserObj.getCountPrice());//总价值
 }
 
 /*设置localStorage,如果value不存在则移除*/
@@ -356,6 +406,7 @@ function EmptyBox(option) {
 		warpId: null, //父布局的id
 		icon: "../img/logo-gray.png",//图标路径
 		tip: "暂无相关数据~", //提示
+		isClear:true,//是否先清空列表再显示空布局
 		btntext: "", //按钮
 		btnClick: null
 	}
@@ -376,6 +427,7 @@ EmptyBox.prototype.show = function() {
 		me.emptyDom = document.createElement("div");
 		me.emptyDom.className = 'empty-box';
 		me.emptyDom.innerHTML = str;
+		if(optEmpty.isClear) emptyWarp.innerHTML="";//清空列表
 		emptyWarp.appendChild(me.emptyDom);
 		if(optEmpty.btnClick) { //点击按钮的回调
 			var emptyBtn = me.emptyDom.getElementsByClassName("empty-btn")[0];

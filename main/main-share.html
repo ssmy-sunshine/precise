@@ -7,90 +7,155 @@
 		<link rel="stylesheet" href="../fonts/iconfont.css">
 		<link rel="stylesheet" href="../css/app.css">
 		<style type="text/css">
-		
+			/*顶部*/
+			.top-warp{
+				position: relative;
+				padding-top: 45px;
+				background-color: #DDEBFF;
+				text-align: center;
+				overflow: hidden;
+			}
+			.top-warp .CountPrice{
+				font-size: 40px;
+				margin-bottom: 15px;
+				color: #EA1C40;
+			}
+			.userdata li{
+				display: inline-block;
+				width: 30%;
+				font-size: 13px;
+				line-height: 20px;
+				padding: 40px 0 8px 0;
+			}
+			.userdata b{
+				font-size: 20px;
+				color: #EA1C40;
+			}
+			.btn-buy,.btn-sell{
+				position: absolute;
+				right: -15px;
+				font-size: 14px;
+				border-radius: 20px;
+				padding: 7px 20px;
+				color: white;
+			}
+			.btn-buy{top: 25px;background-color: #E79519}
+			.btn-sell{top: 75px;background-color: #EA1C40}
+			/*菜单*/
+			.navs{
+				border-bottom: 1px solid #eee;
+				font-size: 14px;
+				color: gray;
+			}
+			.navs li{ padding: 10px 0; }
+			.navs .tab-active{color: #EA1C40;}
+			/*列表标题*/
+			.list-title{border-bottom: 1px solid #eee;color: #555;}
+			.list-title p{padding: 8px 0;font-size: 14px}
+			/*列表*/
+			.data-list li{
+				padding: 10px 0;
+				font-size: 14px;
+				border-bottom: 1px solid #eee;
+			}
+			.data-list li p:last-child{
+				font-size: 12px;
+			}
 		</style>
 	</head>
 
 	<body>
-		<!--标题-->
-		<div class="wb-head">
-			<p class="wb-back iconfont icon-fanhui"></p>
-			<p class="wb-title">股票</p>
-			<p class="wb-head-right iconfont icon-youjiantou"></p>
+		<!--顶部-->
+		<div class="top-warp">
+			<p id="CountPrice" class="CountPrice">0.00</p>
+			<p>总价值</p>
+			<ul class="userdata">
+				<li> <b id="SharesPrice">0</b> <p>当前股价</p> </li>
+				<li> <b id="SharesCount">0</b> <p>持股数</p> </li>
+				<li> <b id="ShareAmount">0</b> <p>股票币</p> </li>
+			</ul>
+			<p class="btn-buy">买入</p>
+			<p class="btn-sell">卖出</p>
 		</div>
-		
-		<!--内容写到这里-->
-		<div class="wb-content">
-
+		<!--菜单-->
+		<ul id="navs" class="navs wb-flex-box">
+			<li class="tab-active" i="0">买入记录</li>
+			<li i="1">卖出记录</li>
+		</ul>
+		<div class="list-title wb-flex-box">
+			<p>卖家</p> <p>金额</p> <p>股数</p> <p>股价</p> <p>时间</p>
 		</div>
+		<ul id="datalist" class="data-list">
+			<!--<li class="wb-flex-box">
+				<p>卖家</p> <p>金额</p> <p>股数</p> <p>股价</p> <p>时间</p>
+			</li>-->
+		</ul>
 	</body>
 
 	<script src="../js/mui.min.js" charset="utf-8"></script>
 	<script src="../js/DomBiz.js" charset="utf-8"></script>
 	<script src="../js/app.js" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
+		var navIndex=0;
+	
 		mui.init();
-		mui.ready(function() {//plusReady TODO
-			//获取传来的参数
-//			var value=plus.webview.currentWebview().key;
-			//联网获取数据
-//			getData(value);
+		mui.plusReady(function() {
+			//设置会员信息
+			EJ_SetUserInfo();
 			
-			//点击事件
-//			$("#id").click(function(e) {
-//				var act=data[Number(this.getAttribute("i"))];
-//				var href = e.target.getAttribute("href");
-//				if (href=="toshare") {
-//					
-//				}else{
-//					
-//				}
-//			})
+			//买入记录
+			initList();
+			
+			//切换导航
+			$("#navs li").click(function() {
+				changePage(this.getAttribute("i"));
+			});
 		});
 		
-		/*联网获取数据*/
-//		function getData(orderId){
-//			//参数
-//			var param={"IFID":23,"PR":[[orderId],[orderId],[orderId]]};
-//			ajaxData(HostDataInV2, function(dataArr) {
-//				//返回数据
-//				var data=JSON.parse(dataArr[2]);
-//				//设置界面数据
-//				initView(data);
-//				
-//			},param);
-//		}
-
-		/*设置界面数据*/
-//		function initView(data) {
-//			var listDom=document.getElementById("upscroll-list");
-//			listDom.innerHTML="";
-//			for (var i = 0; i < data.length; i++) {
-//				var liData=data[i];
-				//拼接
-//				var str='';
-//				str+='';
-//				str+='';
-//				str+='';
-//				str+='';
-//				str+='';
-//				str+='';
-//				str+='';
-//				str+='';
-//				//加入
-//				var liDom=document.createElement("li");
-//				liDom.innerHTML=str;
-//				listDom.appendChild(liDom);
-//				//存入变量到li
-//				liDom.setAttribute("liID",liData.id);
-//				//li的点击事件
-//				liDom.addEventListener("tap",function() {
-//					var liID=this.getAttribute("liID");
-//					
-//				})
-//				
-//			}
-//		}
+		/*切换导航*/
+		function changePage(i) {
+			if (i!=navIndex){
+				//选中
+				var navDom=document.getElementById("navs");
+				var navArr=navDom.getElementsByTagName("li");
+				navDom.getElementsByClassName("tab-active")[0].classList.remove("tab-active");
+				navArr[i].classList.add("tab-active");
+				//标记切换
+				navIndex=i;
+				initList();
+			}
+		}
+		
+		/*显示列表*/
+		function initList(){
+			var url;
+			if (navIndex==0){
+				url=Host+"api/Share/GetBuyInTransactionLog?pageIndex=1";//买入记录
+			} else{
+				url=Host+"api/Share/GetBuyOutTransactionLog?pageIndex=1";//卖出记录
+			}
+			//查询
+			ajaxData(url, function(data) {
+				var objList= data.Data ? data.Data.Data : [];
+				var len=objList.length;
+				if (len==0) {
+					new EmptyBox({warpId:"datalist"}).show();
+				} else{
+					var str='';
+					for (var i = 0; i < len; i++) {
+						var obj=objList[i];
+						str+='<li class="wb-flex-box">';
+						str+='<p>'+obj.ToMemberName+'</p>';
+						str+='<p>'+obj.Amount+'</p>';
+						str+='<p>'+obj.ShareQty+'</p>';
+						str+='<p>'+obj.SharePrice+'</p>';
+						str+='<p>'+obj.CreateDate+'</p>';
+						str+='</li>';
+					}
+					$("#datalist").html(str);
+				}
+			},{ajaxtype:"get"});
+		}
 	</script>
 
 </html>
