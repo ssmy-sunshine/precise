@@ -30,62 +30,62 @@ var UserObj={
 		setLocalStorage("Uid",Uid);
 	},
 	/*获取用户头像,如果传imgpath则返回拼接的头像地址,如果不传则返回当前用户的头像地址*/
-	getIcon : function(imgpath) {
-		if(imgpath){
-			return getImgpath(imgpath);
+	getIcon : function(value) {
+		if(value){
+			return getImgpath(value);
 		}else{
 			return localStorage.getItem("UserIcon");
 		}
 	},
-	setIcon : function(imgpath){
-		setLocalStorage("UserIcon",UserObj.getIcon(imgpath));
+	setIcon : function(value){
+		setLocalStorage("UserIcon",UserObj.getIcon(value));
 	},
 	/*获取用户名*/
 	getUsername : function() {
 		return localStorage.getItem("Username");
 	},
-	setUsername : function(username) {
-		setLocalStorage("Username",username);
+	setUsername : function(value) {
+		setLocalStorage("Username",value);
 	},
 	/*获取用户密码*/
 	getPassword : function() {
 		return localStorage.getItem("password");
 	},
-	setPassword : function(password) {
-		setLocalStorage("password",password);
+	setPassword : function(value) {
+		setLocalStorage("password",value);
 	},
 	/*获取用户昵称*/
 	getNickname : function() {
 		return localStorage.getItem("UNickName");
 	},
-	setNickname : function(nickname) {
-		setLocalStorage("UNickName",nickname);
+	setNickname : function(value) {
+		setLocalStorage("UNickName",value);
 	},
 	/*获取用户会员等级*/
-	getLevelTag : function() {
-		return localStorage.getItem("UserTypTag");
+	getComboId : function() {
+		return localStorage.getItem("ComboId");
 	},
-	setLevelTag : function(userTypTag) {
-		setLocalStorage("UserTypTag",userTypTag);
+	setComboId : function(value) {
+		setLocalStorage("ComboId",value);
 	},
 	getLevelName : function() {
-		return localStorage.getItem("LevelName")+"会员";
+		return localStorage.getItem("LevelName");
 	},
-	setLevelName : function(levelName) {
-		setLocalStorage("LevelName",levelName);
+	setLevelName : function(value) {
+		setLocalStorage("LevelName",value);
 	},
 	/*获取access_token*/
 	getToken : function() {
 		return localStorage.getItem("access_token");
 	},
-	setToken : function(access_token) {
-		setLocalStorage("access_token",access_token);
+	setToken : function(value) {
+		setLocalStorage("access_token",value);
 	},
 	getTokenType : function() {
 		return localStorage.getItem("token_type");
 	},
-	setTokenType : function(token_type) {
-		setLocalStorage("token_type",token_type);
+	setTokenType : function(value) {
+		setLocalStorage("token_type",value);
 	},
 	/*登录*/
 	login : function(username,password,success,err){
@@ -123,13 +123,18 @@ var UserObj={
 					//缓存数据
 					UserObj.setIcon(user.ImgUrl);//头像
 					UserObj.setNickname(user.Name);//昵称
-					UserObj.setLevelTag(user.ComboId);//会员级别id
+					UserObj.setComboId(user.ComboId);//会员套餐ID
 					UserObj.setLevelName(user.Level);//会员等级名(套餐名)
 					UserObj.setTestTag(user.IsTestUser);//是否为测试人员,在updateBiz.js用到
 					UserObj.setSharesCount(user.SharesCount);//持股数
 					UserObj.setShareAmount(user.ShareAmount);//股票币
 					UserObj.setSharesPrice(user.SharesPrice);//当前股价
 					UserObj.setCountPrice(user.CountPrice);//总价值
+					UserObj.setIntegration(user.Integration);//积分
+					UserObj.setAmount(user.Amount);//现金币
+					UserObj.setInviteCode(user.InviteCode);//邀请码
+					UserObj.setRegisterAmount(user.RegisterAmount);//注册币
+					UserObj.setPrevMemberId(user.PrevMemberId);//上级会员
 					//回调
 					callback&&callback(user);
 				}else{
@@ -156,8 +161,8 @@ var UserObj={
 	getTestTag : function() {
 		return localStorage.getItem("USER_ISTEST");
 	},
-	setTestTag : function(type) {
-		setLocalStorage("USER_ISTEST",type);
+	setTestTag : function(value) {
+		setLocalStorage("USER_ISTEST",value);
 	},
 	/*持股数*/
 	getSharesCount : function() {
@@ -187,6 +192,41 @@ var UserObj={
 	setCountPrice : function(value) {
 		setLocalStorage("CountPrice",value);
 	},
+	/*邀请码*/
+	getInviteCode : function() {
+		return localStorage.getItem("InviteCode");
+	},
+	setInviteCode : function(value) {
+		setLocalStorage("InviteCode",value);
+	},
+	/*积分*/
+	getIntegration : function() {
+		return localStorage.getItem("Integration")||"0";
+	},
+	setIntegration : function(value) {
+		setLocalStorage("Integration",value);
+	},
+	/*现金币*/
+	getAmount : function() {
+		return localStorage.getItem("Amount")||"0";
+	},
+	setAmount : function(value) {
+		setLocalStorage("Amount",value);
+	},
+	/*注册币*/
+	getRegisterAmount : function() {
+		return localStorage.getItem("RegisterAmount")||"0";
+	},
+	setRegisterAmount : function(value) {
+		setLocalStorage("RegisterAmount",value);
+	},
+	/*上级会员ID*/
+	getPrevMemberId : function() {
+		return localStorage.getItem("PrevMemberId");
+	},
+	setPrevMemberId : function(value) {
+		setLocalStorage("PrevMemberId",value);
+	},
 }
 
 /*设置用户信息*/
@@ -197,6 +237,10 @@ function EJ_SetUserInfo(){
 	$("#ShareAmount").html(UserObj.getShareAmount());//股票币
 	$("#SharesPrice").html(UserObj.getSharesPrice());//当前股价
 	$("#CountPrice").html(UserObj.getCountPrice());//总价值
+	$("#RegisterAmount").html(UserObj.getRegisterAmount());//注册币
+	$("#Amount").html(UserObj.getAmount());//现金币
+	$("#Integration").html(UserObj.getIntegration());//积分
+	$("#InviteCode").html(UserObj.getInviteCode());//邀请码
 }
 
 /*设置localStorage,如果value不存在则移除*/
