@@ -189,7 +189,7 @@
 				var min=Number(minDom.value||0);
 				var max=Number(maxDom.value||0);
 				ajaxData(Host+"api/Trading/GetCNTradingList?start="+min+"&end="+max, function(data) {
-					var list=data.Data;
+					var list=data.Data||[];
 					var len=list.length;
 					mescroll.endSuccess(len);
 					if (len>0) {

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<link rel="stylesheet" href="../fonts/iconfont.css">
+		<link rel="stylesheet" href="../css/app.css">
+		<link rel="stylesheet" href="../css/mescroll.min.css">
+		<style type="text/css">
+			.towarp{
+				height: 160px;
+				padding-top: 66px;
+				background-color: #18B4FE;
+				text-align: center;
+				color: white;
+			}
+			.towarp .Amount{
+				font-size: 40px;
+				margin-bottom: 20px;
+			}
+			.towarp .amount-tip{
+				font-size: 12px;
+			}
+			.title-list{padding: 14px;border-bottom: 1px solid #eee;font-size: 14px;}
+			/*列表*/
+			.datalist li{
+				padding: 12px 0;
+				border-bottom: 1px solid #eee;
+			}
+			.datalist .remark{
+				display: inline-block;
+				padding-left: 14px;
+				width: 35%;
+				color: #555;
+			}
+			.datalist .money{
+				display: inline-block;
+				width: 25%;
+				color: #EA1C40;
+			}
+			.datalist .time{
+				display: inline-block;
+				width: 35%;
+				font-size: 12px;
+				text-align: center;
+				color: gray;
+			}
+			/*列表*/
+			.mescroll{
+				position: fixed;
+				top: 206px;
+				bottom: 50px;
+				width: 100%;
+				height: auto;
+			}
+			/*底部*/
+			.wb-footer{
+				height: 50px;
+				line-height: 50px;
+				color: white;
+			}
+			.wb-footer .btn-buy{background-color: #E79519 }
+			.wb-footer .btn-update{background-color: #FF5152 }
+			.wb-footer .btn-act{background-color: #FF6990 }
+		</style>
+	</head>
+
+	<body>
+		<p class="wb-back btn-circle iconfont icon-fanhui wb-head-left"></p>
+		<div class="towarp">
+			<p id="Amount" class="Amount">0.00</p>
+			<p class="amount-tip">当前注册币</p>
+		</div>
+		<p class="title-list">交易明细</p>
+		<div id="mescroll" class="mescroll">
+			<ul id="datalist" class="datalist">
+				<!--<li>
+					<p class="remark">购买</p>
+					<p class="money">450.00</p>
+					<p class="time">2017-7-18 22:11:24</p>
+				</li>-->
+			</ul>
+		</div>
+		<ul class="wb-footer wb-flex-box">
+			<li class="btn-buy">购买</li>
+			<li class="btn-update">升级</li>
+			<li class="btn-act">激活</li>
+		</ul>
+	</body>
+
+	<script src="../js/mui.min.js" charset="utf-8"></script>
+	<script src="../js/DomBiz.js" charset="utf-8"></script>
+	<script src="../js/app.js" charset="utf-8"></script>
+	<script src="../js/mescroll.min.js" charset="utf-8"></script>
+	<script type="text/javascript" charset="utf-8">
+		var mescroll;
+		
+		mui.init();
+		mui.plusReady(function() {
+			//创建MeScroll对象
+			mescroll = initMeScroll("mescroll", {
+				down:{use:false },
+				up: {
+					auto:true,
+					callback: initList,
+					clearEmptyId:"datalist"
+				}
+			});
+			
+			//用户信息
+			EJ_SetUserInfo();
+		});
+		
+		/*初始化列表*/
+		function initList(){
+			ajaxData(Host+"api/Purse/GetPurseLog?pageIndex="+page.num+"&accountType=3", function(data) {
+				var objArr=data.Data||[];
+				var len=objArr.length;
+				mescroll.endSuccess(len);
+				if (len>0) {
+					var listDom=document.getElementById("datalist");
+					for (var i = 0; i < len; i++) {
+						var obj=objArr[i];
+						var str='<p class="remark">'+obj.TransactionTypeName+'</p>';
+						str+='<p class="money">'+obj.TransactionAmount+'</p>';
+						str+='<p class="time">'+obj.CreateDate+'</p>';
+						var liDom=document.createElement("li");
+						liDom.innerHTML=str;
+						listDom.appendChild(liDom);
+					}
+				}
+			},{ajaxtype:"get"},function(){
+				mescroll.endErr();
+			},true);
+		}
+	</script>
+
+</html>
