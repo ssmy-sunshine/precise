@@ -51,8 +51,10 @@
 			//填入缓存的账号
 			var username=UserObj.getUsername();
 			if(username) $("#username").val(username);
+			var pass=UserObj.getPassword();
+			if(pass) $("#pass").val(pass);
 			
-			//登录
+			//登录按钮
 			$("#btnSubmit").click(function() {
 				var username=$("#username").val();
 				if (!username) {
@@ -64,27 +66,22 @@
 					mui.toast("密码不正确");
 					return;
 				}
+				//缓存
+				UserObj.setUsername(username);
+				UserObj.setPassword(pass);
 				//登录
-				var param={"username":username, "password":pass, "grant_type":"password"};
-				ajaxData(Host+"token", function(data){
-					//{"access_token":"xx","token_type":"bearer","refresh_token":"xxxx","as:client_id":"100024","userName":"文举"}
-					UserObj.setTokenAccess(data.access_token);
-					UserObj.setTokenRefresh(data.refresh_token);
-					UserObj.setTokenType(data.token_type);
-					UserObj.setUsername(data.userName);
-					UserObj.setUid(data["as:client_id"]);
+				UserObj.login(username,pass,function() {
 					openWindow("../main/main.html");
-				},param,function (e){
+				},function(e){
 					if (e.error_description&&e.error_description.indexOf("未激活")!=-1) {
 						mui.confirm("您的账号未激活.","温馨提示",["取消","立即激活"],function(e){
 							if (e.index==1) {
-								UserObj.setUsername(username);
 								openWindow("regin-ok.html");
 							}
 						});
 						return false;
 					}
-				});
+				})
 			})
 			
 		})

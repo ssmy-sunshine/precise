@@ -47,6 +47,13 @@ var UserObj={
 	setUsername : function(username) {
 		setLocalStorage("Username",username);
 	},
+	/*获取用户密码*/
+	getPassword : function() {
+		return localStorage.getItem("password");
+	},
+	setPassword : function(password) {
+		setLocalStorage("password",password);
+	},
 	/*获取用户昵称*/
 	getNickname : function() {
 		return localStorage.getItem("UNickName");
@@ -67,56 +74,40 @@ var UserObj={
 	setLevelName : function(levelName) {
 		setLocalStorage("LevelName",levelName);
 	},
-	/*获取用户测试身份: 0普通用户,1测试人员;2开发人员;*/
-	getTestTag : function() {
-		return localStorage.getItem("USER_ISTEST");
-	},
-	setTestTag : function(type) {
-		setLocalStorage("USER_ISTEST",type);
-	},
 	/*获取access_token*/
-	getTokenAccess : function() {
+	getToken : function() {
 		return localStorage.getItem("access_token");
 	},
-	setTokenAccess : function(access_token) {
+	setToken : function(access_token) {
 		setLocalStorage("access_token",access_token);
 	},
-	/*获取refresh_token*/
-	getTokenRefresh : function() {
-		return localStorage.getItem("refresh_token");
-	},
-	setTokenRefresh : function(refresh_token) {
-		setLocalStorage("refresh_token",refresh_token);
-	},
-	/*获取refresh_token*/
 	getTokenType : function() {
 		return localStorage.getItem("token_type");
 	},
 	setTokenType : function(token_type) {
 		setLocalStorage("token_type",token_type);
 	},
-	/*刷新TK*/
-	flushToken : function(success,err){
-		var refresh_token = UserObj.getTokenRefresh();
-		if (refresh_token) {
+	/*登录*/
+	login : function(username,password,success,err){
+		if (username&&password) {
+			var param={"username":username, "password":password, "grant_type":"password"};
 			ajaxData(Host+"token", function(data) {
 				//{"access_token":"xx","token_type":"bearer","refresh_token":"xxxx","as:client_id":"100024","userName":"文举"}
-				UserObj.setTokenAccess(data.access_token);
-				UserObj.setTokenRefresh(data.refresh_token);
-				UserObj.setTokenType(data.token_type);
+				UserObj.setToken(data.access_token);
 				UserObj.setUsername(data.userName);
+				UserObj.setTokenType(data.token_type);
 				UserObj.setUid(data["as:client_id"]);
-				success&&success();//成功回调
-			},{grant_type:"refresh_token", refresh_token:refresh_token},function(e) {
-				err&&err(e);//失败回调
-			},true);
+				return success&&success();//成功回调
+			},param,function(e) {
+				return err&&err(e);//失败回调
+			});
 		}else{
 			openWindow("../account/login.html");//如果没有TK,则去登录页
 		}
 	},
 	/*获取用户是否登录 isToLogin默认跳转登录*/
 	isLogin : function(isToLogin) {
-		if (UserObj.getUid()&&UserObj.getTokenAccess()) {
+		if (UserObj.getUid()&&UserObj.getToken()) {
 			return true;
 		} else{
 			if(isToLogin!=false) openWindow("../account/login.html");
@@ -148,6 +139,13 @@ var UserObj={
 		}else{
 			callback&&callback();//未登录
 		}
+	},
+	/*获取用户测试身份: 0普通用户,1测试人员;2开发人员;*/
+	getTestTag : function() {
+		return localStorage.getItem("USER_ISTEST");
+	},
+	setTestTag : function(type) {
+		setLocalStorage("USER_ISTEST",type);
 	}
 }
 
@@ -212,7 +210,7 @@ function ajaxData(url,success,param,err,hideWait) {
 			data:sendData,
 			type:param.ajaxtype,
 			dataType:'json',
-			headers:{'Authorization':UserObj.getTokenType()+" "+UserObj.getTokenAccess()},
+			headers:{'Authorization':UserObj.getTokenType()+" "+UserObj.getToken()},
 			timeout:10000,
 			success:function(data){
 				isConsole&&console.log("请求url--> " + url + " 参数--> " + JSON.stringify(sendData) + " 结果-->" + JSON.stringify(data));
@@ -222,7 +220,7 @@ function ajaxData(url,success,param,err,hideWait) {
 					if(!window.isGetTK){
 						//一个界面只许刷一次token,避免多个请求同时刷token导致死循环
 						window.isGetTK=true;
-						UserObj.flushToken(function() {
+						UserObj.login(UserObj.getUsername(),UserObj.getPassword(),function() {
 							sendAjax();
 						},function (){
 							window.isGetTK=false;
