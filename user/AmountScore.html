@@ -99,7 +99,7 @@
 		});
 		
 		/*初始化列表*/
-		function initList(){
+		function initList(page){
 			ajaxData(Host+"api/Purse/GetPurseLog?pageIndex="+page.num+"&accountType=1", function(data) {
 				var objArr=data.Data||[];
 				var len=objArr.length;

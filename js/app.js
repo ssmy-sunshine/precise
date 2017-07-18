@@ -241,6 +241,7 @@ function EJ_SetUserInfo(){
 	$("#Amount").html(UserObj.getAmount());//现金币
 	$("#Integration").html(UserObj.getIntegration());//积分
 	$("#InviteCode").html(UserObj.getInviteCode());//邀请码
+	$("#Nickname").html(UserObj.getNickname());//昵称
 }
 
 /*设置localStorage,如果value不存在则移除*/

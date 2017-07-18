@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<link rel="stylesheet" href="../fonts/iconfont.css">
+		<link rel="stylesheet" href="../css/app.css">
+		<style type="text/css">
+			.itemwarp{
+				width: 92%;
+				margin-left: 4%;
+				margin-top: 8%;
+				border: 1px solid #ccc;
+				border-radius: 16px;
+			}
+			.itemwarp .wb-item{
+				min-height: 44px;
+				background-color: transparent;
+			}
+			.itemwarp .wb-item:last-child{
+				border: none;
+			}
+			/*当前选择的账户*/
+			.curuser, .curuser *{color: #EA1C40;}
+			/*注销*/
+			.loginout{
+				width: 92%;
+				margin-left: 4%;
+				margin-top: 14%;
+				padding: 15px;
+				border: 1px solid #aaa;
+				border-radius: 10px;
+				text-align: center;
+				color: #666;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="wb-head">
+			<p class="wb-back iconfont icon-fanhui"></p>
+			<p class="wb-title">账户管理</p>
+		</div>
+		<div class="wb-content">
+			<div class="itemwarp">
+				<div class="wb-item red">当前登录账户<p class="wb-item-right"><span id="Username" class="red"></span></p></div>
+				<div class="wb-item">账户昵称<p class="wb-item-right"><span id="Nickname"></span> <span class="iconfont icon-youjiantou"></span></p></div>
+				<div class="wb-item">登录密码<p class="wb-item-right"><span>重置</span> <span class="iconfont icon-youjiantou"></span></p></div>
+				<div class="wb-item">交易密码<p class="wb-item-right"><span>重置</span> <span class="iconfont icon-youjiantou"></span></p></div>
+				<div class="wb-item">银行账户<p class="wb-item-right"><span>编辑</span> <span class="iconfont icon-youjiantou"></span></p></div>
+			</div>
+			<div class="itemwarp">
+				<div class="wb-item red">我的所有账户</div>
+				<div id="userlist">
+					<div class="wb-item curuser"><p class="wb-item-right"><span class="iconfont icon-xuanze"></span></p></div>
+					<!--<div class="wb-item">张三</div>-->
+				</div>
+			</div>
+			
+			<p class="loginout">退出当前账户</p>
+		</div>
+	</body>
+
+	<script src="../js/mui.min.js" charset="utf-8"></script>
+	<script src="../js/DomBiz.js" charset="utf-8"></script>
+	<script src="../js/app.js" charset="utf-8"></script>
+	<script type="text/javascript" charset="utf-8">
+		mui.init();
+		mui.plusReady(function() {
+			//用户信息
+			EJ_SetUserInfo();
+			//账户列表
+			getAccounts();
+			//注销
+			$(".loginout").click(function() {
+				openWindow("../account/login.html",{"isCanBack":false},true);
+				plus.webview.getWebviewById("../main/main.html").close("none");
+			})
+		});
+		
+		/*账户列表*/
+		function getAccounts(){
+			ajaxData(Host+"api/Account/GetAssociatedAccount", function(data) {
+				var list=data.Data;
+				var str='';
+				for (var i = 0; i < list.length; i++) {
+					var obj=list[i];
+					if (i==0) {
+						str+='<div class="wb-item curuser">'+obj.LoginName+'<p class="wb-item-right"><span class="iconfont icon-xuanze"></span></p></div>';
+					} else{
+						str+='<div class="wb-item">'+obj.LoginName+'</div>';
+					}
+				}
+				$("#userlist").html(str);
+			},{ajaxtype:"get"});
+		}
+	</script>
+
+</html>
