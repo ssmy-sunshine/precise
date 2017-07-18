@@ -350,6 +350,50 @@ function loadimg(imgObj_id,src,callback){
 	}
 }
 
+/*--------无任何数据的空布局--------*/
+function EmptyBox(option) {
+	this.optEmpty={
+		warpId: null, //父布局的id
+		icon: "../img/logo-gray.png",//图标路径
+		tip: "暂无相关数据~", //提示
+		btntext: "", //按钮
+		btnClick: null
+	}
+	mui.extend(this.optEmpty,option);
+}
+EmptyBox.prototype.show = function() {
+	var me = this;
+	var optEmpty = me.optEmpty; //空布局的配置
+	if(optEmpty.warpId == null) return;
+	var emptyWarp = document.getElementById(optEmpty.warpId) //要显示空布局的位置
+	if(emptyWarp) {
+		me.remove(); //先移除,避免重复加入
+		//初始化无任何数据的空布局
+		var str = '';
+		if(optEmpty.icon) str += '<img class="empty-icon" src="' + optEmpty.icon + '"/>'; //图标
+		if(optEmpty.tip) str += '<p class="empty-tip">' + optEmpty.tip + '</p>'; //提示
+		if(optEmpty.btntext) str += '<p class="empty-btn">' + optEmpty.btntext + '</p>'; //按钮
+		me.emptyDom = document.createElement("div");
+		me.emptyDom.className = 'empty-box';
+		me.emptyDom.innerHTML = str;
+		emptyWarp.appendChild(me.emptyDom);
+		if(optEmpty.btnClick) { //点击按钮的回调
+			var emptyBtn = me.emptyDom.getElementsByClassName("empty-btn")[0];
+			emptyBtn.onclick = function() {
+				optEmpty.btnClick();
+			}
+		}
+	}
+}
+/*移除空布局*/
+EmptyBox.prototype.remove = function() {
+	if(this.emptyDom) {
+		var parentDom = this.emptyDom.parentNode;
+		if(parentDom) parentDom.removeChild(this.emptyDom);
+		this.emptyDom = null;
+	}
+}
+
 /*遮罩
 *标题wb-head 9910
 *底部wb-footer 9900

@@ -229,6 +229,39 @@ img{width:100%; height:auto; vertical-align:bottom}
 .wb-item .icon-youjiantou{ font-size: 11px; }
 .wb-item:active{ background-color: #FAFAFA; }
 
+/*无任何数据的空布局
+ <div class="empty-box">
+	<img class="empty-icon" src="../img/logo-gray.png"/>
+	<p class="empty-tip">暂无相关数据~</p>
+	 <p class="empty-btn">去逛逛 ></p> 
+</div>
+*/
+.empty-box {
+	width: 100%;
+	padding-top: 20px;
+	text-align: center;
+}
+.empty-box .empty-icon {
+	width: 45%;
+}
+.empty-box .empty-tip {
+	margin-top: 6px;
+	font-size: 14px;
+	color: gray;
+}
+.empty-box .empty-btn {
+	max-width: 50%;
+	margin: 20px auto;
+	padding: 10px;
+	border: 1px solid #65AADD;
+	border-radius: 6px;
+	background-color: white;
+	color: #65AADD;
+}
+.empty-box .empty-btn:active {
+	opacity: .75;
+}
+
 /*居中布局
 <div class="middle-warp"><!--此处不可换行--><div class="middle-content">
 	//内容布局,随意写
