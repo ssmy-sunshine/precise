@@ -6,88 +6,287 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
 		<link rel="stylesheet" href="../fonts/iconfont.css">
 		<link rel="stylesheet" href="../css/app.css">
+		<link rel="stylesheet" href="../css/mescroll.min.css">
 		<style type="text/css">
-		
+			/*标题*/
+			.wb-head{
+				height: 84px;
+			}
+			.wb-head .nav-page{
+				width: 66%;
+				margin-left: 17%;
+				margin-top: 12px;
+				border: 1px solid #EA1C40;
+				border-radius: 20px;
+				text-align: center;
+				color: gray;
+			}
+			.wb-head .nav-page li{
+				display: inline-block;
+				width: 33%;
+				padding: 5px 0;
+				font-size: 14px;
+			}
+			.wb-head .nav-page li:first-child{
+				border-right: 1px solid #EA1C40;
+			}
+			.wb-head .nav-page li:last-child{
+				border-left: 1px solid #EA1C40;
+			}
+			.wb-head .nav-page .tab-active,
+			.wb-head .nav-type .tab-active{
+				color: #EA1C40;
+			}
+			.wb-head .nav-type{
+				margin-top: 16px;
+				font-size: 14px;
+			}
+			/*内容*/
+			.wb-head~.mescroll{top: 84px;}
+			/*列表*/
+			.datalist li{position: relative;font-size: 15px;padding: 14px 12px 0 12px;border-bottom: 8px solid #eee;}
+			.datalist p{margin-bottom: 15px;}
+			.datalist .mleft{margin-left: 30px;}
+			.datalist .drakgray{color: #444;}
+			.datalist .status{position: absolute;top: 12px;right: 10px;color: #EA1C40;}
+			.datalist .btn{position: absolute;bottom: 12px;right: 10px;color: #18B4FE;border: 1px solid #18B4FE;padding: 4px 12px;font-size: 12px;border-radius: 6px;}
 		</style>
 	</head>
 
 	<body>
 		<div class="wb-head">
-			<p class="wb-back iconfont icon-fanhui"></p>
-			<p class="wb-title">标题</p>
-			<p class="wb-head-right iconfont icon-youjiantou"></p>
+			<ul id="navpage" class="nav-page"><li class="tab-active" i="0">买入</li><li i="1">激活</li><li i="2">卖出</li></ul>
+			<ul id="navtype" class="nav-type wb-flex-box"><li class="tab-active" i="0">全部</li><li id="navtype1" i="1">待付款</li><li id="navtype2" i="2">待确认</li><li id="navtype3" i="3">已完成</li><li id="navtype4" i="4">已取消</li></ul>
 		</div>
-		<div class="wb-content">
-订单
+		<div id="mescroll" class="mescroll">
+			<ul id="datalist" class="datalist">
+				<!--<li>
+					<p class="gray">订单号: 2165451564</p>
+					<p class="status">待付款</p>
+					<p class="drakgray">卖家: 昵称xxx <span class="mleft">13587856415</span></p>
+					<p>股价: 25元  <span class="mleft">股数:100股</span></p>
+					<p class="red">价值: 200元</p>
+					<div class="btn">立即确认</div>
+				</li>-->
+			</ul>
 		</div>
 	</body>
 
 	<script src="../js/mui.min.js" charset="utf-8"></script>
 	<script src="../js/DomBiz.js" charset="utf-8"></script>
 	<script src="../js/app.js" charset="utf-8"></script>
+	<script src="../js/mescroll.min.js" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
+		var pageIndex=0;
+		var typeIndex=0;
+		var mescroll;
+		
 		mui.init();
-		mui.ready(function() {//plusReady TODO
-			//获取传来的参数
-//			var value=plus.webview.currentWebview().key;
-			//联网获取数据
-//			getData(value);
+		mui.plusReady(function() {
+			//创建MeScroll对象
+			mescroll = initMeScroll("mescroll", {
+				down:{use:false },
+				up: {
+					auto:true,
+					callback: initList,
+					page:{size:100},//保证只加载一页
+					clearEmptyId:"datalist"
+				}
+			});
 			
-			//点击事件
-//			$("#id").click(function(e) {
-//				var act=data[Number(this.getAttribute("i"))];
-//				var href = e.target.getAttribute("href");
-//				if (href=="toshare") {
-//					
-//				}else{
-//					
-//				}
-//			})
+			//切换导航
+			$("#navpage li").click(function() {
+				changePage(this.getAttribute("i"));
+			});
+			
+			//切换分类
+			$("#navtype li").click(function() {
+				changeType(this.getAttribute("i"));
+			});
 		});
 		
-		/*联网获取数据*/
-//		function getData(orderId){
-//			//参数
-//			var param={"IFID":23,"PR":[[orderId],[orderId],[orderId]]};
-//			ajaxData(HostDataInV2, function(dataArr) {
-//				//返回数据
-//				var data=JSON.parse(dataArr[2]);
-//				//设置界面数据
-//				initView(data);
-//				
-//			},param);
-//		}
-
-		/*设置界面数据*/
-//		function initView(data) {
-//			var listDom=document.getElementById("upscroll-list");
-//			listDom.innerHTML="";
-//			for (var i = 0; i < data.length; i++) {
-//				var liData=data[i];
-				//拼接
-//				var str='';
-//				str+='';
-//				str+='';
-//				str+='';
-//				str+='';
-//				str+='';
-//				str+='';
-//				str+='';
-//				str+='';
-//				//加入
-//				var liDom=document.createElement("li");
-//				liDom.innerHTML=str;
-//				listDom.appendChild(liDom);
-//				//存入变量到li
-//				liDom.setAttribute("liID",liData.id);
-//				//li的点击事件
-//				liDom.addEventListener("tap",function() {
-//					var liID=this.getAttribute("liID");
-//					
-//				})
-//				
-//			}
-//		}
+		/*切换page*/
+		function changePage(i) {
+			if (i!=pageIndex){
+				//选中
+				var navDom=document.getElementById("navpage");
+				var navArr=navDom.getElementsByTagName("li");
+				navDom.getElementsByClassName("tab-active")[0].classList.remove("tab-active");
+				navArr[i].classList.add("tab-active");
+				//切换列表
+				if (i==0) {
+					//买入
+					$("#navtype1").show().html("待付款");
+					$("#navtype2").show().html("待确认");
+					$("#navtype3").show().html("已完成");
+					$("#navtype4").show().html("已取消");
+				} else if(i==1){
+					//激活
+					$("#navtype1").show().html("待激活");
+					$("#navtype2").show().html("已激活");
+					$("#navtype3").hide();
+					$("#navtype4").hide();
+				}else{
+					//卖出
+					$("#navtype1").show().html("待付款");
+					$("#navtype2").show().html("待确认");
+					$("#navtype3").show().html("已完成");
+					$("#navtype4").hide();
+				}
+				//切换
+				pageIndex=i;
+				mescroll.resetUpScroll();
+			}
+		}
+		
+		/*切换type*/
+		function changeType(i) {
+			if (i!=typeIndex){
+				//选中
+				var navDom=document.getElementById("navtype");
+				var navArr=navDom.getElementsByTagName("li");
+				navDom.getElementsByClassName("tab-active")[0].classList.remove("tab-active");
+				navArr[i].classList.add("tab-active");
+				//切换
+				typeIndex=i;
+				mescroll.resetUpScroll();
+			}
+		}
+		
+		/*显示列表*/
+		function initList(page){
+			var url=Host;
+			if(pageIndex==0){
+				var status = typeIndex==0 ? 0 : typeIndex+1 ;
+				url+="api/Order/GetBuyList?pageIndex="+page.num+"&status="+status;//买入
+			}else if(pageIndex==1){
+				url+="api/Combo/GetActive?pageIndex="+page.num;//激活
+			}else{
+				var status = typeIndex==0 ? 0 : typeIndex+1 ;
+				url+="api/Order/GetSaleList?pageIndex="+page.num+"&status="+status;//卖出
+				
+			}
+			ajaxData(url, function(data) {
+				var arr = data.Data ? data.Data.Data : [];
+				mescroll.endSuccess(arr.length);
+				if(arr.length==0)return;
+				if(pageIndex==1){
+					initActivity(arr);
+				}else{
+					initAmount(arr);
+				}
+			},{ajaxtype:"get"},function () {
+				mescroll.endErr();
+			},true);
+		}
+		
+		/*买入卖出现金币的订单*/
+		function initAmount(arr){
+			var listDom=document.getElementById("datalist");
+			var lidom=document.createElement("li");
+			for (var i = 0; i < arr.length; i++) {
+				var obj=list[i];
+				var status=getStatusText(obj.TransactionStatus);
+				var str='<p class="gray">订单号: '+obj.OrderNumber+'</p>';
+				if(status[0]) str+='<p class="status">'+status[0]+'</p>';
+				str+='<p class="drakgray">'+obj.Name+' <span class="mleft">'+obj.Phone+'</span></p>';
+				str+='<p>兑换 : 人民币'+obj.CNPrice+'元 (美元 $'+obj.USPrice+')</p>';
+				if(status[1]) str+='<div class="btn" status="'+obj.TransactionStatus+'" no="'+obj.OrderNumber+'" tel="'+obj.Phone+'">'+status[1]+'</div>';
+				lidom.innerHTML=str;
+				listDom.appendChild(lidom);
+				//点击事件
+				var btnDom=lidom.getElementsByClassName("btn")[0];
+				if(btnDom){
+					btnDom.addEventListener("tap",function(e){
+						var status=this.getAttribute("status");
+						if(pageIndex==0){
+							//买入
+							if(status==2){
+								//上传支付凭证 TODO
+								e.stopPropagation();
+							} else if(status==3){
+								//催一下
+								var tel=this.getAttribute("tel");
+								mui.confirm('拨打电话: '+tel, '温馨提示', ['取消', '立即拨打'], function(e){
+									if(e.index == 1) window.location.href="tel:"+tel;
+					            });
+					            e.stopPropagation();
+							}
+						}else{
+							//卖出
+							if(status==2){
+								//催一下
+								var tel=this.getAttribute("tel");
+								mui.confirm('拨打电话: '+tel, '温馨提示', ['取消', '立即拨打'], function(e){
+									if(e.index == 1) window.location.href="tel:"+tel;
+					            });
+					            e.stopPropagation();
+							} else if(status==3){
+								//查看支付凭证 TODO
+								
+							}
+						}
+					})
+				}
+			}
+		}
+		
+		/*激活*/
+		function initActivity(arr){
+			var listDom=document.getElementById("datalist");
+			var lidom=document.createElement("li");
+			for (var i = 0; i < arr.length; i++) {
+				var obj=list[i];
+				//ActiveStatus ：1:待激活;2:已激活
+				var statusText;
+				if(obj.ActiveStatus==1) {
+					statusText="待激活";
+				} else if(obj.ActiveStatus==2){
+					statusText="已激活";
+				}
+				var str='';
+				str+='<p class="gray">订单号: '+obj.OrderNumber+'</p>';
+				str+='<p class="status">'+statusText+'</p>';
+				str+='<p class="drakgray">'+obj.Name+' <span class="mleft">'+obj.Phone+'</span></p>';
+				str+='<p>兑换 : 人民币'+obj.CNPrice+'元 (美元 $'+obj.USPrice+')</p>';
+				if(obj.ActiveStatus==1) str+='<div class="btn">确定激活</div>';
+				lidom.innerHTML=str;
+				listDom.appendChild(lidom);
+				//点击事件
+				if(obj.ActiveStatus==1){
+					var btnDom=lidom.getElementsByClassName("btn")[0];
+					btnDom.addEventListener("tap",function(e){
+						//确定激活 TODO
+					})
+				}
+			}
+		}
+		
+		/*获取订单状态*/
+		function getStatusText(status) {
+			//2:待付款;3:待确认;4:已完成;5:取消
+			var str;
+			switch (Number(status)){
+				case 2: 
+					if(pageIndex==0){
+						str=["待付款","上传支付凭证"]; //买入
+					}else{
+						str=["待付款","催一下"]; //卖出
+					}
+				break;
+				case 3: 
+					if(pageIndex==0){
+						str=["待确认","催一下"];  //买入
+					}else{
+						str=["待确认","查看支付凭证"]; //卖出
+					}
+				break;
+				case 4: str=["已完成",null]; break;
+				case 5: str=["已取消",null]; break;
+				default: [null,null]; break;
+			}
+			return str;
+		}
 	</script>
 
 </html>
