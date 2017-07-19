@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<link rel="stylesheet" href="../fonts/iconfont.css">
+		<link rel="stylesheet" href="../css/app.css">
+		<style type="text/css">
+			/*顶部*/
+			.top-warp{
+				padding-top: 25px;
+				padding-bottom: 8px;
+				background-color: #18B4FE;
+				text-align: center;
+				color: white;
+			}
+			.top-warp .usericon{
+				width: 72px;
+				height: 72px;
+				border-radius: 50%;
+				margin-bottom: 15px;
+			}
+			.top-warp .LevelNameWarp{
+				min-height: 18px;
+				margin-left: 12px;
+				font-weight: bold;
+				background-color: #E79519;
+				font-size: 12px;
+				border-radius: 10px;
+				padding: 2px 10px;
+			}
+			.level-list{
+				min-height: 60px;
+				padding-top: 16px;
+			}
+			.level-list li{
+				position: relative;
+				font-size: 14px;
+			}
+			.level-list .level-data{
+				z-index: 999;
+				position: relative;
+				color: #F8E3BD;
+			}
+			.level-list .level-data img{
+				width: 30px;
+				margin-bottom: 4px;
+			}
+			.level-list .bg-line{
+				position: absolute;
+				top: 10px;
+				left: 0;
+				width: 100%;
+				height: 2px;
+				background-color: #F6C995;
+			}
+			.level-list .grayscale .bg-line{
+				background-color: #ccc;
+			}
+			.level-list .grayscale .level-data{
+				color: #ccc;
+			}
+			/*套餐列表*/
+			.comlist{
+				text-align: center;
+				padding:40px 15% 0 15%;
+			}
+			.comlist li{
+				position: relative;
+				margin-top: 25px;
+				border-radius: 50px;
+				border: 1px solid #aaa;
+			}
+			.comlist .select{
+				position: absolute;
+				left: 12px;
+				top: 12px;
+				font-size: 24px;
+				color: #18B4FE;
+			}
+			.comlist .ComboName{
+				font-size: 18px;
+				padding: 12px;
+				color: #e79519;
+			}
+			.comlist .ActiveAmount{
+				position: absolute;
+				right: 12px;
+				top: 12px;
+				font-size: 12px;
+				color: #EA1C40;
+			}
+			.comlist .ActiveAmount b{
+				font-size: 14px;
+				margin-right: 4px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="top-warp">
+			<img id="usericon" class="usericon" src="../img/logo-red.png"/>
+			<div class="mid-align">
+				<span class="LevelNameWarp">当前等级 : <span id="LevelName"></span></span>
+			</div>
+			<ul id="levelList" class="level-list wb-flex-box">
+				<!--<li><div class="level-data"><img src="../img/level-icon.png"/><p>T1</p></div><p class="bg-line" style="left: 50%;"></p></li>
+				<li class="grayscale"><div class="level-data"><img src="../img/level-icon.png"/><p>T1</p></div><p class="bg-line" style="left: -50%;"></p></li>-->
+			</ul>
+		</div>
+		<ul id="comlist" class="comlist">
+			<!--<li>
+				<p class="select iconfont icon-weixuanze"></p>
+				<p class="ComboName">T1</p>
+				<p class="ActiveAmount mid-align"><b>100</b><span>注册币</span></p>
+			</li>-->
+		</ul>
+		<p id="btnSubmit" class="wb-footer wb-btn btn-yellow">请选择升级的套餐</p>
+	</body>
+
+	<script src="../js/mui.min.js" charset="utf-8"></script>
+	<script src="../js/DomBiz.js" charset="utf-8"></script>
+	<script src="../js/app.js" charset="utf-8"></script>
+	<script type="text/javascript" charset="utf-8">
+		mui.init();
+		mui.plusReady(function() {
+			//设置个人信息
+			EJ_SetUserInfo();
+			
+			//套餐列表
+			getCombo();
+			
+			//选择套餐
+			mui("#comlist").on("tap","li",function() {
+				$("#comlist .icon-xuanze").removeClass("icon-xuanze").addClass("icon-weixuanze");
+				var selectDom=this.getElementsByClassName("select")[0];
+				selectDom.classList.remove("icon-weixuanze");
+				selectDom.classList.add("icon-xuanze");
+				//TODO
+			});
+			
+			//激活套餐
+			$("#btnSubmit").click(function() {
+				var selectDom=document.getElementById("comlist").getElementsByClassName("icon-xuanze")[0];
+				if (!selectDom) {
+					mui.toast("请选择套餐");
+					return;
+				}
+				var ComboId=selectDom.parentNode.getAttribute("cid");
+				actCombo(ComboId);
+			})
+		});
+		
+		/*套餐列表*/
+		function getCombo(){
+			ajaxData(Host+"api/Combo/GetCombo?pageIndex=1",function(data){
+				//{"Message":null,"Data":{"Data":[{"ComboId":1,"ComboName":"T1","ActiveAmount":100,"ComboValue":100,"MaxShares":1000,"RecommendAwardRate":0.05,"TouchAwardRate":0.03,"TouchRecommendAwardRate":0.03,"SeeDotAwardRate":0.03,"TouchRecommendAwardLayers":5,"SeeDotAwardLayers":6,"ShareRedeemRate":0.2,"CreateDate":"2017-05-28T15:01:20.893","UpdateDate":"2017-06-22T21:12:08.783","IsDeleted":false,"ShareRate":0.58},{"ComboId":2,"ComboName":"T2","ActiveAmount":200,"ComboValue":200,"MaxShares":10000,"RecommendAwardRate":0.05,"TouchAwardRate":0.05,"TouchRecommendAwardRate":0.03,"SeeDotAwardRate":0.05,"TouchRecommendAwardLayers":3,"SeeDotAwardLayers":5,"ShareRedeemRate":0.4,"CreateDate":"2017-07-07T21:33:17.233","UpdateDate":"2017-07-07T21:33:17.233","IsDeleted":false,"ShareRate":0.4}],"PageCount":1,"PageNumber":1,"HasNextPage":false,"IsFirstPage":true},"Status":200}
+				var topStr='';
+				var comStr='';
+				var grayscale="";
+				var userComboId=UserObj.getComboId();
+				var comboList=data.Data.Data;
+				for (var i = 0; i < comboList.length; i++) {
+					var obj=comboList[i];
+					
+					//顶部图标
+					var lineSty="";
+					if (i==0){
+						lineSty='style="left: 50%;"';//第一个右偏
+					} else if(i==comboList.length-1){
+						lineSty='style="left: -50%;"';//第一个左偏
+					}
+					topStr+='<li '+grayscale+'>';
+					topStr+='<div class="level-data"><img src="../img/level-icon.png"/><p>'+obj.ComboName+'</p></div><p class="bg-line" '+lineSty+'></p>';
+					topStr+='</li>';
+					
+					//套餐列表
+//					if(grayscale){ TODO
+						comStr+='<li cid="'+obj.ComboId+'">';
+						comStr+='<p class="select iconfont icon-weixuanze"></p>';
+						comStr+='<p class="ComboName">'+obj.ComboName+'</p>';
+						comStr+='<p class="ActiveAmount mid-align"><b>'+obj.ActiveAmount+'</b><span>注册币</span></p>';
+						comStr+='</li>';
+//					}
+					
+					if(!grayscale&&obj.ComboId==userComboId){//已初始化到自己对应的等级之后就不可选
+						grayscale='class="grayscale"';
+					}
+				}
+				$("#levelList").html(topStr);
+				$("#comlist").html(comStr);
+				if(!comStr) $("#btnSubmit").removeClass("btn-yellow").addClass("btn-gray").html("您已是最高等级,无需升级");
+			},{ajaxtype:"get"})
+		}
+	</script>
+
+</html>
