@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<link rel="stylesheet" href="../fonts/iconfont.css">
+		<link rel="stylesheet" href="../css/app.css">
+		<link rel="stylesheet" href="../css/login.css">
+		<style type="text/css">
+			.input-left{
+				width: 25%;
+			}
+			.input-center{
+				width: 75%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<p class="wb-back btn-circle iconfont icon-fanhui wb-head-left"></p>
+		<div class="wb-content">
+			<img class="logo" src="../img/logo-red.png"/>
+			<p>我的银行账号信息</p>
+			<div class="input-warp">
+				<div class="input-item">
+					<p class="input-left">银 行 :</p><input id="BankName" class="input-center" type="text" placeholder="输入银行名称" />
+				</div>
+				<div class="input-item">
+					<p class="input-left">卡 号 :</p><input id="BankCard" class="input-center" type="number" placeholder="输入银行卡号" />
+				</div>
+				<div class="input-item">
+					<p class="input-left">姓 名 :</p><input id="BankAccName" class="input-center" type="text" placeholder="输入开户人姓名" />
+				</div>
+			</div>
+			<p id="btnSubmit" class="btn-submit">确 定</p>
+		</div>
+	</body>
+
+	<script src="../js/mui.min.js" charset="utf-8"></script>
+	<script src="../js/DomBiz.js" charset="utf-8"></script>
+	<script src="../js/app.js" charset="utf-8"></script>
+	<script type="text/javascript" charset="utf-8">
+		mui.init();
+		mui.plusReady(function() {
+			var BankName=UserObj.getBankName();//银行
+        	var BankCard=UserObj.getBankCard();//卡号
+        	var BankAccName=UserObj.getBankAccName();//姓名
+        	
+        	if(BankName) $("#BankName").val(BankName);
+        	if(BankCard) $("#BankCard").val(BankCard);
+        	if(BankAccName) $("#BankAccName").val(BankAccName);
+			
+			//确定
+			$("#btnSubmit").click(function() {
+				var BankName=$("#BankName").val();
+				if (BankName.length<2) {
+					mui.toast("请输入银行名称");
+					return;
+				}
+				var BankCard=$("#BankCard").val();
+				if (BankCard.length<11) {
+					mui.toast("请输入银行卡号");
+					return;
+				}
+				var BankAccName=$("#BankAccName").val();
+				if (BankAccName.length<2) {
+					mui.toast("输入开户人姓名");
+					return;
+				}
+				//重置
+				var param={BankName:BankName, BankCardNumber:BankCard, BankCardAccountName:BankAccName}
+				reset(param);
+			})
+			
+		})
+		
+		//重置
+		function reset(param) {
+			ajaxData(Host+"api/Account/UpdateBankCard", function(data){
+				if (data.Status==200) {
+					mui.toast("编辑成功");
+					UserObj.setBankName(param.BankName);//银行
+        			UserObj.setBankCard(param.BankCardNumber);//卡号
+        			UserObj.setBankAccName(param.BankCardAccountName);//姓名
+					mui.back();
+				} else{
+					return data.Message;
+				}
+			},param);
+		}
+	</script>
+
+</html>

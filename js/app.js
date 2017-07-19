@@ -74,99 +74,6 @@ var UserObj={
 	setLevelName : function(value) {
 		setLocalStorage("LevelName",value);
 	},
-	/*获取access_token*/
-	getToken : function() {
-		return localStorage.getItem("access_token");
-	},
-	setToken : function(value) {
-		setLocalStorage("access_token",value);
-	},
-	getTokenType : function() {
-		return localStorage.getItem("token_type");
-	},
-	setTokenType : function(value) {
-		setLocalStorage("token_type",value);
-	},
-	/*登录*/
-	login : function(username,password,success,err){
-		if (username&&password) {
-			var param={"username":username, "password":password, "grant_type":"password"};
-			ajaxData(Host+"token", function(data) {
-				//{"access_token":"xx","token_type":"bearer","refresh_token":"xxxx","as:client_id":"100024","userName":"文举"}
-				UserObj.setToken(data.access_token);
-				UserObj.setUsername(data.userName);
-				UserObj.setTokenType(data.token_type);
-				UserObj.setUid(data["as:client_id"]);
-				return success&&success();//成功回调
-			},param,function(e) {
-				return err&&err(e);//失败回调
-			});
-		}else{
-			openWindow("../account/login.html");//如果没有TK,则去登录页
-		}
-	},
-	/*获取用户是否登录 isToLogin默认跳转登录*/
-	isLogin : function(isToLogin) {
-		if (UserObj.getUid()&&UserObj.getToken()) {
-			return true;
-		} else{
-			if(isToLogin!=false) openWindow("../account/login.html");
-			return false;
-		}
-	},
-	/*获取用户信息*/
-	getUserinfo : function(callback){
-		if(UserObj.isLogin(false)){
-			ajaxData(Host+"api/Account/GetMemberInfo", function(data){
-				if (data.Status==200) {
-					var user=data.Data;
-					//缓存数据
-					UserObj.setIcon(user.ImgUrl);//头像
-					UserObj.setNickname(user.Name);//昵称
-					UserObj.setComboId(user.ComboId);//会员套餐ID
-					UserObj.setLevelName(user.Level);//会员等级名(套餐名)
-					UserObj.setTestTag(user.IsTestUser);//是否为测试人员,在updateBiz.js用到
-					UserObj.setSharesCount(user.SharesCount);//持股数
-					UserObj.setShareAmount(user.ShareAmount);//股票币
-					UserObj.setSharesPrice(user.SharesPrice);//当前股价
-					UserObj.setCountPrice(user.CountPrice);//总价值
-					UserObj.setIntegration(user.Integration);//积分
-					UserObj.setAmount(user.Amount);//现金币
-					UserObj.setInviteCode(user.InviteCode);//邀请码
-					UserObj.setRegisterAmount(user.RegisterAmount);//注册币
-					UserObj.setPrevMemberId(user.PrevMemberId);//上级会员
-					//回调
-					callback&&callback(user);
-				}else{
-					//失败回调
-					callback&&callback();
-					return data.Message;
-				}
-			},{ajaxtype:"get"},function(){
-				callback&&callback();//失败回调
-			});
-		}else{
-			callback&&callback();//未登录
-		}
-	},
-	/*刷新用户数据*/
-	notifyView : function() {
-		var viewIdArr=["main-home.html","main-user.html","../user/ReginAmount.html"];
-		for (var i = 0; i < viewIdArr.length; i++) {
-			var viewObj=plus.webview.getWebviewById(viewIdArr[i]);
-			viewObj&&viewObj.evalJS("EJ_SetUserInfo()");
-		}
-	},
-	addNotifyListener : function(value) {
-		UserObj.notifyListener=value;
-	},
-	/*获取用户测试身份: 0普通用户,1测试人员;2开发人员;*/
-	getTestTag : function() {
-		return localStorage.getItem("USER_ISTEST");
-	},
-	setTestTag : function(value) {
-		setLocalStorage("USER_ISTEST",value);
-	},
 	/*持股数*/
 	getSharesCount : function() {
 		return localStorage.getItem("SharesCount")||"0";
@@ -230,6 +137,124 @@ var UserObj={
 	setPrevMemberId : function(value) {
 		setLocalStorage("PrevMemberId",value);
 	},
+	/*银行名*/
+	getBankName : function() {
+		return localStorage.getItem("BankName");
+	},
+	setBankName : function(value) {
+		setLocalStorage("BankName",value);
+	},
+	/*银行账号*/
+	getBankCard : function() {
+		return localStorage.getItem("BankCard");
+	},
+	setBankCard : function(value) {
+		setLocalStorage("BankCard",value);
+	},
+	/*开户名*/
+	getBankAccName : function() {
+		return localStorage.getItem("BankAccName");
+	},
+	setBankAccName : function(value) {
+		setLocalStorage("BankAccName",value);
+	},
+	/*获取用户测试身份: 0普通用户,1测试人员;2开发人员;*/
+	getTestTag : function() {
+		return localStorage.getItem("USER_ISTEST");
+	},
+	setTestTag : function(value) {
+		setLocalStorage("USER_ISTEST",value);
+	},
+	/*获取access_token*/
+	getToken : function() {
+		return localStorage.getItem("access_token");
+	},
+	setToken : function(value) {
+		setLocalStorage("access_token",value);
+	},
+	getTokenType : function() {
+		return localStorage.getItem("token_type");
+	},
+	setTokenType : function(value) {
+		setLocalStorage("token_type",value);
+	},
+	/*登录*/
+	login : function(username,password,success,err){
+		if (username&&password) {
+			var param={"username":username, "password":password, "grant_type":"password"};
+			ajaxData(Host+"token", function(data) {
+				//{"access_token":"xx","token_type":"bearer","refresh_token":"xxxx","as:client_id":"100024","userName":"文举"}
+				UserObj.setToken(data.access_token);
+				UserObj.setUsername(data.userName);
+				UserObj.setTokenType(data.token_type);
+				UserObj.setUid(data["as:client_id"]);
+				return success&&success();//成功回调
+			},param,function(e) {
+				return err&&err(e);//失败回调
+			});
+		}else{
+			openWindow("../account/login.html");//如果没有TK,则去登录页
+		}
+	},
+	/*获取用户是否登录 isToLogin默认跳转登录*/
+	isLogin : function(isToLogin) {
+		if (UserObj.getUid()&&UserObj.getToken()) {
+			return true;
+		} else{
+			if(isToLogin!=false) openWindow("../account/login.html");
+			return false;
+		}
+	},
+	/*获取用户信息*/
+	getUserinfo : function(callback){
+		if(UserObj.isLogin(false)){
+			ajaxData(Host+"api/Account/GetMemberInfo", function(data){
+				if (data.Status==200) {
+					var user=data.Data;
+					//缓存数据
+					UserObj.setIcon(user.ImgUrl);//头像
+					UserObj.setNickname(user.Name);//昵称
+					UserObj.setComboId(user.ComboId);//会员套餐ID
+					UserObj.setLevelName(user.Level);//会员等级名(套餐名)
+					UserObj.setTestTag(user.IsTestUser);//是否为测试人员,在updateBiz.js用到
+					UserObj.setSharesCount(user.SharesCount);//持股数
+					UserObj.setShareAmount(user.ShareAmount);//股票币
+					UserObj.setSharesPrice(user.SharesPrice);//当前股价
+					UserObj.setCountPrice(user.CountPrice);//总价值
+					UserObj.setIntegration(user.Integration);//积分
+					UserObj.setAmount(user.Amount);//现金币
+					UserObj.setInviteCode(user.InviteCode);//邀请码
+					UserObj.setRegisterAmount(user.RegisterAmount);//注册币
+					UserObj.setPrevMemberId(user.PrevMemberId);//上级会员
+					UserObj.setBankCard(user.BankCard);//银行账号
+					UserObj.setBankAccName(user.BankAccName);//开户名
+					UserObj.setBankName(user.BankName);//银行名
+					//回调
+					callback&&callback(user);
+				}else{
+					//失败回调
+					callback&&callback();
+					return data.Message;
+				}
+			},{ajaxtype:"get"},function(){
+				callback&&callback();//失败回调
+			});
+		}else{
+			callback&&callback();//未登录
+		}
+	},
+	/*刷新用户数据*/
+	notifyView : function() {
+		var viewIdArr=["main-home.html","main-user.html","../user/ReginAmount.html"];
+		for (var i = 0; i < viewIdArr.length; i++) {
+			var viewObj=plus.webview.getWebviewById(viewIdArr[i]);
+			viewObj&&viewObj.evalJS("EJ_SetUserInfo()");
+		}
+	},
+	/*刷新用户数据的监听*/
+	addNotifyListener : function(value) {
+		UserObj.notifyListener=value;
+	}
 }
 
 /*设置用户信息*/

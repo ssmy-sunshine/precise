@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<link rel="stylesheet" href="../fonts/iconfont.css">
+		<link rel="stylesheet" href="../css/app.css">
+		<link rel="stylesheet" href="../css/login.css">
+	</head>
+
+	<body>
+		<p class="wb-back btn-circle iconfont icon-fanhui wb-head-left"></p>
+		<div class="wb-content">
+			<img class="logo" src="../img/logo-red.png"/>
+			<div class="input-warp">
+				<div class="input-item">
+					<p class="input-left">手机号 :</p>
+					<input id="tel" class="input-center" type="tel" placeholder="输入手机号" />
+				</div>
+				<div class="input-item">
+					<p class="input-left">验证码 :</p>
+					<input id="code" class="input-center" type="number" placeholder="验证码" />
+					<p id="send" class="input-right red">获取验证码</p>
+				</div>
+				<div class="input-item">
+					<p class="input-left">新密码 :</p>
+					<input id="pass" class="input-center" type="password" placeholder="输入新登录密码" />
+				</div>
+			</div>
+			<p id="btnSubmit" class="btn-submit">重置登录密码</p>
+		</div>
+	</body>
+
+	<script src="../js/mui.min.js" charset="utf-8"></script>
+	<script src="../js/DomBiz.js" charset="utf-8"></script>
+	<script src="../js/sendCode.js" charset="utf-8"></script>
+	<script src="../js/app.js" charset="utf-8"></script>
+	<script type="text/javascript" charset="utf-8">
+		mui.init();
+		mui.plusReady(function() {
+			//点击
+			$("#btnSubmit").click(function() {
+				var tel=$("#tel").val();
+				if (!isTel(tel)) {
+					mui.toast("手机号不正确");
+					return;
+				}
+				var code=$("#code").val();
+				if (code.length<3) {
+					mui.toast("验证码不正确");
+					return;
+				}
+				var pass=$("#pass").val();
+				if (pass.length<6) {
+					mui.toast("密码至少6位");
+					return;
+				}
+				//重置
+				reset(tel,code,pass);
+			})
+			
+			//发送验证码
+			initSendCode("send","tel");
+		})
+		
+		//重置
+		function reset(tel,code,pass) {
+			ajaxData(Host+"api/Account/ResetLoginPwd?newPwd="+pass+"&validCode="+code, function(data) {
+				if (data.Status==200) {
+					mui.toast("密码已重置");
+					mui.back();
+				} else{
+					return data.Message;
+				}
+			}, {ajaxtype:"get"});
+		}
+	</script>
+
+</html>
