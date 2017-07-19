@@ -39,19 +39,23 @@
 			
 		});
 		
-		/*获取公告*/
-		function getNotice(){
+		/*获取数据*/
+		function getData(){
 			ajaxData(Host+"api/Content/GetContents", function(data) {
-				var list=data.Data;
-				var str='';
-				for (var i = 0; i < list.length; i++) {
-					var obj=list[i];
-					str+='';
-					str+='';
-					str+='';
+				if (data.Status==401){
+					var list=data.Data||[];
+					var str='';
+					for (var i = 0; i < list.length; i++) {
+						var obj=list[i];
+						str+='';
+						str+='';
+						str+='';
+					}
+					$("#notices").html(str);
+				}else{
+					return data.Message;
 				}
-				$("#notices").html(str);
-			},{ajaxtype:"get"});
+			});
 		}
 	</script>
 

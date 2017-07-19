@@ -7,7 +7,32 @@
 		<link rel="stylesheet" href="../fonts/iconfont.css">
 		<link rel="stylesheet" href="../css/app.css">
 		<style type="text/css">
-		
+			.wb-content{
+				text-align: center;
+			}
+			.userwarp{
+				margin: auto;
+				font-size: 14px;
+				padding: 10px 0;
+				border-radius: 20px;
+				border: 1px solid #aaa;
+			}
+			.vline{
+				width: 1px;
+				height: 40px;
+				margin: auto;
+				background-color: #aaa;
+			}
+			.hline{
+				width: 50%;
+				height: 1px;
+				margin: auto;
+				background-color: #aaa;
+			}
+			
+			.userwarp1{width: 32%;font-size: 16px;margin-top: 20%;color: #EA1C40;}
+			.userwarp2{width: 64%;font-size: 14px;color: #E79519;}
+			.userwarp3{width: 92%;font-size: 12px;color: gray;}
 		</style>
 	</head>
 
@@ -15,10 +40,39 @@
 		<div class="wb-head">
 			<p class="wb-back iconfont icon-fanhui"></p>
 			<p class="wb-title">直推列表</p>
-			<p class="wb-head-right iconfont icon-youjiantou"></p>
 		</div>
 		<div class="wb-content">
-
+			<p class="userwarp userwarp1">A</p>
+			<p class="vline"></p>
+			<p class="hline"></p>
+			<ul class="wb-flex-box">
+				<li><p class="vline"></p></li>
+				<li><p class="vline"></p></li>
+			</ul>
+			<ul class="wb-flex-box">
+				<li><p class="userwarp userwarp2">B</p></li>
+				<li><p class="userwarp userwarp2">C</p></li>
+			</ul>
+			<ul class="wb-flex-box">
+				<li><p class="vline"></p></li>
+				<li><p class="vline"></p></li>
+			</ul>
+			<ul class="wb-flex-box">
+				<li><p class="hline"></p></li>
+				<li><p class="hline"></p></li>
+			</ul>
+			<ul class="wb-flex-box">
+				<li><p class="vline"></p></li>
+				<li><p class="vline"></p></li>
+				<li><p class="vline"></p></li>
+				<li><p class="vline"></p></li>
+			</ul>
+			<ul class="wb-flex-box">
+				<li><p class="userwarp userwarp3">D</p></li>
+				<li><p class="userwarp userwarp3">E</p></li>
+				<li><p class="userwarp userwarp3">F</p></li>
+				<li><p class="userwarp userwarp3">G</p></li>
+			</ul>
 		</div>
 	</body>
 
@@ -29,13 +83,23 @@
 		mui.init();
 		mui.plusReady(function() {
 			//直推列表
-			getTeam();
+			getTeam(UserObj.getUid());
+			//点击获取对应用户的直推列表
+			$(".userwarp").click(function() {
+				var uid=this.getAttribute("uid");
+				uid&&getTeam(Number(uid));
+			})
 		});
 		
 		/*直推列表*/
-		function getTeam(){
-			ajaxData(Host+"api/Account/GetRecommendList?assignMemberId="+UserObj.getUid(), function(data) {
-				
+		function getTeam(uid){
+			ajaxData(Host+"api/Account/GetRecommendList?assignMemberId="+uid, function(data) {
+				if (data.Status==401){
+					var list=data.Data||[];
+					
+				}else{
+					return data.Message;
+				}
 				
 			});
 		}
