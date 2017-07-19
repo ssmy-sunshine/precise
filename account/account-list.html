@@ -6,6 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
 		<link rel="stylesheet" href="../fonts/iconfont.css">
 		<link rel="stylesheet" href="../css/app.css">
+		<link rel="stylesheet" href="../css/layer.css">
 		<style type="text/css">
 			.itemwarp{
 				width: 92%;
@@ -45,7 +46,7 @@
 		<div class="wb-content">
 			<div class="itemwarp">
 				<div class="wb-item red">当前登录账户<p class="wb-item-right"><span id="Username" class="red"></span></p></div>
-				<div class="wb-item">账户昵称<p class="wb-item-right"><span id="Nickname"></span> <span class="iconfont icon-youjiantou"></span></p></div>
+				<div id="editNickName" class="wb-item">账户昵称<p class="wb-item-right"><span id="Nickname"></span> <span class="iconfont icon-youjiantou"></span></p></div>
 				<div class="wb-item">登录密码<p class="wb-item-right"><span>重置</span> <span class="iconfont icon-youjiantou"></span></p></div>
 				<div class="wb-item">交易密码<p class="wb-item-right"><span>重置</span> <span class="iconfont icon-youjiantou"></span></p></div>
 				<div class="wb-item">银行账户<p class="wb-item-right"><span>编辑</span> <span class="iconfont icon-youjiantou"></span></p></div>
@@ -65,11 +66,25 @@
 	<script src="../js/mui.min.js" charset="utf-8"></script>
 	<script src="../js/DomBiz.js" charset="utf-8"></script>
 	<script src="../js/app.js" charset="utf-8"></script>
+	<script src="../js/layer.js" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
 		mui.init();
 		mui.plusReady(function() {
 			//用户信息
 			EJ_SetUserInfo();
+			//编辑昵称
+			$("#editNickName").click(function() {
+				new Layer({
+					title:"修改昵称",
+					content:'<input id="nameInput" style="width: 100%;text-align: center;color: #EA1C40;" type="text" value="'+UserObj.getNickname()+'"/>',
+					btnClick:[null,function() {
+						var nickname=$("#nameInput").val();
+						if (nickname&&nickname!=UserObj.getNickname()) {
+							editNickname(nickname);
+						}
+					}]
+				}).show();
+			})
 			//账户列表
 			getAccounts();
 			//注销
@@ -93,6 +108,20 @@
 					}
 				}
 				$("#userlist").html(str);
+			},{ajaxtype:"get"});
+		}
+		
+		/*修改昵称*/
+		function editNickname (nickname) {
+			ajaxData(Host+"api/Account/ChangeName?name="+nickname, function(data) {
+				if (data.Status==200) {
+					UserObj.getUserinfo(function () {
+						UserObj.notifyView();
+						$("#Nickname").html(nickname);
+					})
+				} else{
+					return data.Message
+				}
 			},{ajaxtype:"get"});
 		}
 	</script>
