@@ -96,7 +96,7 @@
 			
 			//切换导航
 			$("#navpage li").click(function() {
-				changePage(this.getAttribute("i"));
+				EJ_ChangePage(this.getAttribute("i"));
 			});
 			
 			//切换分类
@@ -106,7 +106,7 @@
 		});
 		
 		/*切换page*/
-		function changePage(i) {
+		function EJ_ChangePage(i) {
 			if (i!=pageIndex){
 				//选中
 				var navDom=document.getElementById("navpage");

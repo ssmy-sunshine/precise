@@ -85,7 +85,7 @@
 		<ul class="wb-footer wb-flex-box">
 			<li class="btn-buy tohref" href="../user/ReginBuy.html">购买</li>
 			<li class="btn-update tohref" href="../user/update.html">升级</li>
-			<li class="btn-act">激活</li>
+			<li id="toActOrder" class="btn-act">激活</li>
 		</ul>
 	</body>
 
@@ -113,6 +113,13 @@
 			UserObj.addNotifyListener(function(){
 				mescroll.resetUpScroll();
 			});
+			
+			//激活
+			$("#toActOrder").click(function() {
+				plus.webview.getWebviewById("../main/main.html").evalJS("EJ_ChangePage(3)");
+				plus.webview.getWebviewById("main-order.html").evalJS("EJ_ChangePage(1)");
+				mui.back();
+			})
 			
 			//禁止右滑关闭,防止刷新main-user.html的数据,无法及时更新
 			plus.webview.currentWebview().setStyle({'popGesture': 'none'});

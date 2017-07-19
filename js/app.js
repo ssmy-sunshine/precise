@@ -183,7 +183,7 @@ var UserObj={
 	},
 	/*当前股价*/
 	getSharesPrice : function() {
-		return localStorage.getItem("SharesPrice")||"0";
+		return Number(localStorage.getItem("SharesPrice")||0);
 	},
 	setSharesPrice : function(value) {
 		setLocalStorage("SharesPrice",value);

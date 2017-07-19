@@ -9,10 +9,16 @@
 		<link rel="stylesheet" href="../css/paypass.css">
 		<style type="text/css">
 			.contentwarp{
-				padding: 40% 20% 0 20%;
+				padding: 50px 20% 0 20%;
 				text-align: center;
 			}
+			.systrade{
+				font-size: 18px;
+				line-height: 30px;
+				color: red;
+			}
 			.amount-my{
+				margin-top: 30px;
 				font-size: 18px;
 				color: #EA1C40;
 			}
@@ -52,20 +58,21 @@
 	<body>
 		<div class="wb-head">
 			<p class="wb-back iconfont icon-fanhui"></p>
-			<p class="wb-title">购买注册币</p>
+			<p class="wb-title">兑换系统股票</p>
 		</div>
 		<div class="wb-content">
 			<div class="contentwarp">
+				<p class="systrade">当前系统股票池 : <b>10000</b> 股<br />当前股价 <b id="SharesPrice"></b> 元</p>
 				<p class="amount-my">我的现金币 : <span id="Amount"></span></p>
-				<p class="buy-tip">输入您要购买的注册币数量</p>
+				<p class="buy-tip">输入您要兑换的股票数</p>
 				<div class="number-warp">
 					<input id="inputNum" type="number"/>
-					<p class="input-tip">个注册币</p>
+					<p class="input-tip">股</p>
 				</div>
 				<p class="paytip">需支付 <b id="inputNumTip">0</b> 现金币</p>
 			</div>
 		</div>
-		<p id="btnSubmit" class="wb-footer wb-btn btn-yellow">确定购买注册币</p>
+		<p id="btnSubmit" class="wb-footer wb-btn btn-yellow">确定兑换股票</p>
 	</body>
 
 	<script src="../js/mui.min.js" charset="utf-8"></script>
@@ -79,7 +86,8 @@
 			EJ_SetUserInfo();
 			//输入监听
 			$("#inputNum").input(function() {
-				$("#inputNumTip").html(this.value);
+				var allprice=Number(this.value||0)*UserObj.getSharesPrice();
+				$("#inputNumTip").html(allprice);
 			})
 			//购买
 			$("#btnSubmit").click(function() {

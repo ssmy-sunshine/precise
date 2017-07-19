@@ -81,7 +81,7 @@
 				</li>-->
 			</ul>
 		</div>
-		<p class="wb-footer">兑 换</p>
+		<p class="wb-footer tohref" href="../trade/buy-sys.html">兑换系统股票</p>
 	</body>
 
 	<script src="../js/mui.min.js" charset="utf-8"></script>
@@ -105,6 +105,9 @@
 			
 			//用户信息
 			EJ_SetUserInfo();
+			UserObj.addNotifyListener(function(){
+				mescroll.resetUpScroll();
+			});
 			
 			//禁止右滑关闭,防止刷新main-user.html的数据,无法及时更新
 			plus.webview.currentWebview().setStyle({'popGesture': 'none'});
