@@ -36,7 +36,7 @@ function initSendCode(sendCodeId,inputTelId,isBuyName) {
 			} else{
 				return data.Message;
 			}
-		}, {ajaxtype:"get"},function(){
+		}, null,function(){
 			codeTimer.isStop=true;
 		});
 		

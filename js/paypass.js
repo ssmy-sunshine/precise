@@ -37,7 +37,7 @@ function checkPayPass(success, err){
 				}else{
 					return data.Message;
 				}
-			},{ajaxtype:"get"});
+			});
 		}
 	})
 }

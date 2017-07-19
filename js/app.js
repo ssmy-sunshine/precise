@@ -181,7 +181,7 @@ var UserObj={
 	/*登录*/
 	login : function(username,password,success,err){
 		if (username&&password) {
-			var param={"username":username, "password":password, "grant_type":"password"};
+			var param={ajaxtype:"post","username":username, "password":password, "grant_type":"password"};
 			ajaxData(Host+"token", function(data) {
 				//{"access_token":"xx","token_type":"bearer","refresh_token":"xxxx","as:client_id":"100024","userName":"文举"}
 				UserObj.setToken(data.access_token);
@@ -236,7 +236,7 @@ var UserObj={
 					callback&&callback();
 					return data.Message;
 				}
-			},{ajaxtype:"get"},function(){
+			},null,function(){
 				callback&&callback();//失败回调
 			});
 		}else{
@@ -305,7 +305,7 @@ function getImgpath(imgpath,size){
 function ajaxData(url,success,param,err,hideWait) {
 	//统一带参
 	param=param||{};
-	param["ajaxtype"]=param.ajaxtype||'post';//默认post请求
+	param["ajaxtype"]=param.ajaxtype||'get';//默认get请求
 	param["version"]=localStorage.getItem("version");//版本号,在updateBiz.js中赋值;
 	param["tryNum"]=0;//重试第几次
 	//如果get请求需拼接参数

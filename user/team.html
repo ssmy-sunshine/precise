@@ -7,19 +7,18 @@
 		<link rel="stylesheet" href="../fonts/iconfont.css">
 		<link rel="stylesheet" href="../css/app.css">
 		<style type="text/css">
-			.wb-head~.wb-content{
-				padding-top: 60px;
-			}
+		
 		</style>
 	</head>
 
 	<body>
 		<div class="wb-head">
 			<p class="wb-back iconfont icon-fanhui"></p>
-			<p class="wb-title"></p>
+			<p class="wb-title">直推列表</p>
+			<p class="wb-head-right iconfont icon-youjiantou"></p>
 		</div>
 		<div class="wb-content">
-			<div class="notice-warp"></div>
+
 		</div>
 	</body>
 
@@ -29,17 +28,15 @@
 	<script type="text/javascript" charset="utf-8">
 		mui.init();
 		mui.plusReady(function() {
-			//公告
-			var nid=plus.webview.currentWebview().nid;
-			getNotice(nid);
+			//直推列表
+			getTeam();
 		});
 		
-		/*获取公告*/
-		function getNotice(nid){
-			ajaxData(Host+"api/Content/GetContents?ContentId="+nid, function(data) {
-				var obj=data.Data;
-				$(".wb-title").html(obj.Title);
-				$(".notice-warp").html(obj.Content);
+		/*直推列表*/
+		function getTeam(){
+			ajaxData(Host+"api/Account/GetRecommendList?assignMemberId="+UserObj.getUid(), function(data) {
+				
+				
 			});
 		}
 	</script>
