@@ -176,8 +176,8 @@ img{width:100%; height:auto; vertical-align:bottom}
 .btn-red-radius:active{ opacity: 0.75; }
 /*透明白色边框按钮*/
 .btn-white{border: 1px solid white}
-/*紫红色按钮*/
-.btn-purple{background-color: #FF6990}
+/*红色按钮*/
+.btn-yellow{background-color: #E79519}
 /*蓝色按钮*/
 .btn-blue{background-color: #1AA8E3}
 /*红色按钮*/

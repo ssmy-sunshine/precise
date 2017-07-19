@@ -264,6 +264,15 @@ DomBiz.prototype.click = function(fn) {
 	return this;
 };
 
+//输入监听
+DomBiz.prototype.input = function(fn) {
+	for (var i = 0; i < this.elements.length; i++) {
+		var ele=this.elements[i];
+		if(ele) ele.addEventListener("input",fn);
+	}
+	return this;
+};
+
 /*打开新窗口
  *param 参数json格式 {key:value}
  *接收参数: var self = plus.webview.currentWebview(); var value=self.key;

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<link rel="stylesheet" href="../fonts/iconfont.css">
+		<link rel="stylesheet" href="../css/app.css">
+		<link rel="stylesheet" href="../css/paypass.css">
+		<style type="text/css">
+			.contentwarp{
+				padding: 40% 20% 0 20%;
+				text-align: center;
+			}
+			.amount-my{
+				font-size: 18px;
+				color: #EA1C40;
+			}
+			.buy-tip{
+				margin-top: 30px;
+				font-size: 14px;
+			}
+			.number-warp{
+				position: relative;
+				border-bottom: 1px solid #eee;
+			}
+			.number-warp input{
+				width: 90%;
+				padding: 10px 0;
+				font-size: 24px;
+				border-bottom: 1px solid #bbb;
+				text-align: center;
+				color: #EA1C40;
+			}
+			.number-warp .input-tip{
+				position: absolute;
+				right: 5%;
+				top: 20px;
+				font-size: 12px;
+				color: gray;
+			}
+			.paytip{
+				font-size: 14px;
+				margin-top: 20px;
+				margin-right: 10px;
+				text-align: right;
+				color: #EA1C40;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="wb-head">
+			<p class="wb-back iconfont icon-fanhui"></p>
+			<p class="wb-title">购买注册币</p>
+		</div>
+		<div class="wb-content">
+			<div class="contentwarp">
+				<p class="amount-my">我的现金币 : <span id="Amount"></span></p>
+				<p class="buy-tip">输入您要购买的注册币数量</p>
+				<div class="number-warp">
+					<input id="inputNum" type="number"/>
+					<p class="input-tip">个注册币</p>
+				</div>
+				<p class="paytip">需支付 <b id="inputNumTip">0</b> 现金币</p>
+			</div>
+		</div>
+		<p id="btnSubmit" class="wb-footer wb-btn btn-yellow">确定购买注册币</p>
+	</body>
+
+	<script src="../js/mui.min.js" charset="utf-8"></script>
+	<script src="../js/DomBiz.js" charset="utf-8"></script>
+	<script src="../js/paypass.js" charset="utf-8"></script>
+	<script src="../js/app.js" charset="utf-8"></script>
+	<script type="text/javascript" charset="utf-8">
+		mui.init();
+		mui.plusReady(function() {
+			//用户信息
+			EJ_SetUserInfo();
+			//输入监听
+			$("#inputNum").input(function() {
+				$("#inputNumTip").html(this.value);
+			})
+			//购买
+			$("#btnSubmit").click(function() {
+				var num=Number($("#inputNum").val()||0);
+				if(num>0) reginBuy(num);
+			})
+		});
+		
+		/*确定购买*/
+		function reginBuy(num){
+			//交易密码
+			checkPayPass(function() {
+				//购买
+				ajaxData(Host+"api/Regist/Buy?amount="+num, function(data) {
+					if(data.Status==200){
+						//刷新界面
+						UserObj.getUserinfo(function () {
+							mui.toast("购买成功");
+							UserObj.notifyView();
+							mui.back();
+						})
+					}else if(data.Status==5001){
+						//现金币不足
+						mui.confirm("现金币不足.\n\n 您可通过兑换股票获取现金币","",["取消","兑换股票"],function (e) {
+							if(e.index==1) openWindow("../trade/buy.html");
+						})
+					}
+				},{ajaxtype:"get"});
+			})
+		}
+	</script>
+
+</html>

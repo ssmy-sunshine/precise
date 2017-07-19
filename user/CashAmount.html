@@ -105,6 +105,9 @@
 			
 			//用户信息
 			EJ_SetUserInfo();
+			
+			//禁止右滑关闭,防止刷新main-user.html的数据,无法及时更新
+			plus.webview.currentWebview().setStyle({'popGesture': 'none'});
 		});
 		
 		/*初始化列表*/

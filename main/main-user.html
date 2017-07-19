@@ -80,9 +80,9 @@
 				<li class="grayscale"><div class="level-data"><img src="../img/level-icon.png"/><p>T1</p></div><p class="bg-line" style="left: -50%;"></p></li>-->
 			</ul>
 		</div>
-		<div class="wb-item tohref" href="../user/AmountRegin.html">注册币<p class="wb-item-right"><span id="RegisterAmount" class="red"></span> <span class="iconfont icon-youjiantou"></span></p></div>
-		<div class="wb-item tohref" href="../user/AmountCash.html">现金币<p class="wb-item-right"><span id="Amount" class="red"></span> <span class="iconfont icon-youjiantou"></span></p></div>
-		<div class="wb-item tohref" href="../user/AmountScore.html">积分数<p class="wb-item-right"><span id="Integration" class="red"></span> <span class="iconfont icon-youjiantou"></span></p></div>
+		<div class="wb-item tohref" href="../user/ReginAmount.html">注册币<p class="wb-item-right"><span id="RegisterAmount" class="red"></span> <span class="iconfont icon-youjiantou"></span></p></div>
+		<div class="wb-item tohref" href="../user/CashAmount.html">现金币<p class="wb-item-right"><span id="Amount" class="red"></span> <span class="iconfont icon-youjiantou"></span></p></div>
+		<div class="wb-item tohref" href="../user/ScoreAmount.html">积分数<p class="wb-item-right"><span id="Integration" class="red"></span> <span class="iconfont icon-youjiantou"></span></p></div>
  		<div class="hr8"></div>
  		<div class="wb-item tohref" href="../account/account-list.html">账户管理<p class="wb-item-right"><span class="iconfont icon-youjiantou"></span></p></div>
  		<div class="wb-item">直推列表<p class="wb-item-right"><span class="iconfont icon-youjiantou"></span></p></div>
@@ -96,10 +96,10 @@
 	<script type="text/javascript" charset="utf-8">
 		mui.init();
 		mui.plusReady(function() {
-			//设置个人信息
-			EJ_SetUserInfo();
 			//套餐列表
 			getCombo();
+			//设置个人信息
+			EJ_SetUserInfo();
 		});
 		
 		/*套餐列表*/

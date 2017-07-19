@@ -151,11 +151,14 @@ var UserObj={
 	},
 	/*刷新用户数据*/
 	notifyView : function() {
-		var viewIdArr=["main-home.html"];
+		var viewIdArr=["main-home.html","main-user.html","../user/ReginAmount.html"];
 		for (var i = 0; i < viewIdArr.length; i++) {
 			var viewObj=plus.webview.getWebviewById(viewIdArr[i]);
 			viewObj&&viewObj.evalJS("EJ_SetUserInfo()");
 		}
+	},
+	addNotifyListener : function(value) {
+		UserObj.notifyListener=value;
 	},
 	/*获取用户测试身份: 0普通用户,1测试人员;2开发人员;*/
 	getTestTag : function() {
@@ -242,6 +245,8 @@ function EJ_SetUserInfo(){
 	$("#Integration").html(UserObj.getIntegration());//积分
 	$("#InviteCode").html(UserObj.getInviteCode());//邀请码
 	$("#Nickname").html(UserObj.getNickname());//昵称
+	
+	UserObj.notifyListener&&UserObj.notifyListener();//监听
 }
 
 /*设置localStorage,如果value不存在则移除*/
