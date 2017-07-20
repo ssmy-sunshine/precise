@@ -6,6 +6,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
 		<link rel="stylesheet" href="../fonts/iconfont.css">
 		<link rel="stylesheet" href="../css/app.css">
+		<link rel="stylesheet" href="../css/layer.css">
+		<link rel="stylesheet" href="../css/paypass.css">
 		<link rel="stylesheet" href="../css/mescroll.min.css">
 		<style type="text/css">
 			/*标题*/
@@ -110,6 +112,8 @@
 	<script src="../js/mui.min.js" charset="utf-8"></script>
 	<script src="../js/DomBiz.js" charset="utf-8"></script>
 	<script src="../js/app.js" charset="utf-8"></script>
+	<script src="../js/layer.js" charset="utf-8"></script>
+	<script src="../js/paypass.js" charset="utf-8"></script>
 	<script src="../js/mescroll.min.js" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
 		var navIndex=0;
@@ -154,6 +158,29 @@
 				}
 			})
 			
+			//兑换
+			mui("#datalist").on("tap",".btn-buy",function(){
+				var cid=this.getAttribute("cid");
+				var cn=this.getAttribute("CN");
+				var us=this.getAttribute("US");
+				new Layer({
+					content: "人民币 ¥"+cn+", ( 美元 $"+us+" )<br/>确定兑换吗 ?",
+					click: function(i){
+						if(i==1){
+							//兑换
+							checkPayPass(function(){
+								ajaxData(Host+"api/Trading/Confirm?ctId="+cid, function(data){
+									if(data.Status==200){
+										openWindow("../order/trade.html",{cid:cid});
+									}else{
+										return data.Message;
+									}
+								})
+							})
+						}
+					}
+				}).show();
+			})
 		});
 		
 		/*切换导航*/
@@ -196,11 +223,11 @@
 						var str='';
 						for (var i = 0; i < len; i++) {
 							var obj=list[i];
-							str+='<li oid="'+obj.OrderNumber+'"  class="wb-flex-box">';
+							str+='<li class="wb-flex-box">';
 							str+='<p>'+obj.Name+'</p>';
 							str+='<p>'+obj.TransactionCNPrice+'</p>';
 							str+='<p>'+obj.TransactionUSPrice+'</p>';
-							str+='<p><span class="btn-buy">兑换</span></p>';
+							str+='<p><span class="btn-buy" cid="'+obj.CashTransactionId+'" CN="'+obj.TransactionCNPrice+'" US="'+obj.TransactionUSPrice+'">兑换</span></p>';
 							str+='</li>';
 						}
 						$("#datalist").html(str);

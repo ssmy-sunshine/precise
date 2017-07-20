@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<link rel="stylesheet" href="../fonts/iconfont.css">
+		<link rel="stylesheet" href="../css/app.css">
+		<style type="text/css">
+			body{background-color: #eee}
+			/*订单*/
+			.orderinfo{
+				padding: 30px 0 10px 12px;
+				background-color: white;
+			}
+			.order-status{
+				text-align: center;
+				color: #EA1C40;
+			}
+			.order-no{margin-top: 30px;color: gray;}
+			.order-time{margin-top: 16px;color: gray;}
+			/*卖家*/
+			.seller{
+				margin-top: 10px;
+				padding: 12px;
+				line-height: 30px;
+				background-color: white;
+				color: #555;
+			}
+			/*金额*/
+			.order-money{
+				padding: 30px;
+				margin-top: 10px;
+				text-align: center;
+				line-height: 24px;
+				background-color: white;
+				color: #EA1C40;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="wb-head">
+			<p class="wb-back iconfont icon-fanhui"></p>
+			<p class="wb-title">订单详情</p>
+		</div>
+		<div class="wb-content">
+			<div class="orderinfo">
+				<p class="order-status">
+					<span class="iconfont icon-shizhong"></span>
+					<span>订单已提交,请联系卖家,尽快打款</span>
+				</p>
+				<p class="order-no">订单编号 : <span id="OrderNumber"></span></p>
+				<p class="order-time">下单时间 : <span id="CreateDate"></span></p>
+			</div>
+			<div class="seller">
+				<p>卖 家 : <span id="Name"></span></p>
+				<p>手 机 : <span id="Phone"></span></p>
+				<p>收款银行 : <span id="BankName"></span></p>
+				<p>收款账号 : <span id="BankCard"></span></p>
+				<p>收款姓名 : <span id="BankAccName"></span></p>
+			</div>
+			<p class="order-money">兑换 人民币 ¥<span class="CNPrice"></span> <br /> ( 美元 : <span id="USPrice"></span> )</p>
+		</div>
+		<div class="wb-footer wb-btn btn-yellow">上传付款凭证 ( <span class="CNPrice"></span>元 )</div>
+	</body>
+
+	<script src="../js/mui.min.js" charset="utf-8"></script>
+	<script src="../js/DomBiz.js" charset="utf-8"></script>
+	<script src="../js/app.js" charset="utf-8"></script>
+	<script type="text/javascript" charset="utf-8">
+		mui.init();
+		mui.plusReady(function() {
+			var cid=plus.webview.currentWebview().cid;
+			cid&&getData(cid);
+		});
+		
+		/*获取数据*/
+		function getData(cid){
+			ajaxData(Host+"api/Trading/GetDetails?ctId="+cid, function(data) {
+				if (data.Status==200){
+					var obj=data.Data||[];
+					$("#OrderNumber").html(obj.OrderNumber);
+					$("#CreateDate").html(obj.CreateDate);
+					$("#Name").html(obj.Name);
+					$("#Phone").html(obj.Phone);
+					$("#BankName").html(obj.BankName);
+					$("#BankCard").html(obj.BankCard);
+					$("#BankAccName").html(obj.BankAccName);
+					$(".CNPrice").html(obj.TransactionCNPrice);
+					$("#USPrice").html(obj.TransactionUSPrice);
+				}else{
+					return data.Message;
+				}
+			});
+		}
+	</script>
+
+</html>

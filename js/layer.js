@@ -4,7 +4,7 @@ function Layer(options){
 		title:"温馨提示", //标题, 字符串
 		content:"", //内容,可为html,自行定义样式,字符串
 		btn:["取消","确定"], //按钮文本, 数组
-		btnClick:[null,null],  //按钮点击回调, 数组
+		click:null,  //按钮点击回调, 方法(按钮下标)
 		onShow:null, //显示完毕的回调(warpDom,this)
 		onClose:null, //关闭的回调(warpDom,this)
 		style:{
@@ -50,8 +50,7 @@ Layer.prototype.show = function() {
 			btnObjs[i].addEventListener("tap",function(e) {
 				e.stopPropagation();
 				var i=Number(this.getAttribute("i"));
-				var btnClick=me.options.btnClick[i];
-				var isClose=btnClick&&btnClick();
+				var isClose=me.options.click&&me.options.click(i);
 				if(isClose!=true) me.close();
 			})
 		}

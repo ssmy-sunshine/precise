@@ -42,7 +42,7 @@
 		/*获取数据*/
 		function getData(){
 			ajaxData(Host+"api/Content/GetContents", function(data) {
-				if (data.Status==401){
+				if (data.Status==200){
 					var list=data.Data||[];
 					var str='';
 					for (var i = 0; i < list.length; i++) {

@@ -18,24 +18,26 @@
 	width: 80%;
 	display: inline-block;
 	vertical-align: middle;
-	border-radius: 10px;
+	border-radius: 15px;
 	background-color: white;
 }
 /*标题*/
 .layer-warp .layer-title{
 	padding: 15px 0;
-	border-bottom: 1px solid #eee;
+	border-bottom: 1px solid #f6f6f6;
+	font-weight: bold;
 }
 /*内容*/
 .layer-warp .layer-content{
 	padding: 18px 10px;
+	line-height: 24px;
 }
 /*按钮, 平分布局*/
 .layer-warp .layer-btns{
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;
-	border-top: 1px solid #eee;
+	border-top: 1px solid #f6f6f6;
 }
 .layer-warp .layer-btns > *{
 	-webkit-box-flex: 1;
@@ -47,7 +49,8 @@
 }
 .layer-warp .layer-btns .layer-btn{
 	padding: 15px 0;
-	border-right: 1px solid #eee;
+	border-right: 1px solid #f6f6f6;
+	color: #007AFF;
 }
 .layer-warp .layer-btns .layer-btn:last-child{
 	border-right: none;
