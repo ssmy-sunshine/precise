@@ -1,4 +1,4 @@
-﻿{
+{
 	"@platforms": [
 		"android",
 		"iPhone",
@@ -170,6 +170,158 @@
 					"xxhdpi": "F:/精密科技/启动页-聚思/an-1082.png"
 				}
 			}
+		}
+	},
+	"dependencies": {
+		"pages": {
+			"account/login.html": {
+				"resources": [
+					"fonts/iconfont.css",
+					"css/login.css",
+					"fonts/iconfont.ttf",
+					"js/sendCode.js"
+				],
+				"refer": [
+					"main/main.html"
+				],
+				"priority": 0
+			},
+			"main/index.html": {
+				"resources": [
+					"js/app.js",
+					"js/mui.min.js",
+					"css/app.css",
+					"js/DomBiz.js",
+					"img/logo-red.png"
+				],
+				"refer": [
+					"account/login.html",
+					"main/main.html"
+				],
+				"priority": 0
+			},
+			"main/main.html": {
+				"resources": [
+					"main/main-home.html",
+					"fonts/iconfont.css",
+					"fonts/iconfont.ttf"
+				],
+				"refer": [
+					"main/main-trade.html",
+					"main/main-share.html",
+					"main/main-user.html",
+					"main/main-order.html"
+				],
+				"priority": 0
+			},
+			"main/main-trade.html": {
+				"resources": [
+					"css/layer.css",
+					"js/paypass.js",
+					"js/mescroll.min.js",
+					"css/mescroll.min.css",
+					"js/layer.js",
+					"css/paypass.css",
+					"img/logo-gray.png",
+					"fonts/iconfont.ttf"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"main/main-user.html": {
+				"resources": [
+					"img/level-icon.png"
+				],
+				"refer": [
+					"user/ReginAmount.html"
+				],
+				"priority": 0
+			},
+			"main/main-order.html": {
+				"resources": [
+					"js/mescroll.min.js",
+					"css/mescroll.min.css"
+				],
+				"refer": [
+					"order/trade.html"
+				],
+				"priority": 0
+			},
+			"order/trade.html": {
+				"resources": [
+					"js/plusBiz.js"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"trade/buy-user.html": {
+				"resources": [
+					"js/paypass.js",
+					"css/paypass.css"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"main/main-share.html": {
+				"resources": [
+					"img/logo-gray.png",
+					"js/app.js",
+					"fonts/iconfont.css",
+					"js/mui.min.js",
+					"css/app.css",
+					"js/DomBiz.js"
+				],
+				"refer": [
+					"trade/buy-user.html",
+					"trade/sell-share.html"
+				],
+				"priority": 0
+			},
+			"trade/sell-share.html": {
+				"resources": [
+					"js/paypass.js",
+					"js/app.js",
+					"fonts/iconfont.css",
+					"js/mui.min.js",
+					"css/app.css",
+					"fonts/iconfont.ttf",
+					"css/paypass.css",
+					"js/DomBiz.js"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"main/main-home.html": {
+				"resources": [
+					"img/logo-red.png"
+				],
+				"refer": [],
+				"priority": 0
+			}
+		},
+		"idle": {
+			"resources": [
+				"user/team.html",
+				"account/reset-trade.html",
+				"user/ScoreAmount.html",
+				"js/updateBiz.js",
+				"img/translate.png",
+				"account/regin.html",
+				"packet/packet.html",
+				"img/mescroll-totop.png",
+				"mall/mall.html",
+				"trade/buy-sys.html",
+				"css/swiper-3.3.1.min.css",
+				"account/reset-bank.html",
+				"account/account-list.html",
+				"user/ReginBuy.html",
+				"account/findpw.html",
+				"user/CashAmount.html",
+				"user/update.html",
+				"notice/notice.html",
+				"account/regin-ok.html",
+				"account/reset-pw.html"
+			]
 		}
 	}
 }

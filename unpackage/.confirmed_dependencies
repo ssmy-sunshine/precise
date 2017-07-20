@@ -1,1 +1,111 @@
-null
+{
+	"account/login.html": {
+		"resources": [
+			"fonts/iconfont.css",
+			"css/login.css",
+			"fonts/iconfont.ttf",
+			"js/sendCode.js"
+		],
+		"refer": [
+			"main/main.html"
+		]
+	},
+	"main/index.html": {
+		"resources": [
+			"js/app.js",
+			"js/mui.min.js",
+			"css/app.css",
+			"js/DomBiz.js",
+			"img/logo-red.png"
+		],
+		"refer": [
+			"account/login.html",
+			"main/main.html"
+		]
+	},
+	"main/main.html": {
+		"resources": [
+			"main/main-home.html",
+			"fonts/iconfont.css",
+			"fonts/iconfont.ttf"
+		],
+		"refer": [
+			"main/main-home.html",
+			"main/main-trade.html",
+			"main/main-share.html",
+			"main/main-user.html",
+			"main/main-order.html"
+		]
+	},
+	"main/main-trade.html": {
+		"resources": [
+			"css/layer.css",
+			"js/paypass.js",
+			"js/mescroll.min.js",
+			"css/mescroll.min.css",
+			"js/layer.js",
+			"css/paypass.css",
+			"img/logo-gray.png",
+			"fonts/iconfont.ttf"
+		]
+	},
+	"main/main-user.html": {
+		"resources": [
+			"img/level-icon.png"
+		],
+		"refer": [
+			"user/ReginAmount.html"
+		]
+	},
+	"main/main-order.html": {
+		"refer": [
+			"order/trade.html"
+		],
+		"resources": [
+			"js/mescroll.min.js",
+			"css/mescroll.min.css"
+		]
+	},
+	"order/trade.html": {
+		"resources": [
+			"js/plusBiz.js"
+		]
+	},
+	"trade/buy-user.html": {
+		"resources": [
+			"js/paypass.js",
+			"css/paypass.css"
+		]
+	},
+	"main/main-share.html": {
+		"refer": [
+			"trade/buy-user.html",
+			"trade/sell-share.html"
+		],
+		"resources": [
+			"img/logo-gray.png",
+			"js/app.js",
+			"fonts/iconfont.css",
+			"js/mui.min.js",
+			"css/app.css",
+			"js/DomBiz.js"
+		]
+	},
+	"trade/sell-share.html": {
+		"resources": [
+			"js/paypass.js",
+			"js/app.js",
+			"fonts/iconfont.css",
+			"js/mui.min.js",
+			"css/app.css",
+			"fonts/iconfont.ttf",
+			"css/paypass.css",
+			"js/DomBiz.js"
+		]
+	},
+	"main/main-home.html": {
+		"resources": [
+			"img/logo-red.png"
+		]
+	}
+}

@@ -172,6 +172,8 @@
 								ajaxData(Host+"api/Trading/Confirm?ctId="+cid, function(data){
 									if(data.Status==200){
 										openWindow("../order/trade.html",{cid:cid});
+										mescroll.resetUpScroll();
+										plus.webview.getWebviewById("main-order.html").evalJS("EJ_ReloadData()");
 									}else{
 										return data.Message;
 									}

@@ -102,6 +102,9 @@
 		mui.plusReady(function() {
 			//设置会员信息
 			EJ_SetUserInfo();
+			UserObj.addNotifyListener(function(){
+				initList();
+			})
 			
 			//买入记录
 			initList();
