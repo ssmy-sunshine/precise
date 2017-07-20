@@ -118,7 +118,7 @@ var UserObj={
 	},
 	/*现金币*/
 	getAmount : function() {
-		return localStorage.getItem("Amount")||"0";
+		return Number(localStorage.getItem("Amount")||0);
 	},
 	setAmount : function(value) {
 		setLocalStorage("Amount",value);
@@ -606,6 +606,11 @@ function dateToMsec(str) {
 /*计算两个时间字符串相差的毫秒 (date1,date2时间字符串:2014/07/10 10:21:13)*/
 function getDateDiff(date1,date2) {
 	return dateToMsec(date1)-dateToMsec(date2);
+}
+
+/*整理时间 2017-06-17T11:21:01.83*/
+function trimDateStr(str){
+	return str.substring(0,str.indexOf(".")).replace("T"," ");
 }
 
 /*给指定元素添加拨打电话的功能*/

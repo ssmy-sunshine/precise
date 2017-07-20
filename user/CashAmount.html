@@ -81,7 +81,7 @@
 				</li>-->
 			</ul>
 		</div>
-		<p class="wb-footer tohref" href="../trade/buy-sys.html">兑换系统股票</p>
+		<p class="wb-footer tohref" href="../trade/buy-sys.html">兑换现金币</p>
 	</body>
 
 	<script src="../js/mui.min.js" charset="utf-8"></script>
@@ -116,7 +116,7 @@
 		/*初始化列表*/
 		function initList(page){
 			ajaxData(Host+"api/Purse/GetPurseLog?pageIndex="+page.num+"&accountType=0", function(data) {
-				var objArr=data.Data||[];
+				var objArr=data.Data ? data.Data.Data : [];
 				var len=objArr.length;
 				mescroll.endSuccess(len);
 				if (len>0) {
@@ -125,7 +125,7 @@
 						var obj=objArr[i];
 						var str='<p class="remark">'+obj.TransactionTypeName+'</p>';
 						str+='<p class="money">'+obj.TransactionAmount+'</p>';
-						str+='<p class="time">'+obj.CreateDate+'</p>';
+						str+='<p class="time">'+trimDateStr(obj.CreateDate)+'</p>';
 						var liDom=document.createElement("li");
 						liDom.innerHTML=str;
 						listDom.appendChild(liDom);

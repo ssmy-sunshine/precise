@@ -54,7 +54,9 @@
 			"img/level-icon.png"
 		],
 		"refer": [
-			"user/ReginAmount.html"
+			"user/ReginAmount.html",
+			"user/team.html",
+			"user/CashAmount.html"
 		]
 	},
 	"main/main-order.html": {
@@ -63,7 +65,12 @@
 		],
 		"resources": [
 			"js/mescroll.min.js",
-			"css/mescroll.min.css"
+			"css/mescroll.min.css",
+			"js/app.js",
+			"fonts/iconfont.css",
+			"js/mui.min.js",
+			"css/app.css",
+			"js/DomBiz.js"
 		]
 	},
 	"order/trade.html": {
@@ -106,6 +113,21 @@
 	"main/main-home.html": {
 		"resources": [
 			"img/logo-red.png"
+		]
+	},
+	"user/CashAmount.html": {
+		"refer": [
+			"trade/buy-sys.html"
+		],
+		"resources": [
+			"fonts/iconfont.ttf",
+			"js/app.js",
+			"fonts/iconfont.css",
+			"js/mescroll.min.js",
+			"js/mui.min.js",
+			"css/app.css",
+			"css/mescroll.min.css",
+			"js/DomBiz.js"
 		]
 	}
 }

@@ -42,15 +42,8 @@
 				position: absolute;
 				right: 5%;
 				top: 20px;
-				font-size: 12px;
-				color: gray;
-			}
-			.paytip{
 				font-size: 14px;
-				margin-top: 20px;
-				margin-right: 10px;
-				text-align: right;
-				color: #EA1C40;
+				color: gray;
 			}
 		</style>
 	</head>
@@ -58,21 +51,19 @@
 	<body>
 		<div class="wb-head">
 			<p class="wb-back iconfont icon-fanhui"></p>
-			<p class="wb-title">兑换系统股票</p>
+			<p class="wb-title">兑换现金币</p>
 		</div>
 		<div class="wb-content">
 			<div class="contentwarp">
-				<p class="systrade">当前系统股票池 : <b>10000</b> 股<br />当前股价 <b id="SharesPrice"></b> 元</p>
 				<p class="amount-my">我的现金币 : <span id="Amount"></span></p>
-				<p class="buy-tip">输入您要兑换的股票数</p>
+				<p class="buy-tip">输入您要兑换的数量</p>
 				<div class="number-warp">
 					<input id="inputNum" type="number"/>
-					<p class="input-tip">股</p>
+					<p class="input-tip">现金币</p>
 				</div>
-				<p class="paytip">需支付 <b id="inputNumTip">0</b> 现金币</p>
 			</div>
 		</div>
-		<p id="btnSubmit" class="wb-footer wb-btn btn-yellow">确定兑换股票</p>
+		<p id="btnSubmit" class="wb-footer wb-btn btn-yellow">确定兑换</p>
 	</body>
 
 	<script src="../js/mui.min.js" charset="utf-8"></script>
@@ -84,36 +75,35 @@
 		mui.plusReady(function() {
 			//用户信息
 			EJ_SetUserInfo();
-			//输入监听
-			$("#inputNum").input(function() {
-				var allprice=Number(this.value||0)*UserObj.getSharesPrice();
-				$("#inputNumTip").html(allprice);
-			})
-			//购买
+			//兑换
 			$("#btnSubmit").click(function() {
 				var num=Number($("#inputNum").val()||0);
-				if(num>0) reginBuy(num);
+				if(num>0){
+					if(num>UserObj.getAmount()){
+						mui.toast("现金币不足");
+						return;
+					}
+					toSubmit(num);
+				}
 			})
 		});
 		
-		/*确定购买*/
-		function reginBuy(num){
+		/*确定兑换*/
+		function toSubmit(num){
 			//交易密码
 			checkPayPass(function() {
 				//购买
-				ajaxData(Host+"api/Regist/Buy?amount="+num, function(data) {
+				ajaxData(Host+"api/My/Sell?price="+num, function(data) {
 					if(data.Status==200){
 						//刷新界面
 						UserObj.getUserinfo(function () {
-							mui.toast("购买成功");
+							mui.confirm(data.Message,"温馨提示",["好的"],function() {
+								mui.back();
+							})
 							UserObj.notifyView();
-							mui.back();
 						})
-					}else if(data.Status==5001){
-						//现金币不足
-						mui.confirm("现金币不足.\n\n 您可通过兑换股票获取现金币","",["取消","兑换股票"],function (e) {
-							if(e.index==1) openWindow("../trade/sell.html");
-						})
+					}else{
+						return data.Message;
 					}
 				});
 			})

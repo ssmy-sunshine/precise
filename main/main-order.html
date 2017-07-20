@@ -254,7 +254,8 @@
 				str+='<p class="gray">订单号: '+obj.SerialNumber+'</p>';
 				str+='<p class="status">'+statusText+'</p>';
 				str+='<p class="drakgray">'+obj.Name+'</p>';
-				str+='<p>兑换 : 人民币'+obj.Price+'元</p>';
+				str+='<p>请求激活 : <span class="red">'+obj.ActiveCombo+'会员</span></p>';
+				str+='<p>注册币 : <span class="red">'+obj.Price+'</span></p>';
 				if(obj.ActiveStatus==1) str+='<div class="btn">确定激活</div>';
 				var lidom=document.createElement("li");
 				lidom.innerHTML=str;
