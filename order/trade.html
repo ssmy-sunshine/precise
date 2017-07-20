@@ -62,17 +62,32 @@
 			</div>
 			<p class="order-money">兑换 人民币 ¥<span class="CNPrice"></span> <br /> ( 美元 : <span id="USPrice"></span> )</p>
 		</div>
-		<div class="wb-footer wb-btn btn-yellow">上传付款凭证 ( <span class="CNPrice"></span>元 )</div>
+		<div id="upfile" class="wb-footer wb-btn btn-yellow">上传付款凭证 ( <span class="CNPrice"></span>元 )</div>
 	</body>
 
 	<script src="../js/mui.min.js" charset="utf-8"></script>
 	<script src="../js/DomBiz.js" charset="utf-8"></script>
+	<script src="../js/plusBiz.js" charset="utf-8"></script>
 	<script src="../js/app.js" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
 		mui.init();
 		mui.plusReady(function() {
 			var cid=plus.webview.currentWebview().cid;
 			cid&&getData(cid);
+			//上传付款凭证
+			$("#upfile").click(function () {
+				uploadMobileImg(function(result) {
+					//{"Message":"未授权.","Data":null,"Status":401}
+					var res=JSON.parse(result);
+					if (res.Status==200){
+						mui.toast("上传成功");
+						//TODO
+						
+					} else{
+						mui.toast(res.Message);
+					}
+				},{ctId:cid})
+			});
 		});
 		
 		/*获取数据*/
