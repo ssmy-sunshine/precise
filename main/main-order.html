@@ -185,7 +185,7 @@
 			var listDom=document.getElementById("datalist");
 			var lidom=document.createElement("li");
 			for (var i = 0; i < arr.length; i++) {
-				var obj=list[i];
+				var obj=arr[i];
 				var status=getStatusText(obj.TransactionStatus);
 				var str='<p class="gray">订单号: '+obj.OrderNumber+'</p>';
 				if(status[0]) str+='<p class="status">'+status[0]+'</p>';

@@ -83,6 +83,7 @@
 					UserObj.setBankName(param.BankName);//银行
         			UserObj.setBankCard(param.BankCardNumber);//卡号
         			UserObj.setBankAccName(param.BankCardAccountName);//姓名
+        			UserObj.notifyView();
 					mui.back();
 				} else{
 					return data.Message;

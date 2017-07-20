@@ -33,7 +33,7 @@ function checkPayPass(success, err){
 			ajaxData(Host+"api/Account/TradingVerify?tPwd="+paypass, function(data) {
 				if (data.Status==200){
 					document.body.removeChild(warpDom);//关闭
-					success&&success();//回调
+					success&&success(paypass);//回调
 				}else{
 					return data.Message;
 				}

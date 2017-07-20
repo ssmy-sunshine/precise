@@ -252,8 +252,8 @@ var UserObj={
 		}
 	},
 	/*刷新用户数据的监听*/
-	addNotifyListener : function(value) {
-		UserObj.notifyListener=value;
+	addNotifyListener : function(fn) {
+		UserObj.notifyListener=fn;
 	}
 }
 
@@ -270,6 +270,9 @@ function EJ_SetUserInfo(){
 	$("#Integration").html(UserObj.getIntegration());//积分
 	$("#InviteCode").html(UserObj.getInviteCode());//邀请码
 	$("#Nickname").html(UserObj.getNickname());//昵称
+    $("#BankName").html(UserObj.getBankName());//银行
+    $("#BankCard").html(UserObj.getBankCard());//卡号
+    $("#BankAccName").html(UserObj.getBankAccName());//姓名
 	
 	UserObj.notifyListener&&UserObj.notifyListener();//监听
 }
@@ -338,7 +341,7 @@ function ajaxData(url,success,param,err,hideWait) {
 			headers:{'Authorization':UserObj.getTokenType()+" "+UserObj.getToken()},
 			timeout:10000,
 			success:function(data){
-				isConsole&&console.log("请求url--> " + url + " 参数--> " + JSON.stringify(sendData) + " 结果-->" + JSON.stringify(data));
+				isConsole&&console.log("请求url--> " + url + " POST参数--> " + JSON.stringify(sendData) + " 结果-->" + JSON.stringify(data));
 				if(!hideWait) plus.nativeUI.closeWaiting();//关闭进度条
 				if (data.Status==401){
 					//token过期 自动刷token
@@ -361,7 +364,7 @@ function ajaxData(url,success,param,err,hideWait) {
 				}
 			},
 			error:function (xhr) {
-				isConsole&&console.log("请求url--> " + url + " 参数--> " + JSON.stringify(sendData)+" 异常--> " + xhr.responseText);
+				isConsole&&console.log("请求url--> " + url + " POST参数--> " + JSON.stringify(sendData)+" 异常--> " + xhr.responseText);
 				//关闭进度条
 				if(!hideWait) plus.nativeUI.closeWaiting();
 				//请求失败 特殊状态重新请求3次
