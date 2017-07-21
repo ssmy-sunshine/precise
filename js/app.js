@@ -618,19 +618,17 @@ function getDateDiff(date1,date2) {
 
 /*整理时间 2017-06-17T11:21:01.83*/
 function trimDateStr(str){
-	return str.substring(0,str.lastIndexOf(":")).replace("T"," ");
+	return str.substring(0,str.lastIndexOf(":")+3).replace("T"," ");
 }
 
 /*给指定元素添加拨打电话的功能*/
 function addTelHref(domId,tel){
 	var domTel=document.getElementById(domId);
-	if(domTel){
+	if(domTel&&tel){
 		domTel.addEventListener("tap",function () {
 			//弹窗提示
-			tel = tel || "4008871881";
-			mui.confirm('亲,您有任何疑问或建议,欢迎致电联系我们:'+tel, '温馨提示', ['取消', '立即拨打'], function(e){
+			mui.confirm('拨打电话 : '+tel, null, ['取消', '立即拨打'], function(e){
 				if(e.index == 1){
-					//如果tel没值,则默认平台的客服电话
                 	window.location.href="tel:"+tel;
 				}
             });

@@ -56,10 +56,12 @@
 			.data-list li{
 				padding: 10px 0;
 				font-size: 14px;
+				line-height: 32px;
 				border-bottom: 1px solid #eee;
 			}
 			.data-list li p:last-child{
 				font-size: 12px;
+				line-height: 15px;
 			}
 		</style>
 	</head>
@@ -152,7 +154,7 @@
 						str+='<p>'+obj.Amount+'</p>';
 						str+='<p>'+obj.ShareQty+'</p>';
 						str+='<p>'+obj.SharePrice+'</p>';
-						str+='<p>'+obj.CreateDate+'</p>';
+						str+='<p>'+trimDateStr(obj.CreateDate).replace(" ","<br/>")+'</p>';
 						str+='</li>';
 					}
 					$("#datalist").html(str);

@@ -55,12 +55,12 @@
 			</div>
 			<div class="seller">
 				<p>卖 家 : <span id="Name"></span></p>
-				<p>手 机 : <span id="Phone"></span></p>
+				<p>手 机 : <span id="Phone" class="blue"></span></p>
+				<p>收款姓名 : <span id="BankAccName"></span></p>
 				<p>收款银行 : <span id="BankName"></span></p>
 				<p>收款账号 : <span id="BankCard"></span></p>
-				<p>收款姓名 : <span id="BankAccName"></span></p>
 			</div>
-			<p class="order-money">兑换 人民币 ¥<span class="CNPrice"></span> <br /> ( 美元 : <span id="USPrice"></span> )</p>
+			<p class="order-money">兑换 人民币 ¥ <span class="CNPrice"></span> <br /> ( 美元 : $ <span id="USPrice"></span> )</p>
 		</div>
 		<div id="upfile" class="wb-footer wb-btn btn-yellow">上传付款凭证 ( <span class="CNPrice"></span>元 )</div>
 	</body>
@@ -95,14 +95,15 @@
 				if (data.Status==200){
 					var obj=data.Data||[];
 					$("#OrderNumber").html(obj.OrderNumber);
-					$("#CreateDate").html(obj.CreateDate);
+					$("#CreateDate").html(trimDateStr(obj.CreateDate));
 					$("#Name").html(obj.Name);
 					$("#Phone").html(obj.Phone);
 					$("#BankName").html(obj.BankName);
 					$("#BankCard").html(obj.BankCard);
 					$("#BankAccName").html(obj.BankAccName);
-					$(".CNPrice").html(obj.TransactionCNPrice);
-					$("#USPrice").html(obj.TransactionUSPrice);
+					$(".CNPrice").html(obj.TransactionCNPrice.toFixed(2));
+					$("#USPrice").html(obj.TransactionUSPrice.toFixed(2));
+					addTelHref("Phone",obj.Phone);//拨打电话
 				}else{
 					return data.Message;
 				}
