@@ -6,6 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
 		<link rel="stylesheet" href="../fonts/iconfont.css">
 		<link rel="stylesheet" href="../css/app.css">
+		<link rel="stylesheet" href="../css/showpayimg.css">
 		<style type="text/css">
 			body{background-color: #eee}
 			/*订单*/
@@ -29,12 +30,20 @@
 			}
 			/*金额*/
 			.order-money{
-				padding: 30px;
+				padding: 25px;
 				margin-top: 10px;
+				margin-bottom: 15px;
 				text-align: center;
 				line-height: 24px;
 				background-color: white;
 				color: #EA1C40;
+			}
+			/*支付凭证*/
+			.payimg{
+				width: 72px;
+				height: 72px;
+				margin: auto;
+				background-color: #eee;
 			}
 		</style>
 	</head>
@@ -48,7 +57,7 @@
 			<div class="orderinfo">
 				<p class="order-status">
 					<span class="iconfont icon-shizhong"></span>
-					<span>订单已提交,请联系卖家,尽快打款</span>
+					<span id="statusText"></span>
 				</p>
 				<p class="order-no">订单编号 : <span id="OrderNumber"></span></p>
 				<p class="order-time">下单时间 : <span id="CreateDate"></span></p>
@@ -61,21 +70,25 @@
 				<p>收款账号 : <span id="BankCard"></span></p>
 			</div>
 			<p class="order-money">兑换 人民币 ¥ <span class="CNPrice"></span> <br /> ( 美元 : $ <span id="USPrice"></span> )</p>
+			<img id="payimg" class="payimg hide"/>
 		</div>
-		<div id="upfile" class="wb-footer wb-btn btn-yellow">上传付款凭证 ( <span class="CNPrice"></span>元 )</div>
+		<div id="btnSubmit" class="wb-footer wb-btn btn-yellow hide">上传付款凭证 ( <span class="CNPrice"></span>元 )</div>
 	</body>
 
 	<script src="../js/mui.min.js" charset="utf-8"></script>
 	<script src="../js/DomBiz.js" charset="utf-8"></script>
 	<script src="../js/plusBiz.js" charset="utf-8"></script>
+	<script src="../js/showpayimg.js" charset="utf-8"></script>
 	<script src="../js/app.js" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
+		var cid;//订单id
+		
 		mui.init();
 		mui.plusReady(function() {
-			var cid=plus.webview.currentWebview().cid;
+			cid=plus.webview.currentWebview().cid;
 			cid&&getData(cid);
 			//上传付款凭证
-			$("#upfile").click(function () {
+			$("#btnSubmit").click(function () {
 				uploadMobileBase64(function(result) {
 //					var res=JSON.parse(result);
 //					if (res.Status==200){
@@ -91,23 +104,52 @@
 		
 		/*获取数据*/
 		function getData(cid){
-			ajaxData(Host+"api/Trading/GetDetails?ctId="+cid, function(data) {
+			ajaxData(Host+"api/Order/GetBuyOrderDetatils?ctId="+cid, function(data){
 				if (data.Status==200){
 					var obj=data.Data||[];
 					$("#OrderNumber").html(obj.OrderNumber);
-					$("#CreateDate").html(trimDateStr(obj.CreateDate));
+					$("#CreateDate").html(trimDateStr(obj.TransactionDate));
 					$("#Name").html(obj.Name);
 					$("#Phone").html(obj.Phone);
 					$("#BankName").html(obj.BankName);
 					$("#BankCard").html(obj.BankCard);
 					$("#BankAccName").html(obj.BankAccName);
-					$(".CNPrice").html(obj.TransactionCNPrice.toFixed(2));
-					$("#USPrice").html(obj.TransactionUSPrice.toFixed(2));
+					$(".CNPrice").html(obj.CNPrice.toFixed(2));
+					$("#USPrice").html(obj.USPrice.toFixed(2));
+					handleStatus(obj.TransactionStatus);
 					addTelHref("Phone",obj.Phone);//拨打电话
 				}else{
 					return data.Message;
 				}
 			});
+		}
+		
+		/*处理订单状态*/
+		function handleStatus(status){
+			//1:待成交;2:待付款;3:待确认;4:已完成;5:取消
+			switch (status){
+				case 2://待付款
+					$("#statusText").html("订单已提交,请联系卖家打款并上传凭证");
+					$("#btnSubmit").html("上传支付凭证").show();
+					$("#payimg").hide();
+					break;
+				case 3://待确认
+					$("#statusText").html("付款凭证已上传,待卖家确认");
+					$("#btnSubmit").hide();
+					$("#payimg").show();
+					showPayImg("payimg",cid);//查看交易凭证
+					break;
+				case 4://已完成
+					$("#statusText").html("对方已确认兑换,交易完成");
+					$("#btnSubmit").hide();
+					$("#payimg").show();
+					break;
+				default:
+					$("#statusText").html("交易失败 : "+status);
+					$("#btnSubmit").hide();
+					$("#payimg").hide();
+					break;
+			}
 		}
 	</script>
 

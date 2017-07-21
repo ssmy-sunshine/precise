@@ -46,7 +46,15 @@
 			"js/layer.js",
 			"css/paypass.css",
 			"img/logo-gray.png",
-			"fonts/iconfont.ttf"
+			"fonts/iconfont.ttf",
+			"js/app.js",
+			"fonts/iconfont.css",
+			"js/mui.min.js",
+			"css/app.css",
+			"js/DomBiz.js"
+		],
+		"refer": [
+			"order/trade.html"
 		]
 	},
 	"main/main-user.html": {
@@ -56,12 +64,15 @@
 		"refer": [
 			"user/ReginAmount.html",
 			"user/team.html",
-			"user/CashAmount.html"
+			"user/CashAmount.html",
+			"account/account-list.html"
 		]
 	},
 	"main/main-order.html": {
 		"refer": [
-			"order/trade.html"
+			"order/trade.html",
+			"order/detail-buy.html",
+			"order/detail-sell.html"
 		],
 		"resources": [
 			"js/mescroll.min.js",
@@ -70,7 +81,8 @@
 			"fonts/iconfont.css",
 			"js/mui.min.js",
 			"css/app.css",
-			"js/DomBiz.js"
+			"js/DomBiz.js",
+			"img/logo-gray.png"
 		]
 	},
 	"order/trade.html": {
@@ -128,6 +140,41 @@
 			"css/app.css",
 			"css/mescroll.min.css",
 			"js/DomBiz.js"
+		]
+	},
+	"account/account-list.html": {
+		"resources": [
+			"css/layer.css",
+			"js/layer.js"
+		],
+		"refer": [
+			"account/login.html"
+		]
+	},
+	"order/detail-buy.html": {
+		"resources": [
+			"js/plusBiz.js",
+			"js/app.js",
+			"fonts/iconfont.css",
+			"js/mui.min.js",
+			"css/app.css",
+			"fonts/iconfont.ttf",
+			"js/DomBiz.js",
+			"js/showpayimg.js",
+			"css/showpayimg.css"
+		]
+	},
+	"order/detail-sell.html": {
+		"resources": [
+			"js/app.js",
+			"fonts/iconfont.css",
+			"js/mui.min.js",
+			"css/app.css",
+			"js/plusBiz.js",
+			"fonts/iconfont.ttf",
+			"js/DomBiz.js",
+			"css/showpayimg.css",
+			"js/showpayimg.js"
 		]
 	}
 }

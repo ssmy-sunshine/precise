@@ -85,7 +85,6 @@
 		mui.plusReady(function() {
 			//创建MeScroll对象
 			mescroll = initMeScroll("mescroll", {
-				down:{use:false },
 				up: {
 					auto:true,
 					callback: initList,
@@ -106,8 +105,10 @@
 			
 			//列表点击事件
 			mui("#datalist").on("tap","li",function() {
-				if(pageIndex!=2){
-					openWindow("../order/trade.html",{cid:this.getAttribute("cid")})
+				if(pageIndex==0){//买入
+					openWindow("../order/detail-buy.html",{cid:this.getAttribute("cid")})
+				}else if(pageIndex==1){//卖出
+					openWindow("../order/detail-sell.html",{cid:this.getAttribute("cid")})
 				}
 			})
 		});
@@ -194,7 +195,11 @@
 				var status=getStatusText(obj.TransactionStatus);
 				var str='<p class="gray">订单号: '+obj.OrderNumber+'</p>';
 				if(status[0]) str+='<p class="status">'+status[0]+'</p>';
-				str+='<p class="drakgray">'+obj.Name+' <span class="mleft">'+obj.Phone+'</span></p>';
+				if(pageIndex==0){//买入
+					str+='<p class="drakgray">卖家: '+obj.Name+' <span class="mleft">'+obj.Phone+'</span></p>';
+				}else{//卖出
+					str+='<p class="drakgray">买家: '+obj.Name+' <span class="mleft">'+obj.Phone+'</span></p>';
+				}
 				str+='<p>兑换人民币 <span class="red">¥'+obj.CNPrice+'</span><span class="USPrice">(美元$'+obj.USPrice+')</span></p>';
 				if(status[1]) str+='<div class="btn" status="'+obj.TransactionStatus+'" no="'+obj.OrderNumber+'" tel="'+obj.Phone+'">'+status[1]+'</div>';
 				var lidom=document.createElement("li");
@@ -254,7 +259,7 @@
 				var str='';
 				str+='<p class="gray">订单号: '+obj.SerialNumber+'</p>';
 				str+='<p class="status">'+statusText+'</p>';
-				str+='<p class="drakgray">'+obj.Name+'</p>';
+				str+='<p class="drakgray">用户: '+obj.Name+'</p>';
 				str+='<p>请求激活 : <span class="red">'+obj.ActiveCombo+'会员</span></p>';
 				str+='<p>注册币 : <span class="red">'+obj.Price+'</span></p>';
 				if(obj.ActiveStatus==1) str+='<div class="btn" ActiveId="'+obj.ActiveId+'">确定激活</div>';

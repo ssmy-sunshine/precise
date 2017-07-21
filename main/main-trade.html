@@ -171,7 +171,7 @@
 							checkPayPass(function(){
 								ajaxData(Host+"api/Trading/Confirm?ctId="+cid, function(data){
 									if(data.Status==200){
-										openWindow("../order/trade.html",{cid:cid});
+										openWindow("../order/detail-buy.html",{cid:cid});
 										mescroll.resetUpScroll();//刷新列表
 										plus.webview.getWebviewById("main-order.html").evalJS("EJ_ReloadData()");//刷新订单
 									}else{
