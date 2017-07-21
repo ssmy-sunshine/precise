@@ -128,6 +128,7 @@
 			ajaxData(Host+"api/RedPacket/Open?packetID="+packetID, function(data) {
 				if (data.Status==200){
 					$("#getMoney").html(data.Data);
+					plus.webview.currentWebview().opener().evalJS("EJ_Reload()");
 					//让动画多转一会
 					setTimeout(function(){
 						$("#regWarp").hide();
