@@ -201,7 +201,7 @@
 					str+='<p class="drakgray">买家: '+obj.Name+' <span class="mleft">'+obj.Phone+'</span></p>';
 				}
 				str+='<p>兑换人民币 <span class="red">¥'+obj.CNPrice+'</span><span class="USPrice">(美元$'+obj.USPrice+')</span></p>';
-				if(status[1]) str+='<div class="btn" status="'+obj.TransactionStatus+'" no="'+obj.OrderNumber+'" tel="'+obj.Phone+'">'+status[1]+'</div>';
+				if(status[1]) str+='<div class="btn" status="'+obj.TransactionStatus+'" cid="'+obj.CashTransactionId+'" tel="'+obj.Phone+'">'+status[1]+'</div>';
 				var lidom=document.createElement("li");
 				lidom.innerHTML=str;
 				lidom.setAttribute("cid",obj.CashTransactionId);
@@ -219,24 +219,25 @@
 								
 							} else if(status==3){
 								//催一下
+								 e.stopPropagation();
 								var tel=this.getAttribute("tel");
 								mui.confirm('拨打电话: '+tel, '温馨提示', ['取消', '立即拨打'], function(e){
 									if(e.index == 1) window.location.href="tel:"+tel;
 					            });
-					            e.stopPropagation();
 							}
 						}else{
 							//卖出
 							if(status==2){
 								//催一下
+								e.stopPropagation();
 								var tel=this.getAttribute("tel");
 								mui.confirm('拨打电话: '+tel, '温馨提示', ['取消', '立即拨打'], function(e){
 									if(e.index == 1) window.location.href="tel:"+tel;
 					            });
-					            e.stopPropagation();
 							} else if(status==3){
-								//查看支付凭证 TODO
-								
+								//查看支付凭证
+								e.stopPropagation();
+								openWindow("../order/payimg.html",{cid:this.getAttribute("cid")});
 							}
 						}
 					})

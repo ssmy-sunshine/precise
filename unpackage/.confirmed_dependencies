@@ -72,7 +72,9 @@
 		"refer": [
 			"order/trade.html",
 			"order/detail-buy.html",
-			"order/detail-sell.html"
+			"order/detail-sell.html",
+			"order/payimg.html",
+			"account/act-list.html"
 		],
 		"resources": [
 			"js/mescroll.min.js",

@@ -6,7 +6,6 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
 		<link rel="stylesheet" href="../fonts/iconfont.css">
 		<link rel="stylesheet" href="../css/app.css">
-		<link rel="stylesheet" href="../css/showpayimg.css">
 		<style type="text/css">
 			body{background-color: #eee}
 			/*订单*/
@@ -70,7 +69,7 @@
 				<p>收款账号 : <span id="BankCard"></span></p>
 			</div>
 			<p class="order-money">兑换 人民币 ¥ <span class="CNPrice"></span> <br /> ( 美元 : $ <span id="USPrice"></span> )</p>
-			<img id="payimg" class="payimg hide"/>
+			<img id="payimg" class="payimg hide tohref" href="payimg.html"/>
 		</div>
 		<div id="btnSubmit" class="wb-footer wb-btn btn-yellow hide">我已收到汇款,确认兑换</div>
 	</body>
@@ -78,7 +77,6 @@
 	<script src="../js/mui.min.js" charset="utf-8"></script>
 	<script src="../js/DomBiz.js" charset="utf-8"></script>
 	<script src="../js/plusBiz.js" charset="utf-8"></script>
-	<script src="../js/showpayimg.js" charset="utf-8"></script>
 	<script src="../js/app.js" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
 		var cid;//订单id
@@ -139,7 +137,6 @@
 					$("#statusText").html("买家已付款,已上传支付凭证,待您确认");
 					$("#btnSubmit").show().html("我已收到汇款,确认兑换");
 					$("#payimg").show();
-					showPayImg("payimg",cid);//查看交易凭证
 					break;
 				case 4://已完成
 					$("#statusText").html("已确认兑换,交易完成");
