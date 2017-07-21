@@ -206,7 +206,7 @@ var UserObj={
 		}
 	},
 	/*获取用户信息*/
-	getUserinfo : function(callback){
+	getUserinfo : function(callback,hideWait){
 		if(UserObj.isLogin(false)){
 			ajaxData(Host+"api/Account/GetMemberInfo", function(data){
 				if (data.Status==200) {
@@ -238,7 +238,7 @@ var UserObj={
 				}
 			},null,function(){
 				callback&&callback();//失败回调
-			});
+			},hideWait);
 		}else{
 			callback&&callback();//未登录
 		}
@@ -354,8 +354,8 @@ function ajaxData(url,success,param,err,hideWait) {
 							window.isGetTK=false;
 						});
 					}else{
-						//延时3秒刷新TK后,重新请求
-						setTimeout(function(){ sendAjax(); },3000);
+						//延时1秒刷新TK后,重新请求
+						setTimeout(function(){ sendAjax(); },1000);
 					}
 				}else{
 					var errMsg=success&&success(data);//回调返回具体的信息,则直接提示; 不返回,则不提示
@@ -610,7 +610,7 @@ function getDateDiff(date1,date2) {
 
 /*整理时间 2017-06-17T11:21:01.83*/
 function trimDateStr(str){
-	return str.substring(0,str.indexOf(".")).replace("T"," ");
+	return str.substring(0,str.lastIndexOf(":")).replace("T"," ");
 }
 
 /*给指定元素添加拨打电话的功能*/

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<link rel="stylesheet" href="../fonts/iconfont.css">
+		<link rel="stylesheet" href="../css/app.css">
+		<style type="text/css">
+			/*顶部信息*/
+			.topinfo{
+				height: 220px;
+				padding-top: 60px;
+				text-align: center;
+				background-color: #D84E43;
+			}
+			.topinfo .logo{
+				width: 80px;
+				border-radius: 50%;
+			}
+			.topinfo .tip{
+				margin-top: 20px;
+				color: white;
+			}
+			/*红包*/
+			.reg-warp{
+				z-index: 9900;
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background-color: #D84E43;
+			}
+			.reg-top{
+				height: 45%;
+				border-radius: 10px 10px 50% 50% / 10px 10px 25% 25%;
+			    box-shadow: 0 4px 0 -1px rgba(0,0,0,0.2);
+			    background-color: #E1544A;
+			}
+			.reg-take{
+				position: absolute;
+				top: 45%;
+				left: 50%;
+				display: inline-block;
+			    width: 100px;
+			    height: 100px;
+			    line-height: 100px;
+			    font-size: 40px;
+			    margin-left: -50px;
+			    margin-top: -50px;
+			    text-align: center;
+			    border: 1px solid #FFA73A;
+			    background-color: #FFA73A;
+			    box-shadow: 0px 4px 0px 0px rgba(0, 0, 0, 0.2);
+			    border-radius: 50%;
+			    color: #363636;
+			}
+			/*翻转动画*/
+			.anim_rotate{
+			    -webkit-animation: anim_rotate .6s infinite alternate;
+			    animation: anim_rotate .6s infinite alternate;
+			}
+			@-webkit-keyframes anim_rotate {
+			    from { -webkit-transform: rotateY(180deg); }
+			    to { -webkit-transform: rotateY(360deg); }
+			}
+			@keyframes anim_rotate {
+			    from { transform: rotateY(180deg); }
+			    to { transform: rotateY(360deg); }
+			}
+			/*获取金额*/
+			.get-money{
+				margin-top: 40px;
+				font-size: 40px;
+				text-align: center;
+			}
+			.get-tip{
+				margin-top: 20px;
+				font-size: 12px;
+				padding: 10px 0;
+				text-align: center;
+				color: #18B4FE;
+			}
+		</style>
+	</head>
+
+	<body>
+		<p class="wb-back btn-circle iconfont icon-fanhui wb-head-left"></p>
+		<!--红包-->
+		<div id="regWarp" class="reg-warp">
+			<div class="reg-top"></div>
+			<p id="regTake" class="reg-take">開</p>
+		</div>
+		<div class="wb-content">
+			<div class="topinfo">
+				<img class="logo" src="../img/logo-red.png"/>
+				<p class="tip">对碰红包</p>
+			</div>
+			<p id="getMoney" class="get-money">200</p>
+			<p class="get-tip tohref" href="../user/CashAmount.html">已存入现金币余额</p>
+		</div>
+
+	</body>
+
+	<script src="../js/mui.min.js" charset="utf-8"></script>
+	<script src="../js/DomBiz.js" charset="utf-8"></script>
+	<script src="../js/app.js" charset="utf-8"></script>
+	<script type="text/javascript" charset="utf-8">
+		mui.init();
+		mui.plusReady(function() {
+			//用户信息
+			EJ_SetUserInfo();
+			
+			//抢红包
+			$("#regTake").click(function() {
+				if (!this.classList.contains("anim_rotate")) {
+					this.classList.add("anim_rotate");
+					takeRegbag();
+				}
+			})
+			
+		});
+		
+		/*抢红包*/
+		function takeRegbag(){
+			var packetID=plus.webview.currentWebview().RedPacketId;
+			ajaxData(Host+"api/RedPacket/Open?packetID="+packetID, function(data) {
+				if (data.Status==200){
+					$("#getMoney").html(data.Data);
+					//让动画多转一会
+					setTimeout(function(){
+						$("#regWarp").hide();
+					},1000)
+				}else{
+					$("#regTake").removeClass("anim_rotate");
+					return data.Message;
+				}
+			});
+		}
+	</script>
+
+</html>

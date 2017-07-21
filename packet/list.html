@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<link rel="stylesheet" href="../fonts/iconfont.css">
+		<link rel="stylesheet" href="../css/app.css">
+		<link rel="stylesheet" href="../css/mescroll.min.css">
+		<style type="text/css">
+			.datalist li{
+				border-bottom: 1px solid #eee;
+				padding: 16px;
+			}
+			.datalist .time{
+				float: right;
+				margin-top: 2px;
+				font-size: 12px;
+				color: gray;
+			}
+			.datalist .red{
+				margin-left: 4px;
+				font-size: 12px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="wb-head">
+			<p class="wb-back iconfont icon-fanhui"></p>
+			<p class="wb-title">红包列表</p>
+		</div>
+		<div id="mescroll" class="mescroll">
+			<ul id="datalist" class="datalist">
+				<!--<li>
+					<span>对碰红包</span>
+					<span class="time">2017-7-21 11:43:14</span>
+				</li>-->
+			</ul>
+		</div>
+	</body>
+
+	<script src="../js/mui.min.js" charset="utf-8"></script>
+	<script src="../js/DomBiz.js" charset="utf-8"></script>
+	<script src="../js/app.js" charset="utf-8"></script>
+	<script src="../js/mescroll.min.js" charset="utf-8"></script>
+	<script type="text/javascript" charset="utf-8">
+		var mescroll;
+		
+		mui.init();
+		mui.plusReady(function() {
+			mescroll = new MeScroll("mescroll", {
+				up: {
+					callback: getListData,
+					clearEmptyId:"datalist"
+				}
+			});
+		});
+		
+		/*获取列表数据*/
+		function getListData(page){
+			ajaxData(Host+"api/RedPacket/GetRedPacket?pageIndex="+page.num, function(data) {
+				var objArr= data.Data ? data.Data.Data : [];
+				var len=objArr.length;
+				mescroll.endSuccess(len);
+				if (len>0) {
+					var listDom=document.getElementById("datalist");
+					for (var i = 0; i < len; i++) {
+						var obj=objArr[i];
+						var str='<span>对碰红包</span>';
+						if (obj.RedPacketStatus==1) {
+							str+=' <span class="red">( 已抢 )</span>';
+						} else if (obj.RedPacketStatus!=0) {
+							str+=' <span class="red">( 已失效 )</span>';
+						}
+						str+='<span class="time">'+trimDateStr(obj.CreateDate)+'</span>';
+						var liDom=document.createElement("li");
+						if(obj.RedPacketStatus==0) liDom.setAttribute("RedPacketId",obj.RedPacketId);
+						liDom.innerHTML=str;
+						listDom.appendChild(liDom);
+						liDom.addEventListener("tap",function() {
+							var RedPacketId=this.getAttribute("RedPacketId");
+							RedPacketId&&openWindow("../packet/open.html",{RedPacketId:RedPacketId});
+						})
+					}
+				}
+			},null,function(){
+				mescroll.endErr();
+			},true);
+		}
+	</script>
+
+</html>

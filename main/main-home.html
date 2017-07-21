@@ -94,7 +94,7 @@
 		<!--菜单-->
 		<ul class="navs wb-flex-box">
 			<li class="mall tohref" href="../mall/mall.html"><p class="iconfont icon-shangcheng"></p><p>商城</p></li>
-			<li class="packet tohref" href="../packet/packet.html"><p class="iconfont icon-hongbao"></p><p>红包</p></li>
+			<li class="packet tohref" href="../packet/list.html"><p class="iconfont icon-hongbao"></p><p>红包</p></li>
 			<li class="read tohref" href="../mall/mall.html"><p class="iconfont icon-yuedu"></p><p>阅读</p></li>
 		</ul>
 		<!--公告-->
@@ -113,9 +113,7 @@
 		mui.init();
 		mui.plusReady(function(){
 			//账户信息
-			UserObj.getUserinfo(function(){
-				EJ_SetUserInfo();
-			});
+			EJ_SetUserInfo();
 			
 			//公告
 			getNotice();
@@ -123,6 +121,12 @@
 				var nid=this.getAttribute("nid");
 				openWindow("../notice/notice.html",{nid:nid});
 			})
+			
+			//静默刷新
+			UserObj.getUserinfo(function(){
+				EJ_SetUserInfo();
+			},true);
+			
 		});
 		
 		/*获取公告*/
