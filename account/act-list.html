@@ -50,8 +50,8 @@
 				<li><p class="vline"></p></li>
 			</ul>
 			<ul class="wb-flex-box">
-				<li><p class="userwarp userwarp2">空位</p></li>
-				<li><p class="userwarp userwarp2">空位</p></li>
+				<li><p class="userwarp userwarp2" layer="2" layerNO="1">可注册</p></li>
+				<li><p class="userwarp userwarp2" layer="2" layerNO="2">可注册</p></li>
 			</ul>
 			<ul class="wb-flex-box">
 				<li><p class="vline"></p></li>
@@ -68,10 +68,10 @@
 				<li><p class="vline"></p></li>
 			</ul>
 			<ul class="wb-flex-box">
-				<li><p class="userwarp userwarp3">空位</p></li>
-				<li><p class="userwarp userwarp3">空位</p></li>
-				<li><p class="userwarp userwarp3">空位</p></li>
-				<li><p class="userwarp userwarp3">空位</p></li>
+				<li><p class="userwarp userwarp3" layer="3" layerNO="1">可注册</p></li>
+				<li><p class="userwarp userwarp3" layer="3" layerNO="2">可注册</p></li>
+				<li><p class="userwarp userwarp3" layer="3" layerNO="3">可注册</p></li>
+				<li><p class="userwarp userwarp3" layer="3" layerNO="4">可注册</p></li>
 			</ul>
 		</div>
 	</body>
@@ -88,22 +88,36 @@
 			getTeam(UserObj.getUid());
 			//点击获取对应用户的直推列表
 			$(".userwarp").click(function() {
-				var uid=this.getAttribute("uid");
-				uid&&getTeam(Number(uid));
+				var layer=this.getAttribute("layer");
+				var layerNO=this.getAttribute("layerNO");
+				layer&&layerNO&&actUser(layer,layerNO);
 			})
 		});
 		
 		/*直推列表*/
 		function getTeam(uid){
-			ajaxData(Host+"api/Account/GetRecommendList?assignMemberId="+uid, function(data) {
-				if (data.Status==200||data.Status==402){
+			ajaxData(Host+"api/Account/GetActiveMemberLocation?assignMemberId="+uid, function(data) {
+				if(data.Status==402||data.Status==200){
 					//{"Message":"未找到数据.","Data":null,"Status":402}
 					var list=data.Data||[];
+					
 					
 				}else{
 					return data.Message;
 				}
 				
+			});
+		}
+		
+		/*激活*/
+		function actUser(layer,layerNO){
+			var ActiveId=plus.webview.currentWebview().ActiveId;
+			ajaxData(Host+"api/Order/Active?activeID="+ActiveId+"&layer="+layer+"&layerNO="+layerNO, function(data) {
+				if (data.Status==200){
+					
+					
+				}
+				mui.confirm(data.Message,null,["好的"]);
 			});
 		}
 	</script>

@@ -75,8 +75,12 @@
 	<script src="../js/DomBiz.js" charset="utf-8"></script>
 	<script src="../js/app.js" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
+		var toActName;
+		
 		mui.init();
 		mui.plusReady(function() {
+			//要申请激活的用户名
+			toActName=plus.webview.currentWebview().toActName;
 			//获取套餐列表
 			getCombo();
 			//选择套餐
@@ -118,7 +122,7 @@
 		
 		/*申请激活*/
 		function actCombo(ComboId){
-			ajaxData(Host+"api/Combo/Apply?comboID="+ComboId+"&loginName="+UserObj.getUsername(),function(data){
+			ajaxData(Host+"api/Combo/Apply?comboID="+ComboId+"&loginName="+toActName,function(data){
 				mui.confirm(data.Message, "温馨提示", ["好的"], function(){
 					if (data.Status==200) {
 						mui.back();

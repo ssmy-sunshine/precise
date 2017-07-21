@@ -106,7 +106,9 @@
 			
 			//列表点击事件
 			mui("#datalist").on("tap","li",function() {
-				openWindow("../order/trade.html",{cid:this.getAttribute("cid")})
+				if(pageIndex!=2){
+					openWindow("../order/trade.html",{cid:this.getAttribute("cid")})
+				}
 			})
 		});
 		
@@ -255,7 +257,7 @@
 				str+='<p class="drakgray">'+obj.Name+'</p>';
 				str+='<p>请求激活 : <span class="red">'+obj.ActiveCombo+'会员</span></p>';
 				str+='<p>注册币 : <span class="red">'+obj.Price+'</span></p>';
-				if(obj.ActiveStatus==1) str+='<div class="btn">确定激活</div>';
+				if(obj.ActiveStatus==1) str+='<div class="btn" ActiveId="'+obj.ActiveId+'">确定激活</div>';
 				var lidom=document.createElement("li");
 				lidom.innerHTML=str;
 				listDom.appendChild(lidom);
@@ -263,7 +265,7 @@
 				if(obj.ActiveStatus==1){
 					var btnDom=lidom.getElementsByClassName("btn")[0];
 					btnDom.addEventListener("tap",function(e){
-						//确定激活 TODO
+						openWindow("../account/act-list.html",{ActiveId : this.getAttribute("ActiveId")})
 					})
 				}
 			}

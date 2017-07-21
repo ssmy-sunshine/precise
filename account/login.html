@@ -76,7 +76,7 @@
 					if (e.error_description&&e.error_description.indexOf("未激活")!=-1) {
 						mui.confirm("您的账号未激活.","温馨提示",["取消","立即激活"],function(e){
 							if (e.index==1) {
-								openWindow("regin-ok.html");
+								openWindow("regin-ok.html",{toActName:username});
 							}
 						});
 						return false;
