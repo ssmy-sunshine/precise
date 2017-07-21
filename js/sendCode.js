@@ -30,7 +30,7 @@ function initSendCode(sendCodeId,inputTelId,isBuyName) {
 		//发送验证码
 		ajaxData(url, function(data) {
 			if(isBuyName&&data.Status==200) {
-				mui.confirm("验证码已发送至"+data.Data+", 请注意查收 ~");
+				mui.confirm("验证码已发送至"+data.Message+", 请注意查收 ~",null,["好的"]);
 			} else if(data.Status==1) {
 				mui.toast("验证码发送成功");
 			} else{

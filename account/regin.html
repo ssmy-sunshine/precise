@@ -51,6 +51,10 @@
 	<script type="text/javascript" charset="utf-8">
 		mui.init();
 		mui.plusReady(function() {
+			//填入缓存的账号
+			var PhoneNumber=UserObj.getPhoneNumber();
+			if(PhoneNumber) $("#tel").val(PhoneNumber);
+			
 			//点击注册
 			$("#btnSubmit").click(function() {
 				var username=$("#username").val();

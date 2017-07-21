@@ -47,6 +47,13 @@ var UserObj={
 	setUsername : function(value) {
 		setLocalStorage("Username",value);
 	},
+	/*获取手机号*/
+	getPhoneNumber : function() {
+		return localStorage.getItem("PhoneNumber");
+	},
+	setPhoneNumber : function(value) {
+		setLocalStorage("PhoneNumber",value);
+	},
 	/*获取用户密码*/
 	getPassword : function() {
 		return localStorage.getItem("password");
@@ -214,9 +221,9 @@ var UserObj={
 					//缓存数据
 					UserObj.setIcon(user.ImgUrl);//头像
 					UserObj.setNickname(user.Name);//昵称
+					UserObj.setPhoneNumber(user.PhoneNumber);//手机号
 					UserObj.setComboId(user.ComboId);//会员套餐ID
 					UserObj.setLevelName(user.Level);//会员等级名(套餐名)
-					UserObj.setTestTag(user.IsTestUser);//是否为测试人员,在updateBiz.js用到
 					UserObj.setSharesCount(user.SharesCount);//持股数
 					UserObj.setShareAmount(user.ShareAmount);//股票币
 					UserObj.setSharesPrice(user.SharesPrice);//当前股价
@@ -229,6 +236,7 @@ var UserObj={
 					UserObj.setBankCard(user.BankCard);//银行账号
 					UserObj.setBankAccName(user.BankAccName);//开户名
 					UserObj.setBankName(user.BankName);//银行名
+					UserObj.setTestTag(user.IsTestUser);//是否为测试人员,在updateBiz.js用到
 					//回调
 					callback&&callback(user);
 				}else{
