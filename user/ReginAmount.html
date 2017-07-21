@@ -117,7 +117,7 @@
 			//激活
 			$("#toActOrder").click(function() {
 				plus.webview.getWebviewById("../main/main.html").evalJS("EJ_ChangePage(3)");
-				plus.webview.getWebviewById("main-order.html").evalJS("EJ_ChangePage(1)");
+				plus.webview.getWebviewById("main-order.html").evalJS("EJ_ChangePage(2)");
 				mui.back();
 			})
 			
@@ -128,7 +128,7 @@
 		/*初始化列表*/
 		function initList(page){
 			ajaxData(Host+"api/Purse/GetPurseLog?pageIndex="+page.num+"&accountType=3", function(data) {
-				var objArr=data.Data||[];
+				var objArr=data.Data ? data.Data.Data : [];
 				var len=objArr.length;
 				mescroll.endSuccess(len);
 				if (len>0) {

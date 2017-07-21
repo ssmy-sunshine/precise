@@ -76,17 +76,16 @@
 			cid&&getData(cid);
 			//上传付款凭证
 			$("#upfile").click(function () {
-				uploadMobileImg(function(result) {
-					//{"Message":"未授权.","Data":null,"Status":401}
-					var res=JSON.parse(result);
-					if (res.Status==200){
-						mui.toast("上传成功");
-						//TODO
-						
-					} else{
-						mui.toast(res.Message);
-					}
-				},{ctId:cid})
+				uploadMobileBase64(function(result) {
+//					var res=JSON.parse(result);
+//					if (res.Status==200){
+//						mui.toast("上传成功");
+//						//TODO
+//						
+//					} else{
+//						mui.toast(res.Message);
+//					}
+				},cid)
 			});
 		});
 		

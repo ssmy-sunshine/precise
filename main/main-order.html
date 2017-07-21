@@ -55,7 +55,7 @@
 
 	<body>
 		<div class="wb-head">
-			<ul id="navpage" class="nav-page"><li class="tab-active" i="0">买入</li><li i="1">激活</li><li i="2">卖出</li></ul>
+			<ul id="navpage" class="nav-page"><li class="tab-active" i="0">买入</li><li i="1">卖出</li><li i="2">激活</li></ul>
 			<ul id="navtype" class="nav-type wb-flex-box"><li class="tab-active" i="0">全部</li><li id="navtype1" i="1">待付款</li><li id="navtype2" i="2">待确认</li><li id="navtype3" i="3">已完成</li><li id="navtype4" i="4">已取消</li></ul>
 		</div>
 		<div id="mescroll" class="mescroll">
@@ -126,16 +126,16 @@
 					$("#navtype3").show().html("已完成");
 					$("#navtype4").show().html("已取消");
 				} else if(i==1){
-					//激活
-					$("#navtype1").show().html("待激活");
-					$("#navtype2").show().html("已激活");
-					$("#navtype3").hide();
-					$("#navtype4").hide();
-				}else{
 					//卖出
 					$("#navtype1").show().html("待付款");
 					$("#navtype2").show().html("待确认");
 					$("#navtype3").show().html("已完成");
+					$("#navtype4").hide();
+				}else{
+					//激活
+					$("#navtype1").show().html("待激活");
+					$("#navtype2").show().html("已激活");
+					$("#navtype3").hide();
 					$("#navtype4").hide();
 				}
 				//切换
@@ -165,17 +165,16 @@
 				var status = typeIndex==0 ? 0 : typeIndex+1 ;
 				url+="api/Order/GetBuyList?pageIndex="+page.num+"&status="+status;//买入
 			}else if(pageIndex==1){
-				url+="api/Combo/GetActive?pageIndex="+page.num+"&status="+typeIndex;//激活
-			}else{
 				var status = typeIndex==0 ? 0 : typeIndex+1 ;
 				url+="api/Order/GetSaleList?pageIndex="+page.num+"&status="+status;//卖出
-				
+			}else{
+				url+="api/Combo/GetActive?pageIndex="+page.num+"&status="+typeIndex;//激活
 			}
 			ajaxData(url, function(data) {
 				var arr = data.Data ? data.Data.Data : [];
 				mescroll.endSuccess(arr.length);
 				if(arr.length==0)return;
-				if(pageIndex==1){
+				if(pageIndex==2){
 					initActivity(arr);//激活
 				}else{
 					initAmount(arr);//订单

@@ -127,19 +127,8 @@ ZipBiz.prototype.loadImage=function(callback){
 	dtask.start();
 }
 
-/*打开相册或者拍照压缩上传*/
-function uploadMobileImg(success,param){
-	//打开相册或者拍照
-	getMobilePhoto(function(path) {
-		//压缩
-		new ZipBiz(path,function(zipPath){
-			upLoadFile(zipPath,success,param);
-		}).start();
-	})
-}
-
-/*上传*/
-function upLoadFile(path,success,param){
+/*上传--plus.uploader*/
+function upLoadFileByPlus(path,success,param){
 	var isLog=true;
 	showWaiting("图片上传中...");
 	isLog&&console.log("图片上传中: " + path);
@@ -165,4 +154,47 @@ function upLoadFile(path,success,param){
 		task.addData(key, param[key]);
 	}
 	task.start();
+}
+
+/*上传--js的base64*/
+function upLoadFileByBase64(path,success,CashTransactionId){
+	//转base64
+	getBase64Image(path,function(base64,ext){
+		//上传
+		var param={ajaxtype:"post", CashTransactionId:CashTransactionId, FileType:ext.toUpperCase(), Base64File:base64};
+		ajaxData(Host+"api/Order/UploadFile",function(data){
+			if (data==200) {
+				success&&success(data);
+			} else{
+				return data.Message
+			}
+		},param)
+	});
+}
+
+/*js把img转base64*/
+function getBase64Image(imgpath,callback) {
+	var img = new Image();
+	img.src = imgpath;
+	img.onload = function(){
+		var canvas = document.createElement("canvas");
+		canvas.width = img.width;
+		canvas.height = img.height;
+		var ctx = canvas.getContext("2d");
+		ctx.drawImage(img, 0, 0, img.width, img.height);
+		var ext = img.src.substring(img.src.lastIndexOf(".") + 1).toLowerCase();//后缀
+		var base64 = canvas.toDataURL("image/" + ext);
+		callback&&callback(base64,ext);
+	} 
+}  
+
+/*打开相册或者拍照压缩上传*/
+function uploadMobileBase64(success,CashTransactionId){
+	//打开相册或者拍照
+	getMobilePhoto(function(path) {
+		//压缩
+		new ZipBiz(path,function(zipPath){
+			upLoadFileByBase64(zipPath,success,CashTransactionId)
+		}).start();
+	})
 }
