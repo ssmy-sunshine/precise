@@ -267,7 +267,7 @@
 				var lidom=document.createElement("li");
 				lidom.innerHTML=str;
 				listDom.appendChild(lidom);
-				//点击事件
+				//确定激活,选择激活的位置
 				if(obj.ActiveStatus==1){
 					var btnDom=lidom.getElementsByClassName("btn")[0];
 					btnDom.addEventListener("tap",function(e){

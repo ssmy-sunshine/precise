@@ -124,6 +124,8 @@
 	<script src="../js/DomBiz.js" charset="utf-8"></script>
 	<script src="../js/app.js" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
+		var curComboPrice=0;//当前用户套餐的金额,用于计算差价
+		
 		mui.init();
 		mui.plusReady(function() {
 			//设置个人信息
@@ -138,11 +140,13 @@
 				var selectDom=this.getElementsByClassName("select")[0];
 				selectDom.classList.remove("icon-weixuanze");
 				selectDom.classList.add("icon-xuanze");
-				//TODO
+				var curprice=Number(this.getAttribute("price"));
+				$("#btnSubmit").html("立即升级套餐 (补差价 "+(curprice-curComboPrice)+" 注册币)")
 			});
 			
 			//激活套餐
 			$("#btnSubmit").click(function() {
+				if(this.classList.contains("btn-gray")) return;
 				var selectDom=document.getElementById("comlist").getElementsByClassName("icon-xuanze")[0];
 				if (!selectDom) {
 					mui.toast("请选择套餐");
@@ -177,16 +181,17 @@
 					topStr+='</li>';
 					
 					//套餐列表
-//					if(grayscale){ TODO
-						comStr+='<li cid="'+obj.ComboId+'">';
+					if(grayscale){
+						comStr+='<li cid="'+obj.ComboId+'" price="'+obj.ActiveAmount+'">';
 						comStr+='<p class="select iconfont icon-weixuanze"></p>';
 						comStr+='<p class="ComboName">'+obj.ComboName+'</p>';
 						comStr+='<p class="ActiveAmount mid-align"><b>'+obj.ActiveAmount+'</b><span>注册币</span></p>';
 						comStr+='</li>';
-//					}
+					}
 					
 					if(!grayscale&&obj.ComboId==userComboId){//已初始化到自己对应的等级之后就不可选
 						grayscale='class="grayscale"';
+						curComboPrice=obj.ActiveAmount;
 					}
 				}
 				$("#levelList").html(topStr);
@@ -197,7 +202,17 @@
 		
 		/*激活套餐*/
 		function actCombo(ComboId) {
-			//TODO
+			ajaxData(Host+"api/Regist/Upgrade?comboID="+ComboId,function(data){
+				if(data.Status==200){
+					mui.toast("升级成功");
+					UserObj.getUserinfo(function(){
+						UserObj.notifyView();
+						mui.back();
+					})
+				}else{
+					return data.Message;
+				}
+			})
 		}
 	</script>
 

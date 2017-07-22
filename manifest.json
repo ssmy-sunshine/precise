@@ -243,7 +243,9 @@
 					"user/ReginAmount.html",
 					"user/team.html",
 					"user/CashAmount.html",
-					"account/account-list.html"
+					"account/account-list.html",
+					"account/regin.html",
+					"user/update.html"
 				],
 				"priority": 0
 			},
@@ -373,6 +375,59 @@
 				],
 				"refer": [],
 				"priority": 0
+			},
+			"user/ReginAmount.html": {
+				"resources": [],
+				"refer": [
+					"user/ReginBuy.html",
+					"user/update.html"
+				],
+				"priority": 0
+			},
+			"user/update.html": {
+				"resources": [
+					"js/app.js",
+					"fonts/iconfont.css",
+					"js/mui.min.js",
+					"css/app.css",
+					"fonts/iconfont.ttf",
+					"js/DomBiz.js",
+					"img/logo-red.png"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"account/regin.html": {
+				"resources": [
+					"css/login.css",
+					"js/sendCode.js"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"user/team.html": {
+				"resources": [
+					"js/app.js",
+					"fonts/iconfont.css",
+					"js/mui.min.js",
+					"css/app.css",
+					"fonts/iconfont.ttf",
+					"js/DomBiz.js"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"account/act-list.html": {
+				"resources": [
+					"fonts/iconfont.ttf",
+					"js/app.js",
+					"fonts/iconfont.css",
+					"js/mui.min.js",
+					"css/app.css",
+					"js/DomBiz.js"
+				],
+				"refer": [],
+				"priority": 0
 			}
 		},
 		"idle": {
@@ -381,15 +436,12 @@
 				"user/ScoreAmount.html",
 				"js/updateBiz.js",
 				"img/translate.png",
-				"account/regin.html",
 				"packet/packet.html",
 				"img/mescroll-totop.png",
 				"mall/mall.html",
 				"css/swiper-3.3.1.min.css",
 				"account/reset-bank.html",
-				"user/ReginBuy.html",
 				"account/findpw.html",
-				"user/update.html",
 				"notice/notice.html",
 				"account/regin-ok.html",
 				"account/reset-pw.html"

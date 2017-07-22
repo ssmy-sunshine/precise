@@ -114,8 +114,8 @@
 			var ActiveId=plus.webview.currentWebview().ActiveId;
 			ajaxData(Host+"api/Order/Active?activeID="+ActiveId+"&layer="+layer+"&layerNO="+layerNO, function(data) {
 				if (data.Status==200){
-					
-					
+					mui.toast("激活成功");
+					plus.webview.currentWebview().opener().evalJS("EJ_ReloadData()");
 				}
 				mui.confirm(data.Message,null,["好的"]);
 			});

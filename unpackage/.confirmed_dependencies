@@ -65,7 +65,9 @@
 			"user/ReginAmount.html",
 			"user/team.html",
 			"user/CashAmount.html",
-			"account/account-list.html"
+			"account/account-list.html",
+			"account/regin.html",
+			"user/update.html"
 		]
 	},
 	"main/main-order.html": {
@@ -177,6 +179,49 @@
 			"js/DomBiz.js",
 			"css/showpayimg.css",
 			"js/showpayimg.js"
+		]
+	},
+	"user/ReginAmount.html": {
+		"refer": [
+			"user/ReginBuy.html",
+			"user/update.html"
+		]
+	},
+	"user/update.html": {
+		"resources": [
+			"js/app.js",
+			"fonts/iconfont.css",
+			"js/mui.min.js",
+			"css/app.css",
+			"fonts/iconfont.ttf",
+			"js/DomBiz.js",
+			"img/logo-red.png"
+		]
+	},
+	"account/regin.html": {
+		"resources": [
+			"css/login.css",
+			"js/sendCode.js"
+		]
+	},
+	"user/team.html": {
+		"resources": [
+			"js/app.js",
+			"fonts/iconfont.css",
+			"js/mui.min.js",
+			"css/app.css",
+			"fonts/iconfont.ttf",
+			"js/DomBiz.js"
+		]
+	},
+	"account/act-list.html": {
+		"resources": [
+			"fonts/iconfont.ttf",
+			"js/app.js",
+			"fonts/iconfont.css",
+			"js/mui.min.js",
+			"css/app.css",
+			"js/DomBiz.js"
 		]
 	}
 }
