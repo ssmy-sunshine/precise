@@ -85,11 +85,11 @@
 			<li i="1">卖出记录</li>
 		</ul>
 		<div class="list-title wb-flex-box">
-			<p>卖家</p> <p>金额</p> <p>股数</p> <p>股价</p> <p>时间</p>
+			<p>股数</p> <p>状态</p> <p>时间</p>
 		</div>
 		<ul id="datalist" class="data-list">
 			<!--<li class="wb-flex-box">
-				<p>卖家</p> <p>金额</p> <p>股数</p> <p>股价</p> <p>时间</p>
+				<p>股数</p> <p>状态</p> <p>时间</p>
 			</li>-->
 		</ul>
 	</body>
@@ -115,6 +115,17 @@
 			$("#navs li").click(function() {
 				changePage(this.getAttribute("i"));
 			});
+			
+			//明细
+			mui("#datalist").on("tap","li",function(){
+				var cid=this.getAttribute("cid");
+				var OrderNumber=this.getAttribute("OrderNumber");
+				var CommitTime=this.getAttribute("CommitTime");
+				var StatusId=this.getAttribute("StatusId");
+				var Qty=this.getAttribute("Qty");
+				var TransactionQty=this.getAttribute("TransactionQty");
+				openWindow("../order/detail-share.html",{navIndex:navIndex, cid:cid, OrderNumber:OrderNumber, CommitTime:CommitTime, Qty:Qty, TransactionQty:TransactionQty, StatusId:StatusId});
+			})
 		});
 		
 		/*切换导航*/
@@ -135,9 +146,9 @@
 		function initList(){
 			var url;
 			if (navIndex==0){
-				url=Host+"api/Share/GetBuyInTransactionLog?pageIndex=1";//买入记录
+				url=Host+"api/Share/GetBuyInLog?pageIndex=1";//买入记录
 			} else{
-				url=Host+"api/Share/GetBuyOutTransactionLog?pageIndex=1";//卖出记录
+				url=Host+"api/Share/GetBuyOutLog?pageIndex=1";//卖出记录
 			}
 			//查询
 			ajaxData(url, function(data) {
@@ -149,12 +160,18 @@
 					var str='';
 					for (var i = 0; i < len; i++) {
 						var obj=objList[i];
-						str+='<li class="wb-flex-box">';
-						str+='<p>'+obj.ToMemberName+'</p>';
-						str+='<p>'+obj.Amount+'</p>';
-						str+='<p>'+obj.ShareQty+'</p>';
-						str+='<p>'+obj.SharePrice+'</p>';
-						str+='<p>'+trimDateStr(obj.CreateDate).replace(" ","<br/>")+'</p>';
+						var status;
+						if (obj.TransactionStatus==1) {
+							status="已匹配"+obj.TransactionQty+"股";
+						} else if (obj.TransactionStatus==2){
+							status="交易成功";
+						}else{
+							status="匹配中";
+						}
+						str+='<li class="wb-flex-box" StatusId="'+obj.TransactionStatus+'" Qty="'+obj.Qty+'" TransactionQty="'+obj.TransactionQty+'" cid="'+obj.ShareTransactionId+'" OrderNumber="'+obj.OrderNumber+'" CommitTime="'+obj.CommitTime+'">';
+						str+='<p>'+obj.Qty+'</p>';
+						str+='<p>'+status+'</p>';
+						str+='<p>'+trimDateStr(obj.CommitTime).replace(" ","<br/>")+'</p>';
 						str+='</li>';
 					}
 					$("#datalist").html(str);

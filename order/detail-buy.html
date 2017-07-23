@@ -10,15 +10,16 @@
 			body{background-color: #eee}
 			/*订单*/
 			.orderinfo{
-				padding: 30px 0 10px 12px;
+				padding-bottom: 8px;
 				background-color: white;
 			}
-			.order-status{
+			.orderinfo .order-status{
+				font-size: 18px;
+				padding: 30px 0;
 				text-align: center;
 				color: #EA1C40;
 			}
-			.order-no{margin-top: 30px;color: gray;}
-			.order-time{margin-top: 16px;color: gray;}
+			.orderinfo .infoli{padding: 8px 12px;color: gray;}
 			/*卖家*/
 			.seller{
 				margin-top: 10px;
@@ -54,12 +55,9 @@
 		</div>
 		<div class="wb-content">
 			<div class="orderinfo">
-				<p class="order-status">
-					<span class="iconfont icon-shizhong"></span>
-					<span id="statusText"></span>
-				</p>
-				<p class="order-no">订单编号 : <span id="OrderNumber"></span></p>
-				<p class="order-time">下单时间 : <span id="CreateDate"></span></p>
+				<p id="statusText" class="order-status"></p>
+				<p class="infoli">订单编号 : <span id="OrderNumber"></span></p>
+				<p class="infoli">下单时间 : <span id="CreateDate"></span></p>
 			</div>
 			<div class="seller">
 				<p>卖 家 : <span id="Name"></span></p>
@@ -133,18 +131,18 @@
 			//1:待成交;2:待付款;3:待确认;4:已完成;5:取消
 			switch (status){
 				case 2://待付款
-					$("#statusText").html("订单已提交,请联系卖家打款并上传凭证");
+					$("#statusText").html('<span class="iconfont icon-shizhong"></span> 订单已提交,请联系卖家打款并上传凭证');
 					$("#btnSubmit").html("上传支付凭证").show();
 					$("#payimg").hide();
 					break;
 				case 3://待确认
-					$("#statusText").html("付款凭证已上传,待卖家确认");
+					$("#statusText").html('<span class="iconfont icon-shizhong"></span> 付款凭证已上传,待卖家确认');
 					$("#btnSubmit").hide();
 					$("#payimg").show();
 					getPayImg (cid,"payimg");
 					break;
 				case 4://已完成
-					$("#statusText").html("对方已确认兑换,交易完成");
+					$("#statusText").html('<span class="iconfont icon-xuanze"></span> 卖家已确认兑换,交易完成');
 					$("#btnSubmit").hide();
 					$("#payimg").show();
 					getPayImg (cid,"payimg");
