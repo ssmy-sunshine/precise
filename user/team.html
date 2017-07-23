@@ -10,12 +10,24 @@
 			.wb-content{
 				text-align: center;
 			}
-			.userwarp{
+			.userwarp,
+			.before-user{
 				margin: auto;
 				font-size: 14px;
+				min-height: 34px;
 				padding: 10px 0;
 				border-radius: 20px;
 				border: 1px solid #aaa;
+			}
+			.before-user{
+				width: 30%;
+				margin-top: 60px;
+				border: 1px solid #ccc;
+				color: gray;
+			}
+			.before-user .icon-fanhui{
+				font-size: 14px;
+				margin-right: 6px;
 			}
 			.vline{
 				width: 1px;
@@ -42,7 +54,7 @@
 			<p class="wb-title">直推列表</p>
 		</div>
 		<div class="wb-content">
-			<p class="userwarp userwarp1"><span id="Username"></span></p>
+			<p id="User1" class="userwarp userwarp1"></p>
 			<p class="vline"></p>
 			<p class="hline"></p>
 			<ul class="wb-flex-box">
@@ -50,8 +62,8 @@
 				<li><p class="vline"></p></li>
 			</ul>
 			<ul class="wb-flex-box">
-				<li><p class="userwarp userwarp2">空位</p></li>
-				<li><p class="userwarp userwarp2">空位</p></li>
+				<li><p id="User21" class="userwarp userwarp2"></p></li>
+				<li><p id="User22" class="userwarp userwarp2"></p></li>
 			</ul>
 			<ul class="wb-flex-box">
 				<li><p class="vline"></p></li>
@@ -68,11 +80,13 @@
 				<li><p class="vline"></p></li>
 			</ul>
 			<ul class="wb-flex-box">
-				<li><p class="userwarp userwarp3">空位</p></li>
-				<li><p class="userwarp userwarp3">空位</p></li>
-				<li><p class="userwarp userwarp3">空位</p></li>
-				<li><p class="userwarp userwarp3">空位</p></li>
+				<li><p id="User31" class="userwarp userwarp3"></p></li>
+				<li><p id="User32" class="userwarp userwarp3"></p></li>
+				<li><p id="User33" class="userwarp userwarp3"></p></li>
+				<li><p id="User34" class="userwarp userwarp3"></p></li>
 			</ul>
+			
+			<p id="userBackBtn" class="before-user hide"><span class="iconfont icon-fanhui"></span><span id="beforeName"></span></p>
 		</div>
 	</body>
 
@@ -80,31 +94,77 @@
 	<script src="../js/DomBiz.js" charset="utf-8"></script>
 	<script src="../js/app.js" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
+		var hisArr=[];//记录
+		
 		mui.init();
 		mui.plusReady(function() {
-			//我的
-			$("#Username").html(UserObj.getUsername());
 			//直推列表
 			getTeam(UserObj.getUid());
 			//点击获取对应用户的直推列表
 			$(".userwarp").click(function() {
-				var uid=this.getAttribute("uid");
-				uid&&getTeam(Number(uid));
+				var Name=this.innerHTML;
+				if(Name!="空位"){
+					//点用户名,查下级
+					var uid=this.getAttribute("MemberId");
+					getTeam(uid);
+				}
+			})
+			//返回上个用户
+			$("#userBackBtn").click(function(){
+				var obj=hisArr[len-2];
+				getTeam(obj.MemberId,true);
 			})
 		});
 		
 		/*直推列表*/
-		function getTeam(uid){
-			ajaxData(Host+"api/Account/GetRecommendList?assignMemberId="+uid, function(data) {
-				if (data.Status==200||data.Status==402){
-					//{"Message":"未找到数据.","Data":null,"Status":402}
-					var list=data.Data||[];
-					
+		function getTeam(uid,isBack){
+			ajaxData(Host+"api/Account/GetActiveMemberLocation?assignMemberId="+uid, function(data) {
+				if(data.Status==402||data.Status==200){
+					//{"Message":null,"Data":{"Name":"B1","MemberId":100015,"Layer":2,"LayerNO":1,"SubMembers":[{"Name":"C2","MemberId":100018,"Layer":3,"LayerNO":1,"SubMembers":[{"Name":"空位","MemberId":0,"Layer":4,"LayerNO":1,"SubMembers":[]},{"Name":"空位","MemberId":0,"Layer":4,"LayerNO":2,"SubMembers":[]}]},{"Name":"C1","MemberId":100017,"Layer":3,"LayerNO":2,"SubMembers":[{"Name":"P-96618tacfteetl","MemberId":100021,"Layer":4,"LayerNO":3,"SubMembers":[]},{"Name":"空位","MemberId":0,"Layer":4,"LayerNO":4,"SubMembers":[]}]}]},"Status":200}
+					var User1=data.Data;
+					$("#User1").html(User1.Name).attr("MemberId",User1.MemberId);
+					var User21=User1.SubMembers[0];
+					$("#User21").html(User21.Name).attr("MemberId",User21.MemberId);
+					var User22=User1.SubMembers[1];
+					$("#User22").html(User22.Name).attr("MemberId",User22.MemberId);
+					var User31=User21.SubMembers[0];
+					$("#User31").html(User31.Name).attr("MemberId",User31.MemberId);
+					var User32=User21.SubMembers[1];
+					$("#User32").html(User32.Name).attr("MemberId",User32.MemberId);
+					var User33=User22.SubMembers[0];
+					$("#User33").html(User33.Name).attr("MemberId",User33.MemberId);
+					var User34=User22.SubMembers[1];
+					$("#User34").html(User34.Name).attr("MemberId",User34.MemberId);
+					if (isBack!=true) {
+						//如果是查询下级,则放入记录
+						hisArr.push({MemberId:User1.MemberId, Name:User1.Name});
+					} else{
+						//如果返回上级,则删除记录
+						var delObj;
+						for (var i = 0; i < hisArr.length; i++) {
+							var curObj=hisArr[i];
+							if (User1.MemberId==curObj.MemberId) {
+								delObj=curObj;
+								break;
+							}
+						}
+						delObj&&hisArr.remove(delObj);
+					}
 				}else{
 					return data.Message;
 				}
-				
 			});
+		}
+		
+		/*刷新返回按钮*/
+		function flushBack(){
+			var len=hisArr.length;
+			if(len<=1){
+				$("#userBackBtn").hide();
+			}else{
+				var obj=hisArr[len-2];
+				$("#userBackBtn").show().html(obj.Name);
+			}
 		}
 	</script>
 
