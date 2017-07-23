@@ -89,6 +89,17 @@
 			})
 			//账户列表
 			getAccounts();
+			//切换账号登录
+			mui("#userlist").on("tap",".wb-item",function(){
+				var MemberId=Number(this.getAttribute("MemberId"));
+				changeAccount(MemberId);
+				//更新本界面信息
+				$("#Username").html(this.getAttribute("Username"));
+				$("#Nickname").html(this.getAttribute("Nickname"));
+				//标记登录
+				$("#userlist .curuser").removeClass("curuser");
+				this.classList.add("curuser");
+			})
 			//注销
 			$(".loginout").click(function() {
 				UserObj.setUid(null);
@@ -106,9 +117,9 @@
 				for (var i = 0; i < list.length; i++) {
 					var obj=list[i];
 					if (i==0) {
-						str+='<div class="wb-item curuser">'+obj.LoginName+'<p class="wb-item-right"><span class="iconfont icon-xuanze"></span></p></div>';
+						str+='<div class="wb-item curuser" MemberId="'+obj.MemberId+'" Username="'+obj.LoginName+'" Nickname="'+obj.Name+'">'+obj.LoginName+'<p class="wb-item-right"><span class="iconfont icon-xuanze"></span></p></div>';
 					} else{
-						str+='<div class="wb-item">'+obj.LoginName+'</div>';
+						str+='<div class="wb-item" MemberId="'+obj.MemberId+'" Username="'+obj.LoginName+'" Nickname="'+obj.Name+'">'+obj.LoginName+'</div>';
 					}
 				}
 				$("#userlist").html(str);
@@ -126,6 +137,24 @@
 				} else{
 					return data.Message
 				}
+			});
+		}
+		
+		/*切换账号*/
+		function changeAccount(MemberId) {
+			var param={loginMemberId:MemberId, "refresh_token":UserObj.getTokenRefresh(), "grant_type":"password"};
+			ajaxData(Host+"token", function(data) {
+				if (data.Status==200) {
+					//刷新账号信息
+					UserObj.getUserinfo(function () {
+						UserObj.notifyView();
+						mui.toast("账号切换成功");
+					})
+				} else{
+					return data.Message
+				}
+			},param,function(e) {
+				openWindow("../account/login.html",{isCanBack:false},true);//如果失败,则去登录页
 			});
 		}
 	</script>

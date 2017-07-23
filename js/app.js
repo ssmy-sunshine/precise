@@ -185,23 +185,11 @@ var UserObj={
 	setTokenType : function(value) {
 		setLocalStorage("token_type",value);
 	},
-	/*登录*/
-	login : function(username,password,success,err){
-		if (username&&password) {
-			var param={ajaxtype:"post","username":username, "password":password, "grant_type":"password"};
-			ajaxData(Host+"token", function(data) {
-				//{"access_token":"xx","token_type":"bearer","refresh_token":"xxxx","as:client_id":"100024","userName":"文举"}
-				UserObj.setToken(data.access_token);
-				UserObj.setUsername(data.userName);
-				UserObj.setTokenType(data.token_type);
-				UserObj.setUid(data["as:client_id"]);
-				return success&&success();//成功回调
-			},param,function(e) {
-				return err&&err(e);//失败回调
-			});
-		}else{
-			openWindow("../account/login.html");//如果没有TK,则去登录页
-		}
+	getTokenRefresh : function() {
+		return localStorage.getItem("refresh_token");
+	},
+	setTokenRefresh : function(value) {
+		setLocalStorage("refresh_token",value);
 	},
 	/*获取用户是否登录 isToLogin默认跳转登录*/
 	isLogin : function(isToLogin) {
@@ -210,6 +198,48 @@ var UserObj={
 		} else{
 			if(isToLogin!=false) openWindow("../account/login.html");
 			return false;
+		}
+	},
+	/*登录*/
+	login : function(username,password,success,err){
+		if (username&&password) {
+			var param={ajaxtype:"post", "username":username, "password":password, "grant_type":"password"};
+			ajaxData(Host+"token", function(data) {
+				//{"access_token":"xx","token_type":"bearer","refresh_token":"xxxx","as:client_id":"100024","userName":"文举"}
+				UserObj.setToken(data.access_token);
+				UserObj.setUsername(data.userName);
+				UserObj.setTokenType(data.token_type);
+				UserObj.setTokenRefresh(data.refresh_token);
+				UserObj.setUid(data["as:client_id"]);
+				return success&&success();//成功回调
+			},param,function(e) {
+				return err&&err(e);//失败回调
+			});
+		}else{
+			if(!window.hasToLogin){
+				window.hasToLogin=true;
+				openWindow("../account/login.html",{isCanBack:false},true);//如果没有TK,则去登录页
+			}
+		}
+	},
+	/*刷新token*/
+	refreshToken : function(success,err) {
+		var refresh_token=UserObj.getTokenRefresh();
+		if(refresh_token){
+			var param={ajaxtype:"post", "refresh_token":refresh_token, "grant_type":"refresh_token"};
+			ajaxData(Host+"token", function(data) {
+				//{"access_token":"xx","token_type":"bearer","refresh_token":"xxxx","as:client_id":"100024","userName":"文举"}
+				UserObj.setToken(data.access_token);
+				UserObj.setTokenRefresh(data.refresh_token);
+				return success&&success();//成功回调
+			},param,function(e) {
+				openWindow("../account/login.html",{isCanBack:false},true);//如果失败,则去登录页
+			});
+		}else{
+			if(!window.hasToLogin){
+				window.hasToLogin=true;
+				openWindow("../account/login.html",{isCanBack:false},true);//如果没有TK,则去登录页
+			}
 		}
 	},
 	/*获取用户信息*/
@@ -356,10 +386,8 @@ function ajaxData(url,success,param,err,hideWait) {
 					if(!window.isGetTK){
 						//一个界面只许刷一次token,避免多个请求同时刷token导致死循环
 						window.isGetTK=true;
-						UserObj.login(UserObj.getUsername(),UserObj.getPassword(),function() {
+						UserObj.refreshToken(function(){
 							sendAjax();
-						},function (){
-							window.isGetTK=false;
 						});
 					}else{
 						//延时1秒刷新TK后,重新请求
