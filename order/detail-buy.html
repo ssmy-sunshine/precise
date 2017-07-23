@@ -69,7 +69,7 @@
 				<p>收款账号 : <span id="BankCard"></span></p>
 			</div>
 			<p class="order-money">兑换 人民币 ¥ <span class="CNPrice"></span> <br /> ( 美元 : $ <span id="USPrice"></span> )</p>
-			<img id="payimg" class="payimg hide tohref" href="payimg.html"/>
+			<img id="payimg" class="payimg hide"/>
 		</div>
 		<div id="btnSubmit" class="wb-footer wb-btn btn-yellow hide">上传付款凭证 ( <span class="CNPrice"></span>元 )</div>
 	</body>
@@ -85,19 +85,25 @@
 		mui.plusReady(function() {
 			cid=plus.webview.currentWebview().cid;
 			cid&&getData(cid);
+			
 			//上传付款凭证
 			$("#btnSubmit").click(function () {
 				uploadMobileBase64(function(result) {
-//					var res=JSON.parse(result);
-//					if (res.Status==200){
-//						mui.toast("上传成功");
-//						//TODO
-//						
-//					} else{
-//						mui.toast(res.Message);
-//					}
+					var res=JSON.parse(result);
+					if (res.Status==200){
+						mui.toast("上传成功");
+						getData(cid);
+						plus.webview.currentWebview().opener().evalJS("EJ_ReloadData()");						
+					} else{
+						mui.toast(res.Message);
+					}
 				},cid)
 			});
+			
+			//查看凭证
+			$("#payimg").click(function() {
+				openWindow("../order/payimg.html",{cid:cid})
+			})
 		});
 		
 		/*获取数据*/
@@ -135,11 +141,13 @@
 					$("#statusText").html("付款凭证已上传,待卖家确认");
 					$("#btnSubmit").hide();
 					$("#payimg").show();
+					getPayImg (cid,"payimg");
 					break;
 				case 4://已完成
 					$("#statusText").html("对方已确认兑换,交易完成");
 					$("#btnSubmit").hide();
 					$("#payimg").show();
+					getPayImg (cid,"payimg");
 					break;
 				default:
 					$("#statusText").html("交易失败 : "+status);
@@ -147,6 +155,18 @@
 					$("#payimg").hide();
 					break;
 			}
+		}
+		
+		/*获取付款凭证*/
+		function getPayImg (cid,imgId) {
+			ajaxData(Host+"api/Order/CheckVoucher?ctId="+cid, function(data){
+				if (data.Status==200) {
+					var imgDom=document.getElementById(imgId);
+					if(imgDom) imgDom.src=Host+data.Data;
+				} else{
+					return data.Message;
+				}
+			})
 		}
 	</script>
 

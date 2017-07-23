@@ -75,6 +75,7 @@
 	<script src="../js/mui.min.js" charset="utf-8"></script>
 	<script src="../js/DomBiz.js" charset="utf-8"></script>
 	<script src="../js/app.js" charset="utf-8"></script>
+	<script src="../js/plusBiz.js" charset="utf-8"></script>
 	<script src="../js/mescroll.min.js" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
 		var pageIndex=0;
@@ -214,9 +215,16 @@
 						if(pageIndex==0){
 							//买入
 							if(status==2){
-								//上传支付凭证 TODO
+								//上传支付凭证
 								e.stopPropagation();
-								
+								uploadMobileBase64(function(res) {
+									if (res.Status==200){
+										mui.toast("上传成功");
+										EJ_ReloadData();		
+									} else{
+										mui.toast(res.Message);
+									}
+								},this.getAttribute("cid"))
 							} else if(status==3){
 								//催一下
 								 e.stopPropagation();
@@ -261,7 +269,7 @@
 				str+='<p class="gray">订单号: '+obj.SerialNumber+'</p>';
 				str+='<p class="status">'+statusText+'</p>';
 				str+='<p class="drakgray">用户: '+obj.Name+'</p>';
-				str+='<p>请求激活 : <span class="red">'+obj.ActiveCombo+'会员</span></p>';
+				str+='<p>请求激活 : <span class="red">'+obj.ActiveCombo+'</span></p>';
 				str+='<p>注册币 : <span class="red">'+obj.Price+'</span></p>';
 				if(obj.ActiveStatus==1) str+='<div class="btn" ActiveId="'+obj.ActiveId+'">确定激活</div>';
 				var lidom=document.createElement("li");

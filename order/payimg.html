@@ -36,7 +36,7 @@
 			ajaxData(Host+"api/Order/CheckVoucher?ctId="+cid, function(data){
 				if (data.Status==200) {
 					var imgDom=document.getElementById("payimg");
-					if(imgDom) imgDom.src=data.Data;
+					if(imgDom) imgDom.style.backgroundImage="url("+Host+data.Data+")";
 				} else{
 					mui.confirm(data.Message,null,["好的"],function() {
 						mui.back();

@@ -253,7 +253,7 @@ var UserObj={
 	},
 	/*刷新用户数据*/
 	notifyView : function() {
-		var viewIdArr=["main-home.html","main-user.html","main-share.html","../user/ReginAmount.html"];
+		var viewIdArr=["main-home.html","main-user.html","main-share.html","../user/ReginAmount.html","../user/CashAmount.html"];
 		for (var i = 0; i < viewIdArr.length; i++) {
 			var viewObj=plus.webview.getWebviewById(viewIdArr[i]);
 			viewObj&&viewObj.evalJS("EJ_SetUserInfo()");

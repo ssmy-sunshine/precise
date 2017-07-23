@@ -161,9 +161,10 @@ function upLoadFileByBase64(path,success,CashTransactionId){
 	//转base64
 	getBase64Image(path,function(base64,ext){
 		//上传
+		base64=base64.split(",")[1];//去掉前缀
 		var param={ajaxtype:"post", CashTransactionId:CashTransactionId, FileType:ext.toUpperCase(), Base64File:base64};
 		ajaxData(Host+"api/Order/UploadFile",function(data){
-			if (data==200) {
+			if (data.Status==200) {
 				success&&success(data);
 			} else{
 				return data.Message

@@ -130,11 +130,11 @@
 			
 			//创建MeScroll对象
 			mescroll = initMeScroll("mescroll", {
-				down:{ use:false },
 				up: {
 					auto:true,
+					page:{size:100},//用于展示end
+					noMoreSize:10,
 					callback: initList,
-					page:{size:100},//保证只加载一页
 					clearEmptyId:"datalist"
 				}
 			});
@@ -199,11 +199,13 @@
 					$("#zhList").show();
 					$("#titleBuy").show();
 					$("#limitShow").show();
+					mescroll.lockDownScroll(false);
 				} else{//欧美市场
 					$("#zhList").hide();
 					$("#enList").show();
 					$("#titleBuy").hide();
 					$("#limitShow").hide();
+					mescroll.lockDownScroll(true);
 				}
 				//标记切换
 				navIndex=i;

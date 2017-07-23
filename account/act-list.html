@@ -99,6 +99,7 @@
 			ajaxData(Host+"api/Account/GetActiveMemberLocation?assignMemberId="+uid, function(data) {
 				if(data.Status==402||data.Status==200){
 					//{"Message":"未找到数据.","Data":null,"Status":402}
+					//{"Message":null,"Data":{"Name":"B1","MemberId":100015,"Layer":2,"LayerNO":1,"SubMembers":[{"Name":"C2","MemberId":100018,"Layer":3,"LayerNO":1,"SubMembers":[{"Name":"空位","MemberId":0,"Layer":4,"LayerNO":1,"SubMembers":[]},{"Name":"空位","MemberId":0,"Layer":4,"LayerNO":2,"SubMembers":[]}]},{"Name":"C1","MemberId":100017,"Layer":3,"LayerNO":2,"SubMembers":[{"Name":"P-96618tacfteetl","MemberId":100021,"Layer":4,"LayerNO":3,"SubMembers":[]},{"Name":"空位","MemberId":0,"Layer":4,"LayerNO":4,"SubMembers":[]}]}]},"Status":200}
 					var list=data.Data||[];
 					
 					
@@ -117,7 +118,9 @@
 					mui.toast("激活成功");
 					plus.webview.currentWebview().opener().evalJS("EJ_ReloadData()");
 				}
-				mui.confirm(data.Message,null,["好的"]);
+				mui.confirm(data.Message,null,["好的"],function () {
+					mui.back();
+				});
 			});
 		}
 	</script>

@@ -69,7 +69,7 @@
 				<p>收款账号 : <span id="BankCard"></span></p>
 			</div>
 			<p class="order-money">兑换 人民币 ¥ <span class="CNPrice"></span> <br /> ( 美元 : $ <span id="USPrice"></span> )</p>
-			<img id="payimg" class="payimg hide tohref" href="payimg.html"/>
+			<img id="payimg" class="payimg hide"/>
 		</div>
 		<div id="btnSubmit" class="wb-footer wb-btn btn-yellow hide">我已收到汇款,确认兑换</div>
 	</body>
@@ -97,6 +97,11 @@
 					}
 				})
 			});
+			
+			//查看凭证
+			$("#payimg").click(function() {
+				openWindow("../order/payimg.html",{cid:cid})
+			})
 		});
 		
 		/*获取数据*/
@@ -137,11 +142,13 @@
 					$("#statusText").html("买家已付款,已上传支付凭证,待您确认");
 					$("#btnSubmit").show().html("我已收到汇款,确认兑换");
 					$("#payimg").show();
+					getPayImg (cid,"payimg");
 					break;
 				case 4://已完成
 					$("#statusText").html("已确认兑换,交易完成");
 					$("#btnSubmit").hide();
 					$("#payimg").show();
+					getPayImg (cid,"payimg");
 					break;
 				default:
 					$("#statusText").html("交易失败 : "+status);
@@ -149,6 +156,18 @@
 					$("#payimg").hide();
 					break;
 			}
+		}
+		
+		/*获取付款凭证*/
+		function getPayImg (cid,imgId) {
+			ajaxData(Host+"api/Order/CheckVoucher?ctId="+cid, function(data){
+				if (data.Status==200) {
+					var imgDom=document.getElementById(imgId);
+					if(imgDom) imgDom.src=Host+data.Data;
+				} else{
+					return data.Message;
+				}
+			})
 		}
 	</script>
 

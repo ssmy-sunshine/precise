@@ -110,7 +110,7 @@
 						var obj=objArr[i];
 						var str='<p class="remark">'+obj.TransactionTypeName+'</p>';
 						str+='<p class="money">'+obj.TransactionAmount+'</p>';
-						str+='<p class="time">'+obj.CreateDate+'</p>';
+						str+='<p class="time">'+trimDateStr(obj.CreateDate)+'</p>';
 						var liDom=document.createElement("li");
 						liDom.innerHTML=str;
 						listDom.appendChild(liDom);
