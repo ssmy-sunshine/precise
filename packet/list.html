@@ -33,7 +33,7 @@
 		<div id="mescroll" class="mescroll">
 			<ul id="datalist" class="datalist">
 				<!--<li>
-					<span>对碰红包</span>
+					<span>红包</span>
 					<span class="time">2017-7-21 11:43:14</span>
 				</li>-->
 			</ul>
@@ -67,7 +67,7 @@
 					var listDom=document.getElementById("datalist");
 					for (var i = 0; i < len; i++) {
 						var obj=objArr[i];
-						var str='<span>对碰红包</span>';
+						var str='<span>红包</span>';
 						if (obj.RedPacketStatus==1) {
 							str+=' <span class="red">( 已抢 )</span>';
 						} else if (obj.RedPacketStatus!=0) {
