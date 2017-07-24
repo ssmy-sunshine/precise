@@ -179,10 +179,16 @@
 					"fonts/iconfont.css",
 					"css/login.css",
 					"fonts/iconfont.ttf",
-					"js/sendCode.js"
+					"js/sendCode.js",
+					"js/app.js",
+					"js/mui.min.js",
+					"css/app.css",
+					"js/DomBiz.js",
+					"img/logo-red.png"
 				],
 				"refer": [
-					"main/main.html"
+					"main/main.html",
+					"account/regin.html"
 				],
 				"priority": 0
 			},
@@ -192,7 +198,8 @@
 					"js/mui.min.js",
 					"css/app.css",
 					"js/DomBiz.js",
-					"img/logo-red.png"
+					"img/logo-red.png",
+					"js/updateBiz.js"
 				],
 				"refer": [
 					"account/login.html",
@@ -204,7 +211,11 @@
 				"resources": [
 					"main/main-home.html",
 					"fonts/iconfont.css",
-					"fonts/iconfont.ttf"
+					"fonts/iconfont.ttf",
+					"js/app.js",
+					"js/mui.min.js",
+					"css/app.css",
+					"js/DomBiz.js"
 				],
 				"refer": [
 					"main/main-trade.html",
@@ -258,7 +269,8 @@
 					"js/mui.min.js",
 					"css/app.css",
 					"js/DomBiz.js",
-					"img/logo-gray.png"
+					"img/logo-gray.png",
+					"js/plusBiz.js"
 				],
 				"refer": [
 					"order/trade.html",
@@ -317,7 +329,9 @@
 				"resources": [
 					"img/logo-red.png"
 				],
-				"refer": [],
+				"refer": [
+					"account/login.html"
+				],
 				"priority": 0
 			},
 			"user/CashAmount.html": {
@@ -402,7 +416,9 @@
 					"css/login.css",
 					"js/sendCode.js"
 				],
-				"refer": [],
+				"refer": [
+					"account/regin-ok.html"
+				],
 				"priority": 0
 			},
 			"user/team.html": {
@@ -434,7 +450,6 @@
 			"resources": [
 				"account/reset-trade.html",
 				"user/ScoreAmount.html",
-				"js/updateBiz.js",
 				"img/translate.png",
 				"packet/packet.html",
 				"img/mescroll-totop.png",
@@ -443,7 +458,6 @@
 				"account/reset-bank.html",
 				"account/findpw.html",
 				"notice/notice.html",
-				"account/regin-ok.html",
 				"account/reset-pw.html"
 			]
 		}

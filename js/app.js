@@ -1,8 +1,7 @@
 /*接口域名*/
 var isConsole=true;//TODO 是否输出,正式项目需改为false
 var Host="http://123.207.55.23:60/";//测试项目服务器地址
-//var Host="http://120.24.219.31:81/";//正式项目服务器地址
-//更新包下载地址:http://123.207.55.23:61/pages/DownLoad.ashx?id=
+//http://123.207.55.23:61/pages/DownLoad.ashx?id=xx 更新包下载地址
 
 /*加载H5插件完成后的事件*/
 document.addEventListener("plusready", function() {

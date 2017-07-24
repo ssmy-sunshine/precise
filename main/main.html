@@ -58,9 +58,10 @@
 			
 			//点击导航切换子页
 			mui(".wb-footer").on("tap","li",function(){
-				EJ_ChangePage(this.getAttribute("i"));
-				//静默刷新
-				getPageObj(curIndex).evalJS("EJ_ReloadData()");
+				var i=Number(this.getAttribute("i"));
+				var nextPage=subObjs[i];//是否已初始化
+				EJ_ChangePage(i);//先切换,再静默更新
+				if(nextPage) getPageObj(i).evalJS("EJ_ReloadData()");//如果初始化了才静默刷新
 			})
 			
 			//android双击退出

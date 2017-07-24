@@ -4,10 +4,16 @@
 			"fonts/iconfont.css",
 			"css/login.css",
 			"fonts/iconfont.ttf",
-			"js/sendCode.js"
+			"js/sendCode.js",
+			"js/app.js",
+			"js/mui.min.js",
+			"css/app.css",
+			"js/DomBiz.js",
+			"img/logo-red.png"
 		],
 		"refer": [
-			"main/main.html"
+			"main/main.html",
+			"account/regin.html"
 		]
 	},
 	"main/index.html": {
@@ -16,7 +22,8 @@
 			"js/mui.min.js",
 			"css/app.css",
 			"js/DomBiz.js",
-			"img/logo-red.png"
+			"img/logo-red.png",
+			"js/updateBiz.js"
 		],
 		"refer": [
 			"account/login.html",
@@ -27,7 +34,11 @@
 		"resources": [
 			"main/main-home.html",
 			"fonts/iconfont.css",
-			"fonts/iconfont.ttf"
+			"fonts/iconfont.ttf",
+			"js/app.js",
+			"js/mui.min.js",
+			"css/app.css",
+			"js/DomBiz.js"
 		],
 		"refer": [
 			"main/main-home.html",
@@ -86,7 +97,8 @@
 			"js/mui.min.js",
 			"css/app.css",
 			"js/DomBiz.js",
-			"img/logo-gray.png"
+			"img/logo-gray.png",
+			"js/plusBiz.js"
 		]
 	},
 	"order/trade.html": {
@@ -129,6 +141,9 @@
 	"main/main-home.html": {
 		"resources": [
 			"img/logo-red.png"
+		],
+		"refer": [
+			"account/login.html"
 		]
 	},
 	"user/CashAmount.html": {
@@ -202,6 +217,9 @@
 		"resources": [
 			"css/login.css",
 			"js/sendCode.js"
+		],
+		"refer": [
+			"account/regin-ok.html"
 		]
 	},
 	"user/team.html": {
