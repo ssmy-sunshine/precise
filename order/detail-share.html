@@ -45,15 +45,7 @@
 				<p class="infoli">订单编号 : <span id="OrderNumber"></span></p>
 				<p class="infoli">提交时间 : <span id="CommitTime"></span></p>
 			</div>
-			<ul id="datalist" class="datalist">
-				<!--<li>
-					<p>用户名称 : <b id="ToMemberName"></b></p>
-					<p>交易股数 : <b id="ShareQty"></b></p>
-					<p>当时股价 : <b id="SharePrice"></b></p>
-					<p>交易金额 : <b id="Amount"></b></p>
-					<p>交易时间 : <b id="CreateDate"></b></p>
-				</li>-->
-			</ul>
+			<ul id="datalist" class="datalist"></ul>
 		</div>
 	</body>
 
@@ -91,11 +83,11 @@
 					for (var i = 0; i < objArr.length; i++) {
 						var obj=objArr[i];
 						str+='<li>';
-						str+='<p>用户名称 : <b>'+obj.ToMemberName+'</b></p>';
-						str+='<p>交易股数 : <b>'+obj.ShareQty+'</b></p>';
-						str+='<p>当时股价 : <b>'+obj.SharePrice+'</b></p>';
-						str+='<p>交易金额 : <b>'+obj.Amount+'</b></p>';
-						str+='<p>交易时间 : <b>'+obj.CreateDate+'</b></p>';
+						str+='<p>用户名称 : <span>'+obj.ToMemberName+'</span></p>';
+						str+='<p>交易股数 : <span>'+obj.ShareQty+'</span></p>';
+						str+='<p>当时股价 : <span>'+obj.SharePrice+'</span></p>';
+						str+='<p>交易金额 : <span>'+obj.Amount+'</span></p>';
+						str+='<p>交易时间 : <span>'+trimDateStr(obj.CreateDate)+'</span></p>';
 						str+='</li>';
 					}
 					$("#datalist").html(str);
