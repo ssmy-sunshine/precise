@@ -35,6 +35,8 @@
 				text-align: center;
 				color: #666;
 			}
+			/*版本号*/
+			.version{font-size: 12px;color: darkgray;text-align: center;margin-top: 25px;}
 		</style>
 	</head>
 
@@ -60,6 +62,7 @@
 			</div>
 			
 			<p class="loginout">退出当前账户</p>
+			<p class="version"></p>
 		</div>
 	</body>
 
@@ -107,6 +110,8 @@
 				openWindow("../account/login.html",{"isCanBack":false},true);
 				plus.webview.getWebviewById("../main/main.html").close("none");
 			})
+			//版本号
+			$(".version").html("v "+localStorage.getItem("version"));
 		});
 		
 		/*账户列表*/
