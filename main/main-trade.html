@@ -131,7 +131,6 @@
 			//创建MeScroll对象
 			mescroll = initMeScroll("mescroll", {
 				up: {
-					auto:true,
 					page:{size:100},//用于展示end
 					noMoreSize:10,
 					callback: initList,
@@ -260,6 +259,13 @@
 				},null,function () {
 					mescroll.endErr();
 				},true);
+			}
+		}
+		
+		/*刷新数据*/
+		function EJ_ReloadData() {
+			if (navIndex==0){//只刷新大陆市场
+				mescroll.resetUpScroll(false);
 			}
 		}
 	</script>

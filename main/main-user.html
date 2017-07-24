@@ -126,7 +126,17 @@
 					}
 				}
 				$("#levelList").html(str);
-			})
+			},null,null,true)
+		}
+		
+		/*刷新数据*/
+		function EJ_ReloadData(){
+			//账户信息
+			UserObj.getUserinfo(function(){
+				EJ_SetUserInfo();
+			},true);
+			//套餐列表
+			getCombo();
 		}
 	</script>
 

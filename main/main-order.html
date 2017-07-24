@@ -87,7 +87,6 @@
 			//创建MeScroll对象
 			mescroll = initMeScroll("mescroll", {
 				up: {
-					auto:true,
 					callback: initList,
 					page:{size:100},//保证只加载一页
 					clearEmptyId:"datalist"
@@ -313,7 +312,7 @@
 		
 		/*刷新数据*/
 		function EJ_ReloadData() {
-			mescroll.resetUpScroll();
+			mescroll.resetUpScroll(false);
 		}
 	</script>
 

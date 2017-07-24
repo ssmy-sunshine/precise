@@ -115,18 +115,14 @@
 			//账户信息
 			EJ_SetUserInfo();
 			
-			//公告
-			getNotice();
+			//加载数据
+			EJ_ReloadData();
+			
+			//点击公告
 			mui("#notices").on("tap","li",function() {
 				var nid=this.getAttribute("nid");
 				openWindow("../notice/notice.html",{nid:nid});
 			})
-			
-			//静默刷新
-			UserObj.getUserinfo(function(){
-				EJ_SetUserInfo();
-			},true);
-			
 		});
 		
 		/*获取公告*/
@@ -142,7 +138,17 @@
 					str+='</li>';
 				}
 				$("#notices").html(str);
-			});
+			},null,null,true);
+		}
+		
+		/*刷新数据*/
+		function EJ_ReloadData(){
+			//账户信息
+			UserObj.getUserinfo(function(){
+				EJ_SetUserInfo();
+			},true);
+			//公告
+			getNotice();
 		}
 	</script>
 

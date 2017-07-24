@@ -108,8 +108,8 @@
 				initList();
 			})
 			
-			//买入记录
-			initList();
+			//加载数据
+			EJ_ReloadData();
 			
 			//切换导航
 			$("#navs li").click(function() {
@@ -143,7 +143,7 @@
 		}
 		
 		/*显示列表*/
-		function initList(){
+		function initList(hideWait){
 			var url;
 			if (navIndex==0){
 				url=Host+"api/Share/GetBuyInLog?pageIndex=1";//买入记录
@@ -176,7 +176,12 @@
 					}
 					$("#datalist").html(str);
 				}
-			});
+			},null,null,hideWait);
+		}
+		
+		/*刷新数据*/
+		function EJ_ReloadData() {
+			initList(true);
 		}
 	</script>
 

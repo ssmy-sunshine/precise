@@ -59,6 +59,8 @@
 			//点击导航切换子页
 			mui(".wb-footer").on("tap","li",function(){
 				EJ_ChangePage(this.getAttribute("i"));
+				//静默刷新
+				getPageObj(curIndex).evalJS("EJ_ReloadData()");
 			})
 			
 			//android双击退出
