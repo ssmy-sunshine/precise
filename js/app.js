@@ -2,6 +2,7 @@
 var isConsole=true;//TODO 是否输出,正式项目需改为false
 var Host="http://123.207.55.23:60/";//测试项目服务器地址
 //var Host="http://120.24.219.31:81/";//正式项目服务器地址
+//更新包下载地址:http://123.207.55.23:61/pages/DownLoad.ashx?id=
 
 /*加载H5插件完成后的事件*/
 document.addEventListener("plusready", function() {
@@ -266,7 +267,7 @@ var UserObj={
 					UserObj.setBankCard(user.BankCard);//银行账号
 					UserObj.setBankAccName(user.BankAccName);//开户名
 					UserObj.setBankName(user.BankName);//银行名
-					UserObj.setTestTag(user.IsTestUser);//是否为测试人员,在updateBiz.js用到
+					UserObj.setTestTag(user.Type);//是否为测试人员,在updateBiz.js用到
 					//回调
 					callback&&callback(user);
 				}else{

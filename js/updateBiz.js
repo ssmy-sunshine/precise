@@ -15,7 +15,7 @@ new UpdateBiz(function(status){
 }).start();
  **/
 function UpdateBiz(callback) {
-	this.debug=false;//是否显示输出
+	this.debug=true;//是否显示输出
 	this.callback=callback;//回调更新状态
 	UpdateBiz.END=0;//已是最新版本或者更新失败
 	UpdateBiz.START_LOADING=1;//下载更新包
@@ -67,8 +67,8 @@ UpdateBiz.prototype.getNewInfo=function(version) {
 					var curV=Number(version.replace(".", ""));//1.0.0-->10
 					if(newV>curV&&obj.PackageUrl){
 						var code = isNextUpdate ? UpdateBiz.END : UpdateBiz.START_LOADING;//3下次启动更新,先静默下载
-						self.callback&&self.callback(code,obj.VersionNumber);//回调下载中
-						self.download(Host+obj.PackageUrl, Terminal);//下载
+						self.callback&&self.callback(code,obj.VersionsNo);//回调下载中
+						self.download("http://123.207.55.23:61/pages/DownLoad.ashx?id="+obj.VersionsId, Terminal);//下载
 						return;
 					}
 				}
@@ -89,7 +89,7 @@ UpdateBiz.prototype.download=function(loadUrl, isNextUpdate) {
 		function(d, code) {
 			var fname=d.filename;
 			if(code == 200){
-				self.debug&&console.log(Terminal+"==安装包下载成功=="+fname);
+				self.debug&&console.log("安装包下载成功=="+fname);
 				if(isNextUpdate){//下次安装
 					localStorage.setItem("LocVersion",fname);
 				}else{
@@ -101,7 +101,7 @@ UpdateBiz.prototype.download=function(loadUrl, isNextUpdate) {
 			}
 		});
 	//如果不是下次安装 则显示下载进度
-	if(!isNextUpdate)
+	if(!isNextUpdate){
 		var curProgress=0;
 		dtask.addEventListener("statechanged", function(task, status) {
             switch (task.state) {
