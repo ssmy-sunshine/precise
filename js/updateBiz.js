@@ -54,35 +54,34 @@ UpdateBiz.prototype.insallLocVersion=function(version) {
 /*获取服务器最新安装包信息*/
 UpdateBiz.prototype.getNewInfo=function(version) {
 	var self=this;
-	//参数[["1.0.1","0"]]}：版本号，设备 1 Android; 2 IOS;
-	var de = mui.os.android ? "1" : "2";
-	var param={"IFID":155,"PR":[[version,de]]};
-	ajaxData(HostDataQuery,function(dataArr){
-		//Y§1§[{"VersionNumber":"1.0.1","isInstall":0,"DownLink":"wb101-102.wgtu"}]§DV2.0§5§2016/6/1 12:07:46
+	ajaxData(Host+"api/my/GetNewVersions",function(data){
+		//{"Message":"","Data":{"VersionsId":19,"VersionsNo":"1.0.4","PackageName":"JMS_Package.txt","PackageUrl":"../file\\20170724\\JMS_Package.txt","UpdateRemark":"服务器测试","Terminal":0,"UpdateTime":"2017-07-24T11:59:06.127"},"Status":200}
 		try{
-			var data=JSON.parse(dataArr[2])[0];
-			//isInstall:0强制android和ios更新;1强制Android更新;2强制IOS更新;3测试员更新;4下次启动更新;5开发人员更新
-			var status=data.isInstall;
-			var userTest=UserObj.getTestTag();//IFID":12 标记用户:0普通用户,1测试人员;2开发人员;
-			if (status==0||(status==1&&mui.os.android)||(status==2&&mui.os.ios)||(status==3&&(userTest==1||userTest==2))||status==4||(status==5&&userTest==2)) {
-				var newV=Number(data.VersionNumber.replace(".", ""));//1.0.1-->10.1
-				var curV=Number(version.replace(".", ""));//1.0.0-->10
-				if(newV>curV&&data.DownLink){
-					var code = status==4 ? UpdateBiz.END : UpdateBiz.START_LOADING;//4下次启动更新,先静默下载
-					self.callback&&self.callback(code,data.VersionNumber);//准备下载
-					self.download("http://www.yblbaby.net/AppFile/"+data.DownLink, status);
-					return;
+			var obj=data.Data;
+			if (obj&&obj.VersionsNo){
+				var Terminal=obj.Terminal;//0所有用户更新; 1测试员更新; 2开发人员更新; 3下次启动更新
+				var userTest=UserObj.getTestTag();//当前用户的标记: 0普通用户, 1测试人员; 2开发人员
+				var isNextUpdate = Terminal==3 ;//是否下次启动更新
+				if (Terminal==0||isNextUpdate||(Terminal==1&&userTest==1)||(Terminal==2&&userTest==2)) {
+					var newV=Number(obj.VersionsNo.replace(".", ""));//1.0.1-->10.1
+					var curV=Number(version.replace(".", ""));//1.0.0-->10
+					if(newV>curV&&obj.PackageUrl){
+						var code = isNextUpdate ? UpdateBiz.END : UpdateBiz.START_LOADING;//3下次启动更新,先静默下载
+						self.callback&&self.callback(code,obj.VersionNumber);//回调下载中
+						self.download(Host+obj.PackageUrl, Terminal);//下载
+						return;
+					}
 				}
 			}
 		}catch(e){}
 		self.callback&&self.callback(UpdateBiz.END);//更新失败的回调
-	},param,function(){
+	},null,function(){
 		self.callback&&self.callback(UpdateBiz.END);//更新失败的回调
 	},true);
 }
 
 /*下载更新包*/
-UpdateBiz.prototype.download=function(loadUrl, isInstall) {
+UpdateBiz.prototype.download=function(loadUrl, isNextUpdate) {
 	var self=this;
 	self.debug&&console.log("开始下载=="+loadUrl);
 	//filename: "_doc/update/"，务必不要更改这个filename，否则会提示安装成功，但是版本号一直没有变，其实就是install找不到这个文件就无法更新了
@@ -90,19 +89,19 @@ UpdateBiz.prototype.download=function(loadUrl, isInstall) {
 		function(d, code) {
 			var fname=d.filename;
 			if(code == 200){
-				self.debug&&console.log(isInstall+"==安装包下载成功=="+fname);
-				if(isInstall==4){//下次安装
+				self.debug&&console.log(Terminal+"==安装包下载成功=="+fname);
+				if(isNextUpdate){//下次安装
 					localStorage.setItem("LocVersion",fname);
 				}else{
 					self.install(fname);
 				}
 			}else{
 				self.debug&&console.log("安装包下载失败=="+fname);
-				if(isInstall!=4) self.callback&&self.callback(UpdateBiz.END);//更新失败的回调
+				if(!isNextUpdate) self.callback&&self.callback(UpdateBiz.END);//更新失败的回调
 			}
 		});
 	//如果不是下次安装 则显示下载进度
-	if(isInstall!=4){
+	if(!isNextUpdate)
 		var curProgress=0;
 		dtask.addEventListener("statechanged", function(task, status) {
             switch (task.state) {

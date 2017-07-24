@@ -29,44 +29,42 @@
 	<script src="../js/mui.min.js" charset="utf-8"></script>
 	<script src="../js/DomBiz.js" charset="utf-8"></script>
 	<script src="../js/app.js" charset="utf-8"></script>
-	<!--<script src="../js/updateBiz.js" charset="utf-8"></script>-->
+	<script src="../js/updateBiz.js" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
 		mui.init();
 		mui.plusReady(function() {
 			//仅支持竖屏显示
 			plus.screen.lockOrientation("portrait-primary");
 			
-			intApp(); //进入app
+			//更新版本
+			var progress=document.getElementById("progress");
+			var progressTip=document.getElementById("progress-tip");
+			new UpdateBiz(function(status,newVersion,gress){
+				switch (status){
+					case UpdateBiz.START_LOADING://关闭启动页,显示下载进度
+						document.getElementById("newVersion").innerHTML=newVersion;
+						plus.navigator.closeSplashscreen();
+						break;
+					case UpdateBiz.LOADING://显示进度
+						progress.style.width=gress+"%";
+						progressTip.innerHTML=gress+"%";
+						break;
+					case UpdateBiz.SUCCESS:
+						plus.runtime.restart();//更新成功重启程序
+						break;
+					case UpdateBiz.END:
+						intApp();//没得更新或者最新完毕
+						break;
+				}
+			}).start();
 			
-//			//更新版本 TODO
-//			var progress=document.getElementById("progress");
-//			var progressTip=document.getElementById("progress-tip");
-//			new UpdateBiz(function(status,newVersion,gress){
-//				switch (status){
-//					case UpdateBiz.START_LOADING://关闭启动页,显示下载进度
-//						document.getElementById("newVersion").innerHTML=newVersion;
-//						plus.navigator.closeSplashscreen();
-//						break;
-//					case UpdateBiz.LOADING://显示进度
-//						progress.style.width=gress+"%";
-//						progressTip.innerHTML=gress+"%";
-//						break;
-//					case UpdateBiz.SUCCESS:
-//						plus.runtime.restart();//更新成功重启程序
-//						break;
-//					case UpdateBiz.END:
-//						intApp();//没得更新或者最新完毕
-//						break;
-//				}
-//			}).start();
-//			
-//			//显示当前版本号
-//			plus.runtime.getProperty(plus.runtime.appid, function(inf) {
-//				document.getElementById("curVersion").innerHTML=inf.version;
-//			});
-//			
-//			//禁止右滑关闭
-//			plus.webview.currentWebview().setStyle({'popGesture': 'none'});
+			//显示当前版本号
+			plus.runtime.getProperty(plus.runtime.appid, function(inf) {
+				document.getElementById("curVersion").innerHTML=inf.version;
+			});
+			
+			//禁止右滑关闭
+			plus.webview.currentWebview().setStyle({'popGesture': 'none'});
 		});
 		
 		/*进入app*/
