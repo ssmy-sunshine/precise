@@ -188,7 +188,8 @@
 				],
 				"refer": [
 					"main/main.html",
-					"account/regin.html"
+					"account/regin.html",
+					"account/findpw.html"
 				],
 				"priority": 0
 			},
@@ -538,8 +539,7 @@
 			"resources": [
 				"img/translate.png",
 				"packet/packet.html",
-				"css/swiper-3.3.1.min.css",
-				"account/findpw.html"
+				"css/swiper-3.3.1.min.css"
 			]
 		}
 	}

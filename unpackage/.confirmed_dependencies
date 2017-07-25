@@ -13,7 +13,8 @@
     ],
     "refer": [
       "main/main.html",
-      "account/regin.html"
+      "account/regin.html",
+      "account/findpw.html"
     ]
   },
   "main/index.html": {
@@ -117,7 +118,8 @@
   "order/trade.html": {
     "resources": [
       "js/plusBiz.js"
-    ]
+    ],
+    "refer": []
   },
   "trade/buy-user.html": {
     "resources": [
@@ -129,7 +131,8 @@
       "css/app.css",
       "js/DomBiz.js",
       "fonts/iconfont.ttf"
-    ]
+    ],
+    "refer": []
   },
   "main/main-share.html": {
     "refer": [
@@ -225,7 +228,8 @@
       "js/DomBiz.js",
       "js/showpayimg.js",
       "css/showpayimg.css"
-    ]
+    ],
+    "refer": []
   },
   "order/detail-sell.html": {
     "resources": [
@@ -270,7 +274,8 @@
       "fonts/iconfont.ttf",
       "js/DomBiz.js",
       "img/logo-red.png"
-    ]
+    ],
+    "refer": []
   },
   "account/regin.html": {
     "resources": [
@@ -289,7 +294,8 @@
       "css/app.css",
       "fonts/iconfont.ttf",
       "js/DomBiz.js"
-    ]
+    ],
+    "refer": []
   },
   "account/act-list.html": {
     "resources": [
@@ -308,22 +314,26 @@
     "resources": [
       "js/paypass.js",
       "css/paypass.css"
-    ]
+    ],
+    "refer": []
   },
   "user/ReginBuy.html": {
     "refer": [
       "trade/sell-share.html"
-    ]
+    ],
+    "resources": []
   },
   "account/reset-bank.html": {
     "resources": [
       "css/login.css"
-    ]
+    ],
+    "refer": []
   },
   "order/detail-share.html": {
     "resources": [
       "fonts/iconfont.ttf",
       "js/plusBiz.js"
-    ]
+    ],
+    "refer": []
   }
 }
