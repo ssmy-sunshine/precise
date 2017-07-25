@@ -100,6 +100,9 @@
 			getCombo();
 			//设置个人信息
 			EJ_SetUserInfo();
+			UserObj.addNotifyListener(function(){
+				getCombo();//升级成功刷新等级
+			})
 		});
 		
 		/*套餐列表*/

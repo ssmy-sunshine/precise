@@ -109,8 +109,8 @@
 					//点空位,去激活
 					var Layer=this.getAttribute("Layer");
 					var LayerNO=this.getAttribute("LayerNO");
-					mui.confirm("确定选择此位置激活吗?",null,["取消","确定"],function(i){
-						if(i==1) actUser(Layer,LayerNO);
+					mui.confirm("确定选择此位置激活吗?",null,["取消","确定"],function(e){
+						if(e.index==1) actUser(Layer,LayerNO);
 					})
 				}else if(Name!="无"){
 					//点用户名,查下级

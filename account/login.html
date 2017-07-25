@@ -71,7 +71,10 @@
 				UserObj.setPassword(pass);
 				//登录
 				UserObj.login(username,pass,function() {
-					openWindow("../main/main.html");
+					//获取账户信息
+					UserObj.getUserinfo(function(){
+						openWindow("../main/main.html");
+					});
 				},function(e){
 					if (e.error_description&&e.error_description.indexOf("未激活")!=-1) {
 						mui.confirm("您的账号未激活.","温馨提示",["取消","立即激活"],function(e){

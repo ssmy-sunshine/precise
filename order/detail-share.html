@@ -61,6 +61,7 @@
 		mui.plusReady(function() {
 			var self=plus.webview.currentWebview();
 			cid=Number(self.cid||0);
+			navIndex=Number(self.navIndex||0);
 			$("#OrderNumber").html(self.OrderNumber);
 			$("#CommitTime").html(trimDateStr(self.CommitTime));
 			$("#statusText").html(handleStatus(self.StatusId,self.Qty,self.TransactionQty));
@@ -91,8 +92,6 @@
 						str+='</li>';
 					}
 					$("#datalist").html(str);
-				}else{
-					return data.Message;
 				}
 			})
 		}

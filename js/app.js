@@ -83,14 +83,14 @@ var UserObj={
 	},
 	/*持股数*/
 	getSharesCount : function() {
-		return localStorage.getItem("SharesCount")||"0";
+		return Number(localStorage.getItem("SharesCount")||0);
 	},
 	setSharesCount : function(value) {
 		setLocalStorage("SharesCount",value);
 	},
 	/*股票币*/
 	getShareAmount : function() {
-		return localStorage.getItem("ShareAmount")||"0";
+		return Number(localStorage.getItem("ShareAmount")||0);
 	},
 	setShareAmount : function(value) {
 		setLocalStorage("ShareAmount",value);
@@ -283,7 +283,7 @@ var UserObj={
 	},
 	/*刷新用户数据*/
 	notifyView : function() {
-		var viewIdArr=["main-home.html","main-user.html","main-share.html","../user/ReginAmount.html","../user/CashAmount.html"];
+		var viewIdArr=["main-home.html","main-user.html","main-share.html","../user/ReginAmount.html","../user/CashAmount.html","../trade/sell-share.html"];
 		for (var i = 0; i < viewIdArr.length; i++) {
 			var viewObj=plus.webview.getWebviewById(viewIdArr[i]);
 			viewObj&&viewObj.evalJS("EJ_SetUserInfo()");

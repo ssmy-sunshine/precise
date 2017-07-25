@@ -55,10 +55,10 @@
 		<div class="wb-content">
 			<div class="money-info">
 				<p>当前股价 : <span id="SharesPrice"></span></p>
-				<p>我的股票币 : <span id="ShareAmount"></span>&nbsp; &nbsp; &nbsp; 持股数 : <span id="SharesCount"></span></p>
+				<p>我的持股数 : <span id="SharesCount"></span></p>
 			</div>
 			<div class="sell-info infowarp">
-				<p class="count-tip">输入您要卖出股票币的数量</p>
+				<p class="count-tip">输入您要卖出的股数</p>
 				<input id="inputnum" class="inputnum" type="number"/>
 				<p>40%回购股票  = <b id="culShare">0</b> 股</p>
 				<p>10%兑换积分  = <b id="culScore">0</b> 分</p>
@@ -83,21 +83,32 @@
 			//用户信息
 			EJ_SetUserInfo();
 			//输入
-			var sharePrice=UserObj.getSharesPrice();
+			var sharePrice=UserObj.getSharesPrice();//当前股价
 			var $culShare=$("#culShare");
 			var $culScore=$("#culScore");
 			var $culCash=$("#culCash");
 			$("#inputnum").input(function() {
-				var num=Number(this.value);
-				$culShare.html(Math.round(num*0.4/sharePrice));//四舍五入取整
-				$culScore.html((num*0.1).toFixed(2));
-				$culCash.html((num*0.5).toFixed(2));
+				var num=Number(this.value);//输入的数量
+				var shareCount=UserObj.getSharesCount();//持股数
+				if(num>shareCount){
+					this.value=shareCount;
+					num=shareCount;
+					mui.toast("您的持股数只有"+num);
+				}
+				var price=Number(this.value)*sharePrice;//股数*股价=价值
+				$culShare.html(Math.round(price*0.4));//四舍五入取整
+				$culScore.html((price*0.1).toFixed(2));
+				$culCash.html((price*0.5).toFixed(2));
 			})
 			//卖出
 			$("#btnSubmit").click(function() {
 				var num=Number($("#inputnum").val());
 				if(num<=0){
-					mui.toast("请输入股票币数量");
+					mui.toast("请输入卖出的数量");
+					return;
+				}
+				if(num>UserObj.getSharesCount()){
+					mui.toast("持股数不足");
 					return;
 				}
 				if(!UserObj.getBankCard()){
@@ -117,11 +128,9 @@
 					var msg=data.Message;
 					if(data.Status==200){
 						//刷新界面
-						UserObj.getUserinfo(function () {
-							UserObj.notifyView();
-							mui.confirm(msg,"温馨提示",["好的"],function(){
-								mui.back();
-							})
+						mui.confirm(msg,"温馨提示",["好的"],function(){
+							plus.webview.currentWebview().opener().evalJS("EJ_ReloadData()");
+							mui.back();
 						})
 					}else{
 						return msg;

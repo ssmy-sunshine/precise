@@ -71,9 +71,9 @@
 			<p id="CountPrice" class="CountPrice">0.00</p>
 			<p>总价值</p>
 			<ul class="userdata">
+				<li> <b id="ShareAmount">0</b> <p>股票币</p> </li>
 				<li> <b id="SharesPrice">0</b> <p>当前股价</p> </li>
 				<li> <b id="SharesCount">0</b> <p>持股数</p> </li>
-				<li> <b id="ShareAmount">0</b> <p>股票币</p> </li>
 			</ul>
 			<p class="btn-buy tohref" href="../trade/buy-user.html">买入</p>
 			<p class="btn-sell tohref" href="../trade/sell-share.html">卖出</p>
@@ -101,14 +101,9 @@
 	
 		mui.init();
 		mui.plusReady(function() {
-			//设置会员信息
-			EJ_SetUserInfo();
-			UserObj.addNotifyListener(function(){
-				initList();
-			})
-			
 			//加载数据
-			EJ_ReloadData();
+			EJ_SetUserInfo();
+			initList();
 			
 			//切换导航
 			$("#navs li").click(function() {
@@ -142,7 +137,7 @@
 		}
 		
 		/*显示列表*/
-		function initList(hideWait){
+		function initList(){
 			var url;
 			if (navIndex==0){
 				url=Host+"api/Share/GetBuyInLog?pageIndex=1";//买入记录
@@ -175,12 +170,15 @@
 					}
 					$("#datalist").html(str);
 				}
-			},null,null,hideWait);
+			},null,null,true);
 		}
 		
 		/*刷新数据*/
 		function EJ_ReloadData() {
-			initList(true);
+			UserObj.getUserinfo(function(){
+				EJ_SetUserInfo();
+			},true);
+			initList();
 		}
 	</script>
 

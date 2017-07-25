@@ -83,16 +83,26 @@
 		mui.plusReady(function() {
 			//用户信息
 			EJ_SetUserInfo();
+			//我的股票币
+			var shareAmount=UserObj.getShareAmount();
 			//当前股价 :
 			var sharesPrice=UserObj.getSharesPrice();
 			//输入监听
 			$("#inputNum").input(function() {
-				$("#inputNumTip").html(this.value*sharesPrice);
+				var price=this.value*sharesPrice;
+				if(price>shareAmount) mui.toast("您的股票币不足");
+				$("#inputNumTip").html(price);
 			})
 			//购买
 			$("#btnSubmit").click(function() {
 				var num=Number($("#inputNum").val()||0);
-				if(num>0) toSubmit(num);
+				if(num>0){
+					if(num*sharesPrice>shareAmount){
+						mui.toast("您的股票币不足");
+						return;
+					}
+					toSubmit(num);
+				}
 			})
 		});
 		
@@ -104,11 +114,9 @@
 				ajaxData(Host+"api/Share/BuyIn?shareQty="+num+"&tradingPwd="+paypass, function(data) {
 					if(data.Status==200){
 						//刷新界面
-						UserObj.getUserinfo(function () {
-							UserObj.notifyView();
-							mui.confirm("购买成功,系统正在为您匹配,请耐心等候.","温馨提示",["好的"],function(){
-								mui.back();
-							})
+						mui.confirm("购买成功,系统正在为您匹配,请耐心等候.","温馨提示",["好的"],function(){
+							plus.webview.currentWebview().opener().evalJS("EJ_ReloadData()");
+							mui.back();
 						})
 					}else{
 						return data.Message;

@@ -122,14 +122,21 @@
 	"trade/buy-user.html": {
 		"resources": [
 			"js/paypass.js",
-			"css/paypass.css"
+			"css/paypass.css",
+			"js/app.js",
+			"fonts/iconfont.css",
+			"js/mui.min.js",
+			"css/app.css",
+			"js/DomBiz.js",
+			"fonts/iconfont.ttf"
 		]
 	},
 	"main/main-share.html": {
 		"refer": [
 			"trade/buy-user.html",
 			"trade/sell-share.html",
-			"order/detail-share.html"
+			"order/detail-share.html",
+			"account/login.html"
 		],
 		"resources": [
 			"img/logo-gray.png",
@@ -150,6 +157,9 @@
 			"fonts/iconfont.ttf",
 			"css/paypass.css",
 			"js/DomBiz.js"
+		],
+		"refer": [
+			"account/reset-bank.html"
 		]
 	},
 	"main/main-home.html": {
@@ -182,7 +192,8 @@
 			"css/app.css",
 			"css/mescroll.min.css",
 			"js/DomBiz.js",
-			"img/mescroll-totop.png"
+			"img/mescroll-totop.png",
+			"img/logo-gray.png"
 		]
 	},
 	"account/account-list.html": {
@@ -199,7 +210,8 @@
 		"refer": [
 			"account/login.html",
 			"account/reset-pw.html",
-			"account/reset-trade.html"
+			"account/reset-trade.html",
+			"account/reset-bank.html"
 		]
 	},
 	"order/detail-buy.html": {
@@ -290,6 +302,28 @@
 		],
 		"refer": [
 			"account/login.html"
+		]
+	},
+	"trade/buy-sys.html": {
+		"resources": [
+			"js/paypass.js",
+			"css/paypass.css"
+		]
+	},
+	"user/ReginBuy.html": {
+		"refer": [
+			"trade/sell-share.html"
+		]
+	},
+	"account/reset-bank.html": {
+		"resources": [
+			"css/login.css"
+		]
+	},
+	"order/detail-share.html": {
+		"resources": [
+			"fonts/iconfont.ttf",
+			"js/plusBiz.js"
 		]
 	}
 }

@@ -91,7 +91,7 @@
 					if (res.Status==200){
 						mui.toast("上传成功");
 						getData(cid);
-						plus.webview.currentWebview().opener().evalJS("EJ_ReloadData()");						
+						plus.webview.currentWebview().opener().evalJS("EJ_ReloadData()");
 					} else{
 						mui.toast(res.Message);
 					}
