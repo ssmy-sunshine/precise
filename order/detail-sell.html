@@ -88,9 +88,9 @@
 			cid&&getData(cid);
 			//确认兑换
 			$("#btnSubmit").click(function () {
-				//交易密码 TODO
+				//交易密码
 				checkPayPass(function() {
-					ajaxData(Host+"api/Order/GetSellOrderDetatils?ctId="+cid,function(data){
+					ajaxData(Host+"api/Order/Confim?ctId="+cid,function(data){
 						if (data.Status==200){
 							mui.toast("确认成功");
 							getData(cid);

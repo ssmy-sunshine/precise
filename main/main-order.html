@@ -248,8 +248,8 @@
 								e.stopPropagation();
 								//交易密码
 								checkPayPass(function() {
-									//确定兑换 TODO
-									ajaxData(Host+"api/Order/GetSellOrderDetatils?ctId="+cid,function(data){
+									//确定兑换
+									ajaxData(Host+"api/Order/Confim?ctId="+cid,function(data){
 										if (data.Status==200){
 											mui.toast("交易成功");
 											mescroll.resetUpScroll();
