@@ -242,13 +242,21 @@
 					"js/DomBiz.js"
 				],
 				"refer": [
-					"order/trade.html"
+					"order/trade.html",
+					"order/detail-buy.html"
 				],
 				"priority": 0
 			},
 			"main/main-user.html": {
 				"resources": [
-					"img/level-icon.png"
+					"img/level-icon.png",
+					"js/app.js",
+					"fonts/iconfont.css",
+					"js/mui.min.js",
+					"css/app.css",
+					"fonts/iconfont.ttf",
+					"js/DomBiz.js",
+					"img/logo-red.png"
 				],
 				"refer": [
 					"user/ReginAmount.html",
@@ -256,7 +264,9 @@
 					"user/CashAmount.html",
 					"account/account-list.html",
 					"account/regin.html",
-					"user/update.html"
+					"user/update.html",
+					"user/ScoreAmount.html",
+					"account/act-list.html"
 				],
 				"priority": 0
 			},
@@ -270,14 +280,17 @@
 					"css/app.css",
 					"js/DomBiz.js",
 					"img/logo-gray.png",
-					"js/plusBiz.js"
+					"js/plusBiz.js",
+					"js/paypass.js",
+					"css/paypass.css"
 				],
 				"refer": [
 					"order/trade.html",
 					"order/detail-buy.html",
 					"order/detail-sell.html",
 					"order/payimg.html",
-					"account/act-list.html"
+					"account/act-list.html",
+					"account/login.html"
 				],
 				"priority": 0
 			},
@@ -307,7 +320,8 @@
 				],
 				"refer": [
 					"trade/buy-user.html",
-					"trade/sell-share.html"
+					"trade/sell-share.html",
+					"order/detail-share.html"
 				],
 				"priority": 0
 			},
@@ -327,10 +341,19 @@
 			},
 			"main/main-home.html": {
 				"resources": [
-					"img/logo-red.png"
+					"img/logo-red.png",
+					"js/app.js",
+					"fonts/iconfont.css",
+					"js/mui.min.js",
+					"css/app.css",
+					"fonts/iconfont.ttf",
+					"js/DomBiz.js"
 				],
 				"refer": [
-					"account/login.html"
+					"account/login.html",
+					"notice/notice.html",
+					"mall/mall.html",
+					"packet/list.html"
 				],
 				"priority": 0
 			},
@@ -343,7 +366,8 @@
 					"js/mui.min.js",
 					"css/app.css",
 					"css/mescroll.min.css",
-					"js/DomBiz.js"
+					"js/DomBiz.js",
+					"img/mescroll-totop.png"
 				],
 				"refer": [
 					"trade/buy-sys.html"
@@ -353,10 +377,18 @@
 			"account/account-list.html": {
 				"resources": [
 					"css/layer.css",
-					"js/layer.js"
+					"js/layer.js",
+					"js/app.js",
+					"fonts/iconfont.css",
+					"js/mui.min.js",
+					"css/app.css",
+					"fonts/iconfont.ttf",
+					"js/DomBiz.js"
 				],
 				"refer": [
-					"account/login.html"
+					"account/login.html",
+					"account/reset-pw.html",
+					"account/reset-trade.html"
 				],
 				"priority": 0
 			},
@@ -385,13 +417,26 @@
 					"fonts/iconfont.ttf",
 					"js/DomBiz.js",
 					"css/showpayimg.css",
-					"js/showpayimg.js"
+					"js/showpayimg.js",
+					"js/paypass.js",
+					"css/paypass.css"
 				],
-				"refer": [],
+				"refer": [
+					"order/payimg.html"
+				],
 				"priority": 0
 			},
 			"user/ReginAmount.html": {
-				"resources": [],
+				"resources": [
+					"js/app.js",
+					"fonts/iconfont.css",
+					"js/mescroll.min.js",
+					"js/mui.min.js",
+					"css/app.css",
+					"css/mescroll.min.css",
+					"fonts/iconfont.ttf",
+					"js/DomBiz.js"
+				],
 				"refer": [
 					"user/ReginBuy.html",
 					"user/update.html"
@@ -442,23 +487,19 @@
 					"css/app.css",
 					"js/DomBiz.js"
 				],
-				"refer": [],
+				"refer": [
+					"account/login.html"
+				],
 				"priority": 0
 			}
 		},
 		"idle": {
 			"resources": [
-				"account/reset-trade.html",
-				"user/ScoreAmount.html",
 				"img/translate.png",
 				"packet/packet.html",
-				"img/mescroll-totop.png",
-				"mall/mall.html",
 				"css/swiper-3.3.1.min.css",
 				"account/reset-bank.html",
-				"account/findpw.html",
-				"notice/notice.html",
-				"account/reset-pw.html"
+				"account/findpw.html"
 			]
 		}
 	}

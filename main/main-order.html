@@ -6,6 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
 		<link rel="stylesheet" href="../fonts/iconfont.css">
 		<link rel="stylesheet" href="../css/app.css">
+		<link rel="stylesheet" href="../css/paypass.css">
 		<link rel="stylesheet" href="../css/mescroll.min.css">
 		<style type="text/css">
 			/*标题*/
@@ -76,6 +77,7 @@
 	<script src="../js/DomBiz.js" charset="utf-8"></script>
 	<script src="../js/app.js" charset="utf-8"></script>
 	<script src="../js/plusBiz.js" charset="utf-8"></script>
+	<script src="../js/paypass.js" charset="utf-8"></script>
 	<script src="../js/mescroll.min.js" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
 		var pageIndex=0;
@@ -211,6 +213,7 @@
 				if(btnDom){
 					btnDom.addEventListener("tap",function(e){
 						var status=this.getAttribute("status");
+						var cid=this.getAttribute("cid");
 						if(pageIndex==0){
 							//买入
 							if(status==2){
@@ -223,7 +226,7 @@
 									} else{
 										mui.toast(res.Message);
 									}
-								},this.getAttribute("cid"))
+								},cid)
 							} else if(status==3){
 								//催一下
 								 e.stopPropagation();
@@ -242,9 +245,19 @@
 									if(e.index == 1) window.location.href="tel:"+tel;
 					            });
 							} else if(status==3){
-								//查看支付凭证
 								e.stopPropagation();
-								openWindow("../order/payimg.html",{cid:this.getAttribute("cid")});
+								//交易密码
+								checkPayPass(function() {
+									//确定兑换 TODO
+									ajaxData(Host+"api/Order/GetSellOrderDetatils?ctId="+cid,function(data){
+										if (data.Status==200){
+											mui.toast("交易成功");
+											mescroll.resetUpScroll();
+										}else{
+											return data.Message;
+										}
+									})
+								})
 							}
 						}
 					})
@@ -300,7 +313,7 @@
 					if(pageIndex==0){
 						str=["待确认","催一下"];  //买入
 					}else{
-						str=["待确认","查看支付凭证"]; //卖出
+						str=["待确认","确定兑换"]; //卖出
 					}
 				break;
 				case 4: str=["已完成",null]; break;

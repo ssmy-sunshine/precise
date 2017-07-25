@@ -95,13 +95,15 @@
 			//切换账号登录
 			mui("#userlist").on("tap",".wb-item",function(){
 				var MemberId=Number(this.getAttribute("MemberId"));
-				changeAccount(MemberId);
-				//更新本界面信息
-				$("#Username").html(this.getAttribute("Username"));
-				$("#Nickname").html(this.getAttribute("Nickname"));
-				//标记登录
-				$("#userlist .curuser").removeClass("curuser");
-				this.classList.add("curuser");
+				if (MemberId!=UserObj.getUid()) {
+					changeAccount(MemberId);
+					//更新本界面信息
+					$("#Username").html(this.getAttribute("Username"));
+					$("#Nickname").html(this.getAttribute("Nickname"));
+					//标记登录
+					$("#userlist .curuser").removeClass("curuser");
+					this.classList.add("curuser");
+				}
 			})
 			//注销
 			$(".loginout").click(function() {
@@ -147,7 +149,7 @@
 		
 		/*切换账号*/
 		function changeAccount(MemberId) {
-			var param={loginMemberId:MemberId, "refresh_token":UserObj.getTokenRefresh(), "grant_type":"password"};
+			var param={ajaxtype:"post", loginMemberId:MemberId, "refresh_token":UserObj.getTokenRefresh(), "grant_type":"password"};
 			ajaxData(Host+"token", function(data) {
 				if (data.Status==200) {
 					//刷新账号信息

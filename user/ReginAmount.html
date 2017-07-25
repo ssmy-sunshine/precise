@@ -117,7 +117,8 @@
 			//激活
 			$("#toActOrder").click(function() {
 				plus.webview.getWebviewById("../main/main.html").evalJS("EJ_ChangePage(3)");
-				plus.webview.getWebviewById("main-order.html").evalJS("EJ_ChangePage(2)");
+				var webOrder=plus.webview.getWebviewById("main-order.html");
+				webOrder&&webOrder.evalJS("EJ_ChangePage(2)");
 				mui.back();
 			})
 			

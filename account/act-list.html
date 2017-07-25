@@ -42,9 +42,9 @@
 				background-color: #aaa;
 			}
 			
-			.userwarp1{width: 32%;font-size: 16px;margin-top: 20%;color: #EA1C40;}
-			.userwarp2{width: 64%;font-size: 14px;color: #E79519;}
-			.userwarp3{width: 92%;font-size: 12px;color: gray;}
+			.userwarp1{width: 32%;font-size: 16px;margin-top: 20%;}
+			.userwarp2{width: 64%;font-size: 14px;}
+			.userwarp3{width: 92%;font-size: 12px;}
 		</style>
 	</head>
 
@@ -112,7 +112,7 @@
 					mui.confirm("确定选择此位置激活吗?",null,["取消","确定"],function(i){
 						if(i==1) actUser(Layer,LayerNO);
 					})
-				}else{
+				}else if(Name!="无"){
 					//点用户名,查下级
 					var uid=this.getAttribute("MemberId");
 					getTeam(uid);
@@ -120,7 +120,7 @@
 			})
 			//返回上个用户
 			$("#userBackBtn").click(function(){
-				var obj=hisArr[len-2];
+				var obj=hisArr[hisArr.length-2];
 				getTeam(obj.MemberId,true);
 			})
 		});
@@ -131,34 +131,35 @@
 				if(data.Status==402||data.Status==200){
 					//{"Message":null,"Data":{"Name":"B1","MemberId":100015,"Layer":2,"LayerNO":1,"SubMembers":[{"Name":"C2","MemberId":100018,"Layer":3,"LayerNO":1,"SubMembers":[{"Name":"空位","MemberId":0,"Layer":4,"LayerNO":1,"SubMembers":[]},{"Name":"空位","MemberId":0,"Layer":4,"LayerNO":2,"SubMembers":[]}]},{"Name":"C1","MemberId":100017,"Layer":3,"LayerNO":2,"SubMembers":[{"Name":"P-96618tacfteetl","MemberId":100021,"Layer":4,"LayerNO":3,"SubMembers":[]},{"Name":"空位","MemberId":0,"Layer":4,"LayerNO":4,"SubMembers":[]}]}]},"Status":200}
 					var User1=data.Data;
-					$("#User1").html(User1.Name).attr("Layer",User1.Layer).attr("LayerNO",User1.LayerNO).attr("MemberId",User1.MemberId);
+					initBox(User1,"User1");
+					
 					var User21=User1.SubMembers[0];
-					$("#User21").html(User21.Name).attr("Layer",User21.Layer).attr("LayerNO",User21.LayerNO).attr("MemberId",User21.MemberId);
+					initBox(User21,"User21");
+					
 					var User22=User1.SubMembers[1];
-					$("#User22").html(User22.Name).attr("Layer",User22.Layer).attr("LayerNO",User22.LayerNO).attr("MemberId",User22.MemberId);
+					initBox(User22,"User22");
+					
 					var User31=User21.SubMembers[0];
-					$("#User31").html(User31.Name).attr("Layer",User31.Layer).attr("LayerNO",User31.LayerNO).attr("MemberId",User31.MemberId);
+					initBox(User31,"User31");
+					
 					var User32=User21.SubMembers[1];
-					$("#User32").html(User32.Name).attr("Layer",User32.Layer).attr("LayerNO",User32.LayerNO).attr("MemberId",User32.MemberId);
+					initBox(User32,"User32");
+					
 					var User33=User22.SubMembers[0];
-					$("#User33").html(User33.Name).attr("Layer",User33.Layer).attr("LayerNO",User33.LayerNO).attr("MemberId",User33.MemberId);
+					initBox(User33,"User33");
+					
 					var User34=User22.SubMembers[1];
-					$("#User34").html(User34.Name).attr("Layer",User34.Layer).attr("LayerNO",User34.LayerNO).attr("MemberId",User34.MemberId);
+					initBox(User34,"User34");
+					
 					if (isBack!=true) {
 						//如果是查询下级,则放入记录
 						hisArr.push({MemberId:User1.MemberId, Name:User1.Name});
 					} else{
-						//如果返回上级,则删除记录
-						var delObj;
-						for (var i = 0; i < hisArr.length; i++) {
-							var curObj=hisArr[i];
-							if (User1.MemberId==curObj.MemberId) {
-								delObj=curObj;
-								break;
-							}
-						}
-						delObj&&hisArr.remove(delObj);
+						//如果返回上级,则删除最后一条记录
+						var len=hisArr.length;
+						if(len>0) hisArr.remove(hisArr[len-1]);
 					}
+					flushBack();
 				}else{
 					return data.Message;
 				}
@@ -185,8 +186,21 @@
 				$("#userBackBtn").hide();
 			}else{
 				var obj=hisArr[len-2];
-				$("#userBackBtn").show().html(obj.Name);
+				$("#userBackBtn").show();
+				$("#beforeName").html(obj.Name);
 			}
+		}
+		
+		/*空位*/
+		function initBox(user,domId) {
+			user = user|| {Name:"无"};
+			var $dom=$("#"+domId);
+			if(user.Name=="空位"){
+				$dom.addClass("red");
+			}else{
+				$dom.removeClass("red");
+			}
+			$dom.html(user.Name).attr("Layer",user.Layer).attr("LayerNO",user.LayerNO).attr("MemberId",user.MemberId);
 		}
 	</script>
 

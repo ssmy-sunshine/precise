@@ -6,6 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
 		<link rel="stylesheet" href="../fonts/iconfont.css">
 		<link rel="stylesheet" href="../css/app.css">
+		<link rel="stylesheet" href="../css/paypass.css">
 		<style type="text/css">
 			body{background-color: #eee}
 			/*订单*/
@@ -75,6 +76,7 @@
 	<script src="../js/mui.min.js" charset="utf-8"></script>
 	<script src="../js/DomBiz.js" charset="utf-8"></script>
 	<script src="../js/plusBiz.js" charset="utf-8"></script>
+	<script src="../js/paypass.js" charset="utf-8"></script>
 	<script src="../js/app.js" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
 		var cid;//订单id
@@ -86,13 +88,16 @@
 			cid&&getData(cid);
 			//确认兑换
 			$("#btnSubmit").click(function () {
-				ajaxData(Host+"api/Order/GetSellOrderDetatils?ctId="+cid,function(data){
-					if (data.Status==200){
-						mui.toast("确认成功");
-						getData(cid);
-					}else{
-						return data.Message;
-					}
+				//交易密码 TODO
+				checkPayPass(function() {
+					ajaxData(Host+"api/Order/GetSellOrderDetatils?ctId="+cid,function(data){
+						if (data.Status==200){
+							mui.toast("确认成功");
+							getData(cid);
+						}else{
+							return data.Message;
+						}
+					})
 				})
 			});
 			

@@ -69,13 +69,16 @@
 		
 		/*进入app*/
 		function intApp () {
-			if (UserObj.isLogin(false)){
-				//如果已登录则进入首页
-				openWindow("../main/main.html",{isCanBack:false});
-			}else{
-				//如果没有登录则自动跳转登录页
-				openWindow("../account/login.html",{isCanBack:false});
-			}
+			//获取账户信息
+			UserObj.getUserinfo(function(user){
+				if (user) {
+					//如果已登录则进入首页
+					openWindow("../main/main.html",{isCanBack:false});
+				} else{
+					//如果没有登录则自动跳转登录页
+					openWindow("../account/login.html",{isCanBack:false});
+				}
+			},true);
 		}
 	</script>
 

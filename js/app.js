@@ -196,7 +196,7 @@ var UserObj={
 		if (UserObj.getUid()&&UserObj.getToken()) {
 			return true;
 		} else{
-			if(isToLogin!=false) openWindow("../account/login.html");
+			if(isToLogin!=false) openWindow("../account/login.html",{isCanBack:false});
 			return false;
 		}
 	},
@@ -218,7 +218,7 @@ var UserObj={
 		}else{
 			if(!window.hasToLogin){
 				window.hasToLogin=true;
-				openWindow("../account/login.html",{isCanBack:false},true);//如果没有TK,则去登录页
+				openWindow("../account/login.html",{isCanBack:false});//如果没有TK,则去登录页
 			}
 		}
 	},
@@ -233,12 +233,12 @@ var UserObj={
 				UserObj.setTokenRefresh(data.refresh_token);
 				return success&&success();//成功回调
 			},param,function(e) {
-				openWindow("../account/login.html",{isCanBack:false},true);//如果失败,则去登录页
+				openWindow("../account/login.html",{isCanBack:false});//如果失败,则去登录页
 			});
 		}else{
 			if(!window.hasToLogin){
 				window.hasToLogin=true;
-				openWindow("../account/login.html",{isCanBack:false},true);//如果没有TK,则去登录页
+				openWindow("../account/login.html",{isCanBack:false});//如果没有TK,则去登录页
 			}
 		}
 	},
