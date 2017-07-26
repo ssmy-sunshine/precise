@@ -1,339 +1,351 @@
 {
-  "account/login.html": {
-    "resources": [
-      "fonts/iconfont.css",
-      "css/login.css",
-      "fonts/iconfont.ttf",
-      "js/sendCode.js",
-      "js/app.js",
-      "js/mui.min.js",
-      "css/app.css",
-      "js/DomBiz.js",
-      "img/logo-red.png"
-    ],
-    "refer": [
-      "main/main.html",
-      "account/regin.html",
-      "account/findpw.html"
-    ]
-  },
-  "main/index.html": {
-    "resources": [
-      "js/app.js",
-      "js/mui.min.js",
-      "css/app.css",
-      "js/DomBiz.js",
-      "img/logo-red.png",
-      "js/updateBiz.js"
-    ],
-    "refer": [
-      "account/login.html",
-      "main/main.html"
-    ]
-  },
-  "main/main.html": {
-    "resources": [
-      "main/main-home.html",
-      "fonts/iconfont.css",
-      "fonts/iconfont.ttf",
-      "js/app.js",
-      "js/mui.min.js",
-      "css/app.css",
-      "js/DomBiz.js"
-    ],
-    "refer": [
-      "main/main-home.html",
-      "main/main-trade.html",
-      "main/main-share.html",
-      "main/main-user.html",
-      "main/main-order.html"
-    ]
-  },
-  "main/main-trade.html": {
-    "resources": [
-      "css/layer.css",
-      "js/paypass.js",
-      "js/mescroll.min.js",
-      "css/mescroll.min.css",
-      "js/layer.js",
-      "css/paypass.css",
-      "img/logo-gray.png",
-      "fonts/iconfont.ttf",
-      "js/app.js",
-      "fonts/iconfont.css",
-      "js/mui.min.js",
-      "css/app.css",
-      "js/DomBiz.js"
-    ],
-    "refer": [
-      "order/trade.html",
-      "order/detail-buy.html"
-    ]
-  },
-  "main/main-user.html": {
-    "resources": [
-      "img/level-icon.png",
-      "js/app.js",
-      "fonts/iconfont.css",
-      "js/mui.min.js",
-      "css/app.css",
-      "fonts/iconfont.ttf",
-      "js/DomBiz.js",
-      "img/logo-red.png"
-    ],
-    "refer": [
-      "user/ReginAmount.html",
-      "user/team.html",
-      "user/CashAmount.html",
-      "account/account-list.html",
-      "account/regin.html",
-      "user/update.html",
-      "user/ScoreAmount.html",
-      "account/act-list.html"
-    ]
-  },
-  "main/main-order.html": {
-    "refer": [
-      "order/trade.html",
-      "order/detail-buy.html",
-      "order/detail-sell.html",
-      "order/payimg.html",
-      "account/act-list.html",
-      "account/login.html"
-    ],
-    "resources": [
-      "js/mescroll.min.js",
-      "css/mescroll.min.css",
-      "js/app.js",
-      "fonts/iconfont.css",
-      "js/mui.min.js",
-      "css/app.css",
-      "js/DomBiz.js",
-      "img/logo-gray.png",
-      "js/plusBiz.js",
-      "js/paypass.js",
-      "css/paypass.css"
-    ]
-  },
-  "order/trade.html": {
-    "resources": [
-      "js/plusBiz.js"
-    ],
-    "refer": []
-  },
-  "trade/buy-user.html": {
-    "resources": [
-      "js/paypass.js",
-      "css/paypass.css",
-      "js/app.js",
-      "fonts/iconfont.css",
-      "js/mui.min.js",
-      "css/app.css",
-      "js/DomBiz.js",
-      "fonts/iconfont.ttf"
-    ],
-    "refer": []
-  },
-  "main/main-share.html": {
-    "refer": [
-      "trade/buy-user.html",
-      "trade/sell-share.html",
-      "order/detail-share.html",
-      "account/login.html"
-    ],
-    "resources": [
-      "img/logo-gray.png",
-      "js/app.js",
-      "fonts/iconfont.css",
-      "js/mui.min.js",
-      "css/app.css",
-      "js/DomBiz.js"
-    ]
-  },
-  "trade/sell-share.html": {
-    "resources": [
-      "js/paypass.js",
-      "js/app.js",
-      "fonts/iconfont.css",
-      "js/mui.min.js",
-      "css/app.css",
-      "fonts/iconfont.ttf",
-      "css/paypass.css",
-      "js/DomBiz.js"
-    ],
-    "refer": [
-      "account/reset-bank.html"
-    ]
-  },
-  "main/main-home.html": {
-    "resources": [
-      "img/logo-red.png",
-      "js/app.js",
-      "fonts/iconfont.css",
-      "js/mui.min.js",
-      "css/app.css",
-      "fonts/iconfont.ttf",
-      "js/DomBiz.js"
-    ],
-    "refer": [
-      "account/login.html",
-      "notice/notice.html",
-      "mall/mall.html",
-      "packet/list.html"
-    ]
-  },
-  "user/CashAmount.html": {
-    "refer": [
-      "trade/buy-sys.html"
-    ],
-    "resources": [
-      "fonts/iconfont.ttf",
-      "js/app.js",
-      "fonts/iconfont.css",
-      "js/mescroll.min.js",
-      "js/mui.min.js",
-      "css/app.css",
-      "css/mescroll.min.css",
-      "js/DomBiz.js",
-      "img/mescroll-totop.png",
-      "img/logo-gray.png"
-    ]
-  },
-  "account/account-list.html": {
-    "resources": [
-      "css/layer.css",
-      "js/layer.js",
-      "js/app.js",
-      "fonts/iconfont.css",
-      "js/mui.min.js",
-      "css/app.css",
-      "fonts/iconfont.ttf",
-      "js/DomBiz.js"
-    ],
-    "refer": [
-      "account/login.html",
-      "account/reset-pw.html",
-      "account/reset-trade.html",
-      "account/reset-bank.html"
-    ]
-  },
-  "order/detail-buy.html": {
-    "resources": [
-      "js/plusBiz.js",
-      "js/app.js",
-      "fonts/iconfont.css",
-      "js/mui.min.js",
-      "css/app.css",
-      "fonts/iconfont.ttf",
-      "js/DomBiz.js",
-      "js/showpayimg.js",
-      "css/showpayimg.css"
-    ],
-    "refer": []
-  },
-  "order/detail-sell.html": {
-    "resources": [
-      "js/app.js",
-      "fonts/iconfont.css",
-      "js/mui.min.js",
-      "css/app.css",
-      "js/plusBiz.js",
-      "fonts/iconfont.ttf",
-      "js/DomBiz.js",
-      "css/showpayimg.css",
-      "js/showpayimg.js",
-      "js/paypass.js",
-      "css/paypass.css"
-    ],
-    "refer": [
-      "order/payimg.html"
-    ]
-  },
-  "user/ReginAmount.html": {
-    "refer": [
-      "user/ReginBuy.html",
-      "user/update.html"
-    ],
-    "resources": [
-      "js/app.js",
-      "fonts/iconfont.css",
-      "js/mescroll.min.js",
-      "js/mui.min.js",
-      "css/app.css",
-      "css/mescroll.min.css",
-      "fonts/iconfont.ttf",
-      "js/DomBiz.js"
-    ]
-  },
-  "user/update.html": {
-    "resources": [
-      "js/app.js",
-      "fonts/iconfont.css",
-      "js/mui.min.js",
-      "css/app.css",
-      "fonts/iconfont.ttf",
-      "js/DomBiz.js",
-      "img/logo-red.png"
-    ],
-    "refer": []
-  },
-  "account/regin.html": {
-    "resources": [
-      "css/login.css",
-      "js/sendCode.js"
-    ],
-    "refer": [
-      "account/regin-ok.html"
-    ]
-  },
-  "user/team.html": {
-    "resources": [
-      "js/app.js",
-      "fonts/iconfont.css",
-      "js/mui.min.js",
-      "css/app.css",
-      "fonts/iconfont.ttf",
-      "js/DomBiz.js"
-    ],
-    "refer": []
-  },
-  "account/act-list.html": {
-    "resources": [
-      "fonts/iconfont.ttf",
-      "js/app.js",
-      "fonts/iconfont.css",
-      "js/mui.min.js",
-      "css/app.css",
-      "js/DomBiz.js"
-    ],
-    "refer": [
-      "account/login.html"
-    ]
-  },
-  "trade/buy-sys.html": {
-    "resources": [
-      "js/paypass.js",
-      "css/paypass.css"
-    ],
-    "refer": []
-  },
-  "user/ReginBuy.html": {
-    "refer": [
-      "trade/sell-share.html"
-    ],
-    "resources": []
-  },
-  "account/reset-bank.html": {
-    "resources": [
-      "css/login.css"
-    ],
-    "refer": []
-  },
-  "order/detail-share.html": {
-    "resources": [
-      "fonts/iconfont.ttf",
-      "js/plusBiz.js"
-    ],
-    "refer": []
-  }
+	"account/login.html": {
+		"resources": [
+			"fonts/iconfont.css",
+			"css/login.css",
+			"fonts/iconfont.ttf",
+			"js/sendCode.js",
+			"js/app.js",
+			"js/mui.min.js",
+			"css/app.css",
+			"js/DomBiz.js",
+			"img/logo-red.png"
+		],
+		"refer": [
+			"main/main.html",
+			"account/regin.html",
+			"account/findpw.html"
+		]
+	},
+	"main/index.html": {
+		"resources": [
+			"js/app.js",
+			"js/mui.min.js",
+			"css/app.css",
+			"js/DomBiz.js",
+			"img/logo-red.png",
+			"js/updateBiz.js"
+		],
+		"refer": [
+			"account/login.html",
+			"main/main.html"
+		]
+	},
+	"main/main.html": {
+		"resources": [
+			"main/main-home.html",
+			"fonts/iconfont.css",
+			"fonts/iconfont.ttf",
+			"js/app.js",
+			"js/mui.min.js",
+			"css/app.css",
+			"js/DomBiz.js"
+		],
+		"refer": [
+			"main/main-home.html",
+			"main/main-trade.html",
+			"main/main-share.html",
+			"main/main-user.html",
+			"main/main-order.html"
+		]
+	},
+	"main/main-trade.html": {
+		"resources": [
+			"css/layer.css",
+			"js/paypass.js",
+			"js/mescroll.min.js",
+			"css/mescroll.min.css",
+			"js/layer.js",
+			"css/paypass.css",
+			"img/logo-gray.png",
+			"fonts/iconfont.ttf",
+			"js/app.js",
+			"fonts/iconfont.css",
+			"js/mui.min.js",
+			"css/app.css",
+			"js/DomBiz.js"
+		],
+		"refer": [
+			"order/trade.html",
+			"order/detail-buy.html"
+		]
+	},
+	"main/main-user.html": {
+		"resources": [
+			"img/level-icon.png",
+			"js/app.js",
+			"fonts/iconfont.css",
+			"js/mui.min.js",
+			"css/app.css",
+			"fonts/iconfont.ttf",
+			"js/DomBiz.js",
+			"img/logo-red.png"
+		],
+		"refer": [
+			"user/ReginAmount.html",
+			"user/team.html",
+			"user/CashAmount.html",
+			"account/account-list.html",
+			"account/regin.html",
+			"user/update.html",
+			"user/ScoreAmount.html",
+			"account/act-list.html"
+		]
+	},
+	"main/main-order.html": {
+		"refer": [
+			"order/trade.html",
+			"order/detail-buy.html",
+			"order/detail-sell.html",
+			"order/payimg.html",
+			"account/act-list.html",
+			"account/login.html"
+		],
+		"resources": [
+			"js/mescroll.min.js",
+			"css/mescroll.min.css",
+			"js/app.js",
+			"fonts/iconfont.css",
+			"js/mui.min.js",
+			"css/app.css",
+			"js/DomBiz.js",
+			"img/logo-gray.png",
+			"js/plusBiz.js",
+			"js/paypass.js",
+			"css/paypass.css"
+		]
+	},
+	"order/trade.html": {
+		"resources": [
+			"js/plusBiz.js"
+		],
+		"refer": []
+	},
+	"trade/buy-user.html": {
+		"resources": [
+			"js/paypass.js",
+			"css/paypass.css",
+			"js/app.js",
+			"fonts/iconfont.css",
+			"js/mui.min.js",
+			"css/app.css",
+			"js/DomBiz.js",
+			"fonts/iconfont.ttf"
+		],
+		"refer": []
+	},
+	"main/main-share.html": {
+		"refer": [
+			"trade/buy-user.html",
+			"trade/sell-share.html",
+			"order/detail-share.html",
+			"account/login.html"
+		],
+		"resources": [
+			"img/logo-gray.png",
+			"js/app.js",
+			"fonts/iconfont.css",
+			"js/mui.min.js",
+			"css/app.css",
+			"js/DomBiz.js"
+		]
+	},
+	"trade/sell-share.html": {
+		"resources": [
+			"js/paypass.js",
+			"js/app.js",
+			"fonts/iconfont.css",
+			"js/mui.min.js",
+			"css/app.css",
+			"fonts/iconfont.ttf",
+			"css/paypass.css",
+			"js/DomBiz.js"
+		],
+		"refer": [
+			"account/reset-bank.html"
+		]
+	},
+	"main/main-home.html": {
+		"resources": [
+			"img/logo-red.png",
+			"js/app.js",
+			"fonts/iconfont.css",
+			"js/mui.min.js",
+			"css/app.css",
+			"fonts/iconfont.ttf",
+			"js/DomBiz.js"
+		],
+		"refer": [
+			"account/login.html",
+			"notice/notice.html",
+			"mall/mall.html",
+			"packet/list.html"
+		]
+	},
+	"user/CashAmount.html": {
+		"refer": [
+			"trade/buy-sys.html"
+		],
+		"resources": [
+			"fonts/iconfont.ttf",
+			"js/app.js",
+			"fonts/iconfont.css",
+			"js/mescroll.min.js",
+			"js/mui.min.js",
+			"css/app.css",
+			"css/mescroll.min.css",
+			"js/DomBiz.js",
+			"img/mescroll-totop.png",
+			"img/logo-gray.png"
+		]
+	},
+	"account/account-list.html": {
+		"resources": [
+			"css/layer.css",
+			"js/layer.js",
+			"js/app.js",
+			"fonts/iconfont.css",
+			"js/mui.min.js",
+			"css/app.css",
+			"fonts/iconfont.ttf",
+			"js/DomBiz.js"
+		],
+		"refer": [
+			"account/login.html",
+			"account/reset-pw.html",
+			"account/reset-trade.html",
+			"account/reset-bank.html"
+		]
+	},
+	"order/detail-buy.html": {
+		"resources": [
+			"js/plusBiz.js",
+			"js/app.js",
+			"fonts/iconfont.css",
+			"js/mui.min.js",
+			"css/app.css",
+			"fonts/iconfont.ttf",
+			"js/DomBiz.js",
+			"js/showpayimg.js",
+			"css/showpayimg.css"
+		],
+		"refer": []
+	},
+	"order/detail-sell.html": {
+		"resources": [
+			"js/app.js",
+			"fonts/iconfont.css",
+			"js/mui.min.js",
+			"css/app.css",
+			"js/plusBiz.js",
+			"fonts/iconfont.ttf",
+			"js/DomBiz.js",
+			"css/showpayimg.css",
+			"js/showpayimg.js",
+			"js/paypass.js",
+			"css/paypass.css"
+		],
+		"refer": [
+			"order/payimg.html"
+		]
+	},
+	"user/ReginAmount.html": {
+		"refer": [
+			"user/ReginBuy.html",
+			"user/update.html"
+		],
+		"resources": [
+			"js/app.js",
+			"fonts/iconfont.css",
+			"js/mescroll.min.js",
+			"js/mui.min.js",
+			"css/app.css",
+			"css/mescroll.min.css",
+			"fonts/iconfont.ttf",
+			"js/DomBiz.js"
+		]
+	},
+	"user/update.html": {
+		"resources": [
+			"js/app.js",
+			"fonts/iconfont.css",
+			"js/mui.min.js",
+			"css/app.css",
+			"fonts/iconfont.ttf",
+			"js/DomBiz.js",
+			"img/logo-red.png"
+		],
+		"refer": []
+	},
+	"account/regin.html": {
+		"resources": [
+			"css/login.css",
+			"js/sendCode.js"
+		],
+		"refer": [
+			"account/regin-ok.html"
+		]
+	},
+	"user/team.html": {
+		"resources": [
+			"js/app.js",
+			"fonts/iconfont.css",
+			"js/mui.min.js",
+			"css/app.css",
+			"fonts/iconfont.ttf",
+			"js/DomBiz.js"
+		],
+		"refer": []
+	},
+	"account/act-list.html": {
+		"resources": [
+			"fonts/iconfont.ttf",
+			"js/app.js",
+			"fonts/iconfont.css",
+			"js/mui.min.js",
+			"css/app.css",
+			"js/DomBiz.js"
+		],
+		"refer": [
+			"account/login.html"
+		]
+	},
+	"trade/buy-sys.html": {
+		"resources": [
+			"js/paypass.js",
+			"css/paypass.css"
+		],
+		"refer": []
+	},
+	"user/ReginBuy.html": {
+		"refer": [
+			"trade/sell-share.html"
+		],
+		"resources": []
+	},
+	"account/reset-bank.html": {
+		"resources": [
+			"css/login.css"
+		],
+		"refer": []
+	},
+	"order/detail-share.html": {
+		"resources": [
+			"fonts/iconfont.ttf",
+			"js/plusBiz.js"
+		],
+		"refer": []
+	},
+	"user/ScoreAmount.html": {
+		"resources": [
+			"js/app.js",
+			"fonts/iconfont.css",
+			"js/mescroll.min.js",
+			"js/mui.min.js",
+			"css/app.css",
+			"css/mescroll.min.css",
+			"fonts/iconfont.ttf",
+			"js/DomBiz.js"
+		]
+	}
 }

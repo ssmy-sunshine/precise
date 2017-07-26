@@ -533,6 +533,20 @@
 				],
 				"refer": [],
 				"priority": 0
+			},
+			"user/ScoreAmount.html": {
+				"resources": [
+					"js/app.js",
+					"fonts/iconfont.css",
+					"js/mescroll.min.js",
+					"js/mui.min.js",
+					"css/app.css",
+					"css/mescroll.min.css",
+					"fonts/iconfont.ttf",
+					"js/DomBiz.js"
+				],
+				"refer": [],
+				"priority": 0
 			}
 		},
 		"idle": {

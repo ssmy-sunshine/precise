@@ -23,7 +23,11 @@
 				border: none;
 			}
 			/*当前选择的账户*/
+			.userlist .icon-xuanze{display: none;}
 			.curuser, .curuser *{color: #EA1C40;}
+			.curuser .icon-xuanze{
+				display: inline-block;
+			}
 			/*注销*/
 			.loginout{
 				width: 92%;
@@ -55,9 +59,9 @@
 			</div>
 			<div class="itemwarp">
 				<div class="wb-item red">我的所有账户</div>
-				<div id="userlist">
+				<div id="userlist" class="userlist">
 					<div class="wb-item curuser"><p class="wb-item-right"><span class="iconfont icon-xuanze"></span></p></div>
-					<!--<div class="wb-item">张三</div>-->
+					<!--<div class="wb-item"><p class="wb-item-right"><span class="iconfont icon-xuanze"></span></p></div>-->
 				</div>
 			</div>
 			
@@ -118,15 +122,16 @@
 		
 		/*账户列表*/
 		function getAccounts(){
+			var uid=UserObj.getUid();
 			ajaxData(Host+"api/Account/GetAssociatedAccount", function(data) {
 				var list=data.Data;
 				var str='';
 				for (var i = 0; i < list.length; i++) {
 					var obj=list[i];
-					if (i==0) {
+					if (uid==obj.MemberId) {
 						str+='<div class="wb-item curuser" MemberId="'+obj.MemberId+'" Username="'+obj.LoginName+'" Nickname="'+obj.Name+'">'+obj.LoginName+'<p class="wb-item-right"><span class="iconfont icon-xuanze"></span></p></div>';
 					} else{
-						str+='<div class="wb-item" MemberId="'+obj.MemberId+'" Username="'+obj.LoginName+'" Nickname="'+obj.Name+'">'+obj.LoginName+'</div>';
+						str+='<div class="wb-item" MemberId="'+obj.MemberId+'" Username="'+obj.LoginName+'" Nickname="'+obj.Name+'">'+obj.LoginName+'<p class="wb-item-right"><span class="iconfont icon-xuanze"></span></p></div>';
 					}
 				}
 				$("#userlist").html(str);
@@ -151,15 +156,17 @@
 		function changeAccount(MemberId) {
 			var param={ajaxtype:"post", loginMemberId:MemberId, "refresh_token":UserObj.getTokenRefresh(), "grant_type":"password"};
 			ajaxData(Host+"token", function(data) {
-				if (data.Status==200) {
-					//刷新账号信息
-					UserObj.getUserinfo(function () {
-						UserObj.notifyView();
-						mui.toast("账号切换成功");
-					})
-				} else{
-					return data.Message
-				}
+				//更新token和uid
+				UserObj.setToken(data.access_token);
+				UserObj.setUsername(data.userName);
+				UserObj.setTokenType(data.token_type);
+				UserObj.setTokenRefresh(data.refresh_token);
+				UserObj.setUid(data["as:client_id"]);
+				//刷新账号信息
+				UserObj.getUserinfo(function () {
+					UserObj.notifyView();
+					mui.toast("账号切换成功");
+				})
 			},param,function(e) {
 				openWindow("../account/login.html",{isCanBack:false},true);//如果失败,则去登录页
 			});
