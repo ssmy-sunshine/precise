@@ -268,7 +268,7 @@ var UserObj={
 					UserObj.setBankName(user.BankName);//银行名
 					UserObj.setTestTag(user.Type);//是否为测试人员,在updateBiz.js用到
 					//回调
-					callback&&callback(user);
+					return callback&&callback(user);
 				}else{
 					//失败回调
 					return callback&&callback();
@@ -411,8 +411,8 @@ function ajaxData(url,success,param,err,hideWait) {
 					var res = xhr.status==400 ? JSON.parse(xhr.response) : xhr ;
 					var errMsg=err&&err(res);//返回false,不提示; 返回具体信息,则提示具体信息; 否则提示默认信息
 					if (errMsg!=false) {
-						if(!errMsg) errMsg=res.error_description||("网速繁忙,请重试."+xhr.status+" v"+param.version);
-						mui.toast(errMsg);
+						if(!errMsg) errMsg=res.error_description||(xhr.status+" "+xhr.responseText+" v"+param.version);
+						if(xhr.responseText!='{"error":"invalid_grant"}') mui.toast(errMsg);//避免启动的时候刷tk失败弹出此提示
 					}
 				}
 			}
