@@ -271,11 +271,10 @@ var UserObj={
 					callback&&callback(user);
 				}else{
 					//失败回调
-					callback&&callback();
-					return data.Message;
+					return callback&&callback();
 				}
 			},null,function(){
-				callback&&callback();//失败回调
+				return callback&&callback();//失败回调
 			},hideWait);
 		}else{
 			callback&&callback();//未登录

@@ -8,17 +8,11 @@
 		<link rel="stylesheet" href="../css/app.css">
 		<link rel="stylesheet" href="../css/paypass.css">
 		<style type="text/css">
-			.contentwarp{
-				padding: 50px 20% 0 20%;
+			.wb-content{
 				text-align: center;
 			}
-			.systrade{
-				font-size: 18px;
-				line-height: 30px;
-				color: red;
-			}
 			.amount-my{
-				margin-top: 30px;
+				margin-top: 60px;
 				font-size: 18px;
 				color: #EA1C40;
 			}
@@ -26,24 +20,20 @@
 				margin-top: 30px;
 				font-size: 14px;
 			}
-			.number-warp{
-				position: relative;
-				border-bottom: 1px solid #eee;
+			.amount-list{
+				margin-top: 30px;
 			}
-			.number-warp input{
-				width: 90%;
-				padding: 10px 0;
-				font-size: 24px;
-				border-bottom: 1px solid #bbb;
-				text-align: center;
-				color: #EA1C40;
-			}
-			.number-warp .input-tip{
-				position: absolute;
-				right: 5%;
-				top: 20px;
-				font-size: 14px;
+			.amount-list li{
+				display: inline-block;
+				width: 25%;
+				margin: 2%;
+				padding: 20px 0;
+				border: 1px solid #ccc;
 				color: gray;
+			}
+			.amount-list .act{
+				border: 1px solid #EA1C40;
+				color: #EA1C40;
 			}
 		</style>
 	</head>
@@ -54,14 +44,11 @@
 			<p class="wb-title">兑换现金币</p>
 		</div>
 		<div class="wb-content">
-			<div class="contentwarp">
-				<p class="amount-my">我的现金币 : <span id="Amount"></span></p>
-				<p class="buy-tip">输入您要兑换的数量</p>
-				<div class="number-warp">
-					<input id="inputNum" type="number"/>
-					<p class="input-tip">现金币</p>
-				</div>
-			</div>
+			<p class="amount-my">我的现金币 : <span id="Amount"></span></p>
+			<p class="buy-tip">选择您要兑换的现金币</p>
+			<ul id="amountList" class="amount-list">
+				<!--<li>100</li>-->
+			</ul>
 		</div>
 		<p id="btnSubmit" class="wb-footer wb-btn btn-yellow">确定兑换</p>
 	</body>
@@ -74,19 +61,44 @@
 		mui.init();
 		mui.plusReady(function() {
 			//用户信息
-			EJ_SetUserInfo();
+			$("#Amount").html(UserObj.getAmount());
+			
+			//获取金额列表
+			getAmount();
+			mui("#amountList").on("tap","li",function() {
+				$("#amountList .act").removeClass("act");
+				this.classList.add("act");
+			})
 			//兑换
 			$("#btnSubmit").click(function() {
-				var num=Number($("#inputNum").val()||0);
+				var num=Number($("#amountList .act").html()||0);
 				if(num>0){
 					if(num>UserObj.getAmount()){
 						mui.toast("现金币不足");
 						return;
 					}
 					toSubmit(num);
+				}else{
+					mui.toast("请选择兑换的金额")
 				}
 			})
 		});
+		
+		/*获取金额列表*/
+		function getAmount(){
+			ajaxData(Host+"api/my/getcashamount", function(data) {
+				var dataArr=data.Data;
+				if(dataArr&&dataArr.length>0){
+					var str='';
+					for (var i = 0; i < dataArr.length; i++) {
+						str+='<li>'+dataArr[i].Amount+'</li>';
+					}
+					$("#amountList").html(str);
+				}else{
+					mui.toast("后台未设置金额");
+				}
+			});
+		}
 		
 		/*确定兑换*/
 		function toSubmit(num){

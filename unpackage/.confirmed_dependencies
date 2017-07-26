@@ -313,7 +313,13 @@
 	"trade/buy-sys.html": {
 		"resources": [
 			"js/paypass.js",
-			"css/paypass.css"
+			"css/paypass.css",
+			"js/app.js",
+			"fonts/iconfont.css",
+			"js/mui.min.js",
+			"css/app.css",
+			"fonts/iconfont.ttf",
+			"js/DomBiz.js"
 		],
 		"refer": []
 	},
